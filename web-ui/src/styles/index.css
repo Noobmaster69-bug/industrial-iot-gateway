@@ -1,0 +1,58 @@
+/* font */
+@font-face {
+  font-family: "Poppins";
+  src: local("Poppins"), url("assets/fonts/Poppins.ttf") format("truetype");
+}
+body *:not(h1):not(h2):not(h3) {
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 400;
+  color: #595959;
+}
+h1,
+h2,
+h3 {
+  color: #262626;
+}
+h1 {
+  font-size: 32px;
+  line-height: 40px;
+}
+h2 {
+  font-size: 24px;
+  line-height: 32px;
+}
+h3 {
+  font-size: 16px;
+  line-height: 24px;
+}
+/*global varies*/
+* {
+  --diasble-color: #bfbfbf;
+  --border-color: #d9d9d9;
+  --background: #eff1f4;
+  --bars-background: #262626;
+  --bars-color: #dbdbdb;
+  --size-bar-width: 260px;
+  --top-bar-height: 64px;
+  --sidebar-active-background: #777777;
+  box-sizing: border-box;
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  font-family: "Poppins";
+}
+a,
+a:active,
+a:focus,
+a:hover {
+  text-decoration: none !important;
+}

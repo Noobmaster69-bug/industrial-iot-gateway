@@ -1,0 +1,41 @@
+.PopUp {
+  height: 120px;
+  width: 300px;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  .content {
+    padding: 20px 20px;
+    text-align: center;
+  }
+  .toolBar {
+    display: flex;
+    justify-content: center;
+
+    margin-bottom: 5px;
+    .button {
+      padding: 10px 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .cancel {
+      margin-right: 20px;
+      background-color: #f2f2f4;
+      transition: background-color 0.2s;
+      &:hover {
+        background-color: #dbdbe7;
+      }
+    }
+    .confirm {
+      color: white;
+      background-color: #00ad55;
+      &:hover {
+        background-color: #05db6e;
+      }
+    }
+  }
+}

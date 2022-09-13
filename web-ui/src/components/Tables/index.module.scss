@@ -1,0 +1,88 @@
+.container {
+  border-collapse: collapse;
+  min-width: 800px;
+  height: max-content;
+  width: 100%;
+}
+.body > tr {
+  border-bottom: 0.5px solid rgba(224, 224, 224, 1);
+  width: 100%;
+  height: 50px;
+  table-layout: fixed;
+  border-spacing: 30px;
+}
+.head {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+.checkbox {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.row-selected {
+  background-color: #c7cbff !important;
+}
+.row:hover {
+  background-color: #f5f5f5;
+}
+.toolBox {
+  min-width: 800px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  .pageSelect {
+    margin-right: 5px;
+    width: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    select {
+      min-width: 40px;
+      text-align: end;
+      border: initial;
+      background-color: white;
+    }
+  }
+  .pageNum {
+    margin-right: 20px;
+  }
+  .iconHolder {
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 60px;
+    cursor: pointer;
+  }
+}
+.toolbox-head {
+  .title {
+    padding-right: 10px;
+  }
+  .search-bar {
+    padding-left: 5px;
+    display: flex;
+    align-items: center;
+    border: 1px solid black;
+    min-height: 25px;
+    max-height: 30px;
+    .search {
+      border: none;
+      background-color: transparent;
+      resize: none;
+      outline: none;
+    }
+  }
+  .select-counter {
+    display: flex;
+  }
+}
