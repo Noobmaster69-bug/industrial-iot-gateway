@@ -6,17 +6,20 @@
   "bin": "./index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "setup": "npm install --omnit-dev",
+    "setup": "npm install --omnit-dev --no-color",
     "setup_armhf": "export AR=\"arm-linux-gnueabihf-ar\" && export CC=\"arm-linux-gnueabihf-gcc\" && export CXX=\"arm-linux-gnueabihf-g++\" &&export LINK=\"arm-linux-gnueabihf-g++\"&&npm install --build-from-source --target_arch=arm --omit=dev",
     "start": "DEV=true nodemon index.js",
     "build": "rm -f -r ./dist && DOCKER_BUILDKIT=1 docker build --output dist . --no-cache=true ",
-    "clean": "rm -f -r ./node_modules && rm -r ./db.sqlite",
-    "install": "npm install --no-color"
+    "clean": "rm -f -r ./node_modules && rm -r ./db.sqlite"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "node-os-utils": "^1.3.7",
     "sequelize": "^6.17.0",

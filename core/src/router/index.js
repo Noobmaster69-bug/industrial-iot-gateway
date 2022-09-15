@@ -1,4 +1,5 @@
-module.exports = function (app, express) {
-  app.use("/devices", require("./devices.router")());
-  app.use("/models", require("./models.router")());
+module.exports = function (app) {
+  app.use("/", require("./auth.router")(app));
+  app.use("/api/devices", require("./devices.router")());
+  app.use("/api/models", require("./models.router")());
 };

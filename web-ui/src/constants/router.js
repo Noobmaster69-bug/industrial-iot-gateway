@@ -1,18 +1,18 @@
 import {
   AiFillHome,
-  AiOutlineApartment,
+  // AiOutlineApartment,
   AiTwotoneReconciliation,
 } from "react-icons/ai";
 import { BsFillCpuFill } from "react-icons/bs";
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [
-  // {
-  //   path: "",
-  //   component: "pages/Login",
-  //   layout: null,
-  //   layoutProps: "",
-  //   navBar: false,
-  // },
+  {
+    path: "/login",
+    component: "pages/Login",
+    layout: null,
+    layoutProps: "",
+    navBar: false,
+  },
   {
     path: "/home",
     component: "pages/Home",

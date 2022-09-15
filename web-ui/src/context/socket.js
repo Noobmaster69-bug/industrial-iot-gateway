@@ -13,8 +13,9 @@ export function SocketProvider({ children }) {
   });
   const [log, setLog] = useState([]);
   useEffect(() => {
-    const socket = io();
+    const socket = io("http://localhost:33333");
     socket.on("connect", () => {
+      console.log("connected to server");
       socket.on("performance", (msg) => {
         setPerformance((data) => {
           let tmp = data;

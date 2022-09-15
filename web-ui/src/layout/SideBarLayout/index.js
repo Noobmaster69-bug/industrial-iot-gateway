@@ -4,12 +4,21 @@ import style from "./index.module.scss";
 import dino from "assets/logos/dino.png";
 import router from "constants/router";
 import clsx from "clsx";
-import { AiOutlineMenu } from "react-icons/ai";
+import {
+  AiOutlineMenu,
+  AiOutlineLogout,
+  AiOutlineSetting,
+} from "react-icons/ai";
 import { BiUserCircle } from "react-icons/bi";
+import { FaUserCog } from "react-icons/fa";
+import { useLogOut, useUser } from "hooks";
 export default function SideBarLayout({ title }) {
   const location = useLocation();
   const currentPath = location.pathname;
   const [sideBar, setSiteBar] = useState(false);
+  const [userMenu, setUserMenu] = useState(true);
+  const { data: user } = useUser();
+  const logout = useLogOut();
   return (
     <div className={style["outer-container"]}>
       <div className={style["top-bar"]}>
@@ -29,7 +38,54 @@ export default function SideBarLayout({ title }) {
         <span style={{ flex: "1 1", boxSizing: "border-box" }} />
         <div className={style["user-holder"]}>
           <BiUserCircle size={25} className={style.icon} />
-          <span>admin</span>
+          <div className={style["tool-tip"]}>
+            <span
+              onClick={() => {
+                setUserMenu(!userMenu);
+              }}
+            >
+              <span className={style["tool-tip-label"]}>{user?.username}</span>
+            </span>
+            <span
+              className={clsx(
+                style["tool-tip-text"],
+                userMenu && style["tool-tip-text-active"]
+              )}
+            >
+              <div>
+                <span>
+                  <AiOutlineSetting
+                    className={style["tool-tip-icon"]}
+                    size={20}
+                  />
+                </span>
+                <span className={style["tool-tip-content"]}>
+                  Account Setting
+                </span>
+              </div>
+              <div>
+                <span>
+                  <FaUserCog className={style["tool-tip-icon"]} size={20} />
+                </span>
+                <span className={style["tool-tip-content"]}>
+                  User Management
+                </span>
+              </div>
+              <div
+                onClick={() => {
+                  logout.mutate();
+                }}
+              >
+                <span>
+                  <AiOutlineLogout
+                    className={style["tool-tip-icon"]}
+                    size={20}
+                  />
+                </span>
+                <span className={style["tool-tip-content"]}>Logout</span>
+              </div>
+            </span>
+          </div>
         </div>
       </div>
       <div className={style.container}>

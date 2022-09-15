@@ -33,7 +33,7 @@
       align-items: center;
       user-select: none;
       cursor: pointer;
-      span {
+      .tool-tip-label {
         color: white;
         display: flex;
         align-items: center;
@@ -110,6 +110,65 @@
 }
 .icon {
   fill: white;
+}
+.tool-tip {
+  position: relative;
+  display: inline-block;
+  .tool-tip-text {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    visibility: hidden;
+    width: 240px;
+    background-color: var(--bars-background);
+    border-radius: 6px;
+    padding: 12px 0;
+    position: absolute;
+    z-index: 1;
+    top: 150%;
+    left: -150%;
+    margin-left: -60px;
+    height: max-content;
+    div {
+      display: flex;
+      width: 100%;
+      height: max-content;
+      padding: 10px 32px;
+      text-align: start;
+      color: var(--bars-color);
+      .tool-tip-icon {
+        fill: var(--bars-color);
+      }
+      .tool-tip-content {
+        padding-left: 8px;
+        color: var(--bars-color);
+      }
+      &:hover {
+        .tool-tip-icon {
+          fill: #fff;
+        }
+        .tool-tip-content {
+          color: #fff;
+        }
+      }
+    }
+    &:hover {
+      visibility: visible;
+    }
+  }
+  .tool-tip-text::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 75%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+  }
+  .tool-tip-text-active {
+    visibility: visible;
+  }
 }
 @media (min-width: 1024px) {
   .blur {

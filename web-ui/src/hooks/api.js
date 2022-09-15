@@ -1,6 +1,14 @@
-import axios from "axios";
+import Axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import Toast from "./toast";
+const axios = Axios.create({
+  baseURL: "http://localhost:33333/api",
+  withCredentials: true,
+  headers: {
+    "Access-Control-Allow-Origin": "*",
+    "Content-Type": "application/json",
+  },
+});
 function errorToast(msg) {
   const toast = Toast("error");
   toast(msg);
@@ -13,7 +21,10 @@ export function useDevices() {
   return useQuery(
     "devices",
     async () => {
-      const data = await axios.get("/devices/model").then(({ data }) => data);
+      const data = await axios
+        .get("/devices/model")
+        .then(({ data }) => data)
+        .catch((err) => console.log(JSON.stringify(err)));
       return data;
     },
     {
@@ -65,6 +76,73 @@ export function useDeviceCount() {
     },
     {
       staleTime: 60000,
+    }
+  );
+}
+export function useUser() {
+  return useQuery(
+    "user",
+    async () => {
+      const data = await Axios.get("http://localhost:33333/login", {
+        withCredentials: true,
+      })
+        .then(({ data }) => data)
+        .catch(() => {});
+      if (data) {
+        return data;
+      }
+      return undefined;
+    },
+    {
+      staleTime: 2 * 3600 * 1000,
+      retry: false,
+      _defaulted: undefined,
+    }
+  );
+}
+export function useLogin(onSuccess = () => {}, onError = () => {}) {
+  const queryClient = useQueryClient();
+  return useMutation(
+    async ({ username, password }) => {
+      const data = await Axios.post(
+        "http://localhost:33333/login",
+        {
+          username,
+          password,
+        },
+        { withCredentials: true }
+      ).then(({ data }) => data);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
+      return data;
+    },
+    {
+      mutationKey: "user",
+      staleTime: Number.MAX_VALUE,
+      onSuccess: (data) => {
+        onSuccess(data);
+        queryClient.invalidateQueries("user");
+      },
+      onError: (error, variables, context) => {
+        onError(error, variables, context);
+        errorToast(error.response?.data);
+      },
+    }
+  );
+}
+export function useLogOut() {
+  const queryClient = useQueryClient();
+  return useMutation(
+    async () => {
+      const data = await Axios.delete("http://localhost:33333/login", {
+        withCredentials: true,
+      });
+      return data;
+    },
+    {
+      mutationKey: "user",
+      onSuccess: () => {
+        queryClient.setQueryData("user", undefined);
+      },
     }
   );
 }

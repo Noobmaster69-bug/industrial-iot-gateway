@@ -30,13 +30,21 @@ module.exports.sync = async () => {
 
     //loading system config
     const fs = require("fs");
-    const { Configuration } = sequelize.models;
+    const { Configuration, Accounts } = sequelize.models;
     const defaults = JSON.parse(
       fs.readFileSync(__dirname + "/../../config.json", "utf8")
     );
     const [config, justCreated] = await Configuration.findOrCreate({
       where: { id: 1 },
       defaults,
+    });
+    const [user, userCreated] = await Accounts.findOrCreate({
+      where: { id: 1 },
+      defaults: {
+        userName: "admin",
+        password: "admin",
+        role: "admin",
+      },
     });
     global._config = config.toJSON();
     if (justCreated) {
@@ -84,3 +92,4 @@ module.exports.Models = require("./dao/models")(sequelize);
 module.exports.Devices = require("./dao/devices.js")(sequelize);
 module.exports.Tasks = require("./dao/tasks")(sequelize);
 module.exports.Protocol = require("./dao/protocols")(sequelize);
+module.exports.Accounts = require("./dao/accounts")(sequelize);

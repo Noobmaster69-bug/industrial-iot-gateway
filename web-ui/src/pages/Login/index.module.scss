@@ -1,0 +1,217 @@
+.container {
+  width: 100%;
+  height: 100%;
+  //   .header {
+  //     height: 20%;
+  //   }
+  .body {
+    padding-left: 200px;
+    display: flex;
+    width: 100%;
+    height: 80%;
+    display: flex;
+    justify-content: space-between;
+    .login-form {
+      display: flex;
+      justify-content: center;
+      height: 100%;
+      max-width: 25%;
+      flex-direction: column;
+      padding: 0 24px;
+      .login-header {
+        font-size: 1.875rem;
+        line-height: 1.375;
+        opacity: 1;
+        background-image: linear-gradient(
+          310deg,
+          rgb(33, 82, 255),
+          rgb(33, 212, 253)
+        );
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        color: rgb(23, 193, 232);
+        font-weight: 700;
+      }
+      .login-quote {
+        font-size: 1rem;
+        line-height: 1.6;
+        letter-spacing: 0.01071em;
+        opacity: 1;
+        text-transform: none;
+        vertical-align: unset;
+        text-decoration: none;
+        color: rgb(103, 116, 142);
+        font-weight: 400;
+      }
+      .form {
+        padding: 24px 0;
+        opacity: 1;
+        background: transparent;
+        color: rgb(52, 71, 103);
+        .form-label {
+          margin-bottom: 8px;
+          margin-left: 4px;
+          opacity: 1;
+          background: transparent;
+          color: rgb(52, 71, 103);
+          font-size: 0.75rem;
+          line-height: 1.25;
+          letter-spacing: 0.03333em;
+          opacity: 1;
+          text-transform: none;
+          vertical-align: unset;
+          text-decoration: none;
+          color: rgb(52, 71, 103);
+          font-weight: 700;
+        }
+        .form-input {
+          input {
+            font: inherit;
+            letter-spacing: inherit;
+            color: currentcolor;
+            border: 0px;
+            box-sizing: content-box;
+            background: none;
+            margin: 0px;
+            -webkit-tap-highlight-color: transparent;
+            display: block;
+            min-width: 0px;
+            animation-name: mui-auto-fill-cancel;
+            animation-duration: 10ms;
+            height: 1.375rem;
+            width: 100% !important;
+            padding: 0px !important;
+            outline: none;
+          }
+          font-family: Roboto, Helvetica, Arial, sans-serif;
+          letter-spacing: 0.00938em;
+          box-sizing: border-box;
+          position: relative;
+          cursor: text;
+          -webkit-box-align: center;
+          padding: 0.5rem 0.75rem;
+          border: 0.0625rem solid rgb(210, 214, 218);
+          border-radius: 0.5rem;
+          pointer-events: auto;
+          display: grid !important;
+          place-items: center !important;
+          width: 100% !important;
+          height: auto !important;
+          font-size: 0.875rem !important;
+          font-weight: 400 !important;
+          line-height: 1.4 !important;
+          color: rgb(73, 80, 87) !important;
+          background-color: rgb(255, 255, 255) !important;
+          background-clip: padding-box !important;
+          appearance: none !important;
+          transition: box-shadow 150ms ease 0s, border-color 150ms ease 0s,
+            padding 150ms ease 0s !important;
+          margin-bottom: 16px;
+        }
+        .form-input-active {
+          border-color: rgb(53, 209, 245);
+          box-shadow: rgb(129, 227, 249) 0rem 0rem 0rem 0.125rem;
+        }
+        .form-input-error {
+          border-color: var(--error-color);
+          box-shadow: var(--error-color) 0rem 0rem 0rem 0.125rem;
+        }
+        .submit {
+          position: relative;
+          box-sizing: border-box;
+          -webkit-tap-highlight-color: transparent;
+          outline: 0px;
+          border: 0px;
+          margin: 0px;
+          cursor: pointer;
+          vertical-align: middle;
+          appearance: none;
+          text-decoration: none;
+          font-family: Roboto, Helvetica, Arial, sans-serif;
+          letter-spacing: 0.02857em;
+          min-width: 64px;
+          width: 100%;
+          display: inline-flex;
+          -webkit-box-pack: center;
+          justify-content: center;
+          -webkit-box-align: center;
+          align-items: center;
+          font-size: 0.75rem;
+          font-weight: 700;
+          border-radius: 0.5rem;
+          line-height: 1.4;
+          text-align: center;
+          text-transform: uppercase;
+          user-select: none;
+          transition: all 150ms ease-in 0s;
+          min-height: 2.5rem;
+          box-shadow: rgb(0 0 0 / 11%) 0rem 0.25rem 0.4375rem -0.0625rem,
+            rgb(0 0 0 / 7%) 0rem 0.125rem 0.25rem -0.0625rem;
+          padding: 0.75rem 1.5rem;
+          background-image: linear-gradient(
+            310deg,
+            rgb(33, 82, 255),
+            rgb(33, 212, 253)
+          );
+          background-position-y: initial;
+          background-repeat: initial;
+          background-attachment: initial;
+          background-origin: initial;
+          background-clip: initial;
+          background-color: initial;
+          color: rgb(255, 255, 255);
+          background-size: 150% !important;
+          background-position-x: 25% !important;
+        }
+      }
+    }
+    .login-logo {
+      flex-basis: 41.6667%;
+      -webkit-box-flex: 0;
+      flex-grow: 0;
+      max-width: 41.6667%;
+      .logo-clip {
+        height: 100%;
+        position: relative;
+        margin-right: -128px;
+        opacity: 1;
+        background: transparent;
+        color: rgb(52, 71, 103);
+        transform: skewX(-10deg);
+        overflow: hidden;
+        border-bottom-left-radius: 0.75rem;
+        .logo-image {
+          margin-left: -64px;
+          height: 100%;
+          opacity: 1;
+          color: rgb(52, 71, 103);
+          transform: skewX(10deg);
+          background: url("/assets/logos/login-logo.jpg") 0% 0% / cover
+            transparent;
+        }
+      }
+    }
+  }
+  .footer {
+    height: 20%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 24px;
+    .about {
+      height: 100%;
+      width: 75%;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+    }
+    .copyright {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}

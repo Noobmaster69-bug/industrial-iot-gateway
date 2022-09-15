@@ -36,6 +36,7 @@ h3 {
   --size-bar-width: 260px;
   --top-bar-height: 64px;
   --sidebar-active-background: #777777;
+  --error-color: #ff4d4f;
   box-sizing: border-box;
   margin: 0;
   font-variant-numeric: tabular-nums;

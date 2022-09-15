@@ -20,6 +20,7 @@ const app = express();
   });
   httpServer.listen(port);
   io.on("connection", (client) => {
+    console.log("user connected");
     require("./src/io")(client);
   });
   process.on("__log", (msg) => {
