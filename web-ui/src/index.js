@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "reactjs-popup/dist/index.css";
 import "styles/index.css";
+import "react-loading-skeleton/dist/skeleton.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { SocketProvider } from "context";

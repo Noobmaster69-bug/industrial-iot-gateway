@@ -12,11 +12,12 @@ export function SocketProvider({ children }) {
     download: [],
   });
   const [log, setLog] = useState([]);
+  const [isConnected, setIsConnected] = useState(false);
   useEffect(() => {
     const socket = io("http://localhost:33333");
     socket.on("connect", () => {
-      console.log("connected to server");
       socket.on("performance", (msg) => {
+        setIsConnected(true);
         setPerformance((data) => {
           let tmp = data;
           tmp.upload.push({
@@ -44,5 +45,10 @@ export function SocketProvider({ children }) {
       socket.removeAllListeners();
     };
   }, []);
-  return <Socket.Provider value={{ performance, log }} children={children} />;
+  return (
+    <Socket.Provider
+      value={{ performance, log, isConnected }}
+      children={children}
+    />
+  );
 }

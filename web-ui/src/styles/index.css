@@ -28,15 +28,24 @@ h3 {
 }
 /*global varies*/
 * {
+  /* bars*/
+  --bars-background: rgb(17, 24, 39);
+  --sidebar-active-background: #242a38;
+
+  --bars-color: rgb(209, 213, 219);
+  --bars-active-color: rgb(16, 185, 129);
+
+  /* /* outlet * */
   --diasble-color: #bfbfbf;
   --border-color: #d9d9d9;
   --background: #eff1f4;
-  --bars-background: #262626;
-  --bars-color: #dbdbdb;
-  --size-bar-width: 260px;
-  --top-bar-height: 64px;
-  --sidebar-active-background: #777777;
   --error-color: #ff4d4f;
+  --top-bars-background: #fff;
+
+  /* size */
+  --side-bar-width: 280px;
+  --top-bar-height: 64px;
+
   box-sizing: border-box;
   margin: 0;
   font-variant-numeric: tabular-nums;

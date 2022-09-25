@@ -2,98 +2,126 @@
   width: 100%;
   height: 100%;
   user-select: none;
-  .top-bar {
-    position: relative;
+  display: flex;
+  .sideBar {
+    // top: 50px;
     z-index: 999;
-    height: var(--top-bar-height);
-    width: 100%;
+    position: fixed;
+    user-select: none;
     background-color: var(--bars-background);
-    display: flex;
-    flex-direction: row;
+    width: var(--side-bar-width);
+    height: 100%;
+    transition: left 0.2s;
     .imgContainer {
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      width: 220px;
+      width: 100%;
       cursor: pointer;
       img {
         background-color: var(--bars-color);
         height: 50px;
       }
     }
-    h2 {
-      color: white;
-      display: flex;
-      align-items: center;
-      // padding: 15px;
+    .link-container {
+      width: 100%;
+      padding: 0 16px;
+      height: 42.5px;
+      margin-bottom: 4px;
     }
-    .user-holder {
-      display: flex;
-      align-items: center;
-      user-select: none;
-      cursor: pointer;
-      .tool-tip-label {
-        color: white;
+    .LinksHolder {
+      padding-top: 20px;
+      .LinkHolder {
+        width: 100%;
+        height: 100%;
         display: flex;
+        text-decoration: none;
         align-items: center;
-        padding: 10px;
-        padding-right: 20px;
+        padding: 9px 24px;
+        border-radius: 8px;
+        .iconHolder {
+          width: 40px;
+          justify-content: center;
+          display: flex;
+          cursor: pointer;
+          svg {
+            fill: var(--bars-color);
+          }
+        }
+        &:hover {
+          background-color: var(--sidebar-active-background);
+        }
+        &Active {
+          background-color: var(--sidebar-active-background);
+          span {
+            color: var(--bars-active-color) !important;
+          }
+          .iconHolder {
+            svg {
+              fill: var(--bars-active-color);
+            }
+          }
+        }
+        span {
+          color: var(--bars-color);
+        }
+      }
+    }
+    .type-holder {
+      margin-top: 12px;
+      .type-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        line-height: 2.5;
+        margin-left: 32px;
+        color: rgb(107, 114, 128);
       }
     }
   }
   .container {
-    width: 100%;
-    height: 100%;
+    width: calc(100%);
+    height: calc(100%);
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     .outlet {
       width: calc(100%);
-      height: calc(100%);
       background-color: var(--background);
     }
-    .sideBar {
-      // top: 50px;
+    .top-bar {
+      position: relative;
       z-index: 999;
-      position: fixed;
-      user-select: none;
-      background-color: var(--bars-background);
-      width: 270px;
-      height: calc(100% - 50px);
-      transition: left 0.2s;
-      .LinksHolder {
-        padding-top: 20px;
-        .LinkHolder {
-          width: 100%;
+      height: var(--top-bar-height);
+      width: 100%;
+      background-color: var(--top-bars-background);
+      display: flex;
+      flex-direction: row;
 
+      h2 {
+        color: color;
+        display: flex;
+        align-items: center;
+      }
+      .user-holder {
+        display: flex;
+        align-items: center;
+        user-select: none;
+        cursor: pointer;
+        height: 60%;
+        align-self: center;
+        width: max-content;
+        margin-right: 8px;
+        border-radius: 12px;
+        padding: 4px;
+        padding-left: 10px;
+        &:hover {
+          background-color: rgba(107, 114, 128, 0.04);
+        }
+        .tool-tip-label {
+          font-weight: bold;
           display: flex;
-          text-decoration: none;
           align-items: center;
-          height: 50px;
-          border-left: 5px solid var(--header-background);
-          .iconHolder {
-            width: 60px;
-            justify-content: center;
-            display: flex;
-            cursor: pointer;
-            svg {
-              fill: white;
-            }
-          }
-          &:hover {
-            background-color: var(--sidebar-active-background);
-            border-left: 5px solid var(--sidebar-active-background);
-          }
-          &Active {
-            border-left: 5px solid white;
-            background-color: var(--sidebar-active-background);
-            &:hover {
-              border-left: 5px solid white;
-            }
-          }
-          span {
-            color: white !important;
-          }
+          padding: 10px;
         }
       }
     }
@@ -104,16 +132,13 @@
   position: fixed;
   width: 100%;
   height: 100%;
-  // pointer-events: auto;
   background: rgba(0, 0, 0, 0.5);
   inset: 0px;
-}
-.icon {
-  fill: white;
 }
 .tool-tip {
   position: relative;
   display: inline-block;
+  z-index: 999;
   .tool-tip-text {
     display: flex;
     flex-direction: column;
@@ -176,10 +201,15 @@
   }
   .sideBar {
     position: initial !important;
-    height: calc(100% - 64px) !important;
   }
   .outlet {
-    width: calc(100% - 256px) !important;
-    height: calc(100% - 64px) !important;
+    height: calc(100% - var(--top-bar-height));
   }
+}
+hr {
+  margin: 24px 0;
+  flex-shrink: 0;
+  border-width: 0px 0px thin;
+  border-style: solid;
+  border-color: rgb(45, 55, 72);
 }
