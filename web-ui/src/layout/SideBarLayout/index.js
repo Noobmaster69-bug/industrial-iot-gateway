@@ -28,8 +28,6 @@ export default function SideBarLayout({ title }) {
         return pre;
       }, new Set())
   );
-
-  console.log(pageTypes);
   return (
     <div
       className={style["outer-container"]}
@@ -41,15 +39,6 @@ export default function SideBarLayout({ title }) {
     >
       <div className={style.sideBar} style={{ left: sideBar ? "0" : "-270px" }}>
         <div style={{ display: "flex", height: "var(--top-bar-height)" }}>
-          {/* <div
-            className={style.imgContainer}
-            style={{ width: "50px" }}
-            onClick={() => {
-              setSiteBar(!sideBar);
-            }}
-          >
-            <AiOutlineMenu size={25} className={style.icon} />
-          </div> */}
           <div className={style.imgContainer}>
             <img src={dino} alt="dino" />
           </div>
@@ -92,16 +81,26 @@ export default function SideBarLayout({ title }) {
 
       <div className={style.container}>
         <div className={style["top-bar"]}>
+          <div
+            className={style.imgContainer}
+            style={{ width: "50px" }}
+            onClick={() => {
+              setSiteBar(!sideBar);
+            }}
+          >
+            <AiOutlineMenu size={25} className={style.icon} />
+          </div>
           {/* <h2>{title}</h2> */}
           <span style={{ flex: "1 1", boxSizing: "border-box" }} />
-          <div className={style["user-holder"]}>
+          <div
+            className={style["user-holder"]}
+            onClick={() => {
+              setUserMenu(!userMenu);
+            }}
+          >
             <BiUserCircle size={25} className={style.icon} />
             <div className={style["tool-tip"]}>
-              <span
-                onClick={() => {
-                  setUserMenu(!userMenu);
-                }}
-              >
+              <span>
                 <span className={style["tool-tip-label"]}>
                   {user?.username}
                 </span>

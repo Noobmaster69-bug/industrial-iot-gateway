@@ -96,7 +96,18 @@
       background-color: var(--top-bars-background);
       display: flex;
       flex-direction: row;
-
+      .imgContainer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        width: 100%;
+        cursor: pointer;
+        img {
+          background-color: var(--bars-color);
+          height: 50px;
+        }
+      }
       h2 {
         color: color;
         display: flex;
@@ -151,7 +162,7 @@
     position: absolute;
     z-index: 1;
     top: 150%;
-    left: -150%;
+    left: -180%;
     margin-left: -60px;
     height: max-content;
     div {
@@ -195,6 +206,14 @@
     visibility: visible;
   }
 }
+hr {
+  margin: 24px 0;
+  flex-shrink: 0;
+  border-width: 0px 0px thin;
+  border-style: solid;
+  border-color: rgb(45, 55, 72);
+}
+
 @media (min-width: 1024px) {
   .blur {
     display: none;
@@ -205,11 +224,9 @@
   .outlet {
     height: calc(100% - var(--top-bar-height));
   }
-}
-hr {
-  margin: 24px 0;
-  flex-shrink: 0;
-  border-width: 0px 0px thin;
-  border-style: solid;
-  border-color: rgb(45, 55, 72);
+  .top-bar {
+    .imgContainer {
+      display: none !important;
+    }
+  }
 }
