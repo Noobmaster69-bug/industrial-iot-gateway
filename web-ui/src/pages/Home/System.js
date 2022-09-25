@@ -1,7 +1,15 @@
 import style from "./system.module.scss";
 import { useSocket } from "context";
+import Skeleton from "react-loading-skeleton";
 export default function System() {
-  const { performance } = useSocket();
+  const { performance, isConnected } = useSocket();
+  if (!isConnected) {
+    return (
+      <div className={style.container} style={{ padding: 0, display: "block" }}>
+        <Skeleton height={"100%"} width={"100%"} count={1} />
+      </div>
+    );
+  }
   function secondToWeek(second) {
     const secondPerWeek = 604800;
     const secondPerDay = 86400;
@@ -35,7 +43,11 @@ export default function System() {
   return (
     <div
       className={style.container}
-      style={{ display: "flex", flexDirection: "column" }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: "#fff",
+      }}
     >
       <h2>System</h2>
       <div className={style.system} style={{ paddingTop: "10px" }}>

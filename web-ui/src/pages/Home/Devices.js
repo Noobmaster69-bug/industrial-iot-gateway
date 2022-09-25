@@ -1,9 +1,17 @@
 import style from "./devices.module.scss";
 import { useDeviceCount } from "hooks/api";
+import Skeleton from "react-loading-skeleton";
 export default function Devices() {
-  const { data: devices } = useDeviceCount();
+  const { data: devices, isLoading } = useDeviceCount();
+  if (isLoading) {
+    return (
+      <div className={style.container} style={{ padding: 0 }}>
+        <Skeleton height={"100%"} width={"100%"} count={1} />;
+      </div>
+    );
+  }
   return (
-    <div className={style.container}>
+    <div className={style.container} style={{ backgroundColor: "#fff" }}>
       <h2>Devices</h2>
       <div className={style["devices-status"]}>
         <div>

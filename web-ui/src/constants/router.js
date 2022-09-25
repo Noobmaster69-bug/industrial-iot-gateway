@@ -14,10 +14,15 @@ export default [
     navBar: false,
   },
   {
-    path: "/home",
+    path: "/overview",
     component: "pages/Home",
     layout: "SideBar",
-    layoutProps: { title: "Overview" },
+    layoutProps: {
+      title: "Overview",
+      icon: (x) => (
+        <AiFillHome size={x} style={{ marginRight: "8px", fill: "#262626" }} />
+      ),
+    },
     icon: <AiFillHome size={20} />,
     label: "Overview",
     type: "GENERAL",
@@ -26,7 +31,15 @@ export default [
     path: "/devices",
     component: "pages/Devices",
     layout: "SideBar",
-    layoutProps: { title: "Devices" },
+    layoutProps: {
+      title: "Devices",
+      icon: (x) => (
+        <BsFillCpuFill
+          size={x}
+          style={{ marginRight: "8px", fill: "#262626" }}
+        />
+      ),
+    },
     icon: <BsFillCpuFill size={20} />,
     label: "Devices",
     type: "MANAGEMENT",
@@ -35,7 +48,15 @@ export default [
     path: "/models",
     component: "pages/Models",
     layout: "SideBar",
-    layoutProps: { title: "Models" },
+    layoutProps: {
+      title: "Models",
+      icon: (x) => (
+        <BsFillCpuFill
+          size={x}
+          style={{ marginRight: "8px", fill: "#262626" }}
+        />
+      ),
+    },
     icon: <AiTwotoneReconciliation size={20} />,
     label: "Models",
     type: "MANAGEMENT",
@@ -44,7 +65,15 @@ export default [
     path: "/task-management",
     component: "pages/Models",
     layout: "SideBar",
-    layoutProps: "",
+    layoutProps: {
+      title: "Models",
+      icon: (x) => (
+        <BsFillCpuFill
+          size={x}
+          style={{ marginRight: "8px", fill: "#262626" }}
+        />
+      ),
+    },
     icon: <AiTwotoneReconciliation size={20} />,
     label: "Tasks",
     type: "MANAGEMENT",
@@ -53,7 +82,15 @@ export default [
     path: "/services-management",
     component: "pages/Models",
     layout: "SideBar",
-    layoutProps: "",
+    layoutProps: {
+      title: "Models",
+      icon: (x) => (
+        <BsFillCpuFill
+          size={x}
+          style={{ marginRight: "8px", fill: "#262626" }}
+        />
+      ),
+    },
     icon: <AiOutlineApartment size={20} />,
     label: "Services",
     type: "MANAGEMENT",

@@ -96,6 +96,7 @@
       background-color: var(--top-bars-background);
       display: flex;
       flex-direction: row;
+
       .imgContainer {
         display: flex;
         align-items: center;
@@ -108,10 +109,10 @@
           height: 50px;
         }
       }
-      h2 {
-        color: color;
+      h1 {
         display: flex;
         align-items: center;
+        padding-left: 30px;
       }
       .user-holder {
         display: flex;

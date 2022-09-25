@@ -42,7 +42,7 @@ export function SocketProvider({ children }) {
           if (tmp.length > 40) {
             tmp = tmp.slice(tmp.length - 10, tmp.length);
           }
-          return [...tmp, msg];
+          return tmp;
         });
       });
     });

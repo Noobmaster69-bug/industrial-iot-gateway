@@ -1,8 +1,9 @@
 import Chart from "react-apexcharts";
 import { useSocket } from "context";
 import style from "./network.module.scss";
+import Skeleton from "react-loading-skeleton";
 export default function Network() {
-  const { performance } = useSocket();
+  const { performance, isConnected } = useSocket();
   const optionDownload = {
     chart: {
       id: "network",
@@ -40,8 +41,15 @@ export default function Network() {
       curve: "smooth",
     },
   };
+  if (!isConnected) {
+    return (
+      <div className={style.container} style={{ padding: 0 }}>
+        <Skeleton height={"100%"} width={"100%"} count={1} />
+      </div>
+    );
+  }
   return (
-    <div className={style.container}>
+    <div className={style.container} style={{ backgroundColor: "#fff" }}>
       <h2>Network</h2>
       <div className={style.networkChart}>
         <Chart

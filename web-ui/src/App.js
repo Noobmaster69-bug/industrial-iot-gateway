@@ -20,7 +20,7 @@ function App() {
     } else if (isFetching) {
     } else {
       if (location.pathname === "/login" || location.pathname === "/") {
-        nevigate("home");
+        nevigate("overview");
       }
     }
   }, [isFetched, location.pathname, nevigate, user, isFetching]);

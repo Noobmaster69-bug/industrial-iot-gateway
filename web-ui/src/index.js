@@ -10,19 +10,21 @@ import "styles/index.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { SocketProvider } from "context";
+import { SocketProvider, SizeProvider } from "context";
 const queryClient = new QueryClient();
 ReactDOM.render(
   <React.StrictMode>
-    <SocketProvider>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-        <ReactQueryDevtools initialIsOpen />
-        <ToastContainer />
-      </QueryClientProvider>
-    </SocketProvider>
+    <SizeProvider>
+      <SocketProvider>
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+          <ReactQueryDevtools initialIsOpen />
+          <ToastContainer />
+        </QueryClientProvider>
+      </SocketProvider>
+    </SizeProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

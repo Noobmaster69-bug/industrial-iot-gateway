@@ -13,7 +13,7 @@ export default function Home() {
           <Performance />
         </div>
         <div className={style.col2}>
-          <Log />
+          <Network />
         </div>
       </div>
       <div className={style.row2}>
@@ -29,7 +29,7 @@ export default function Home() {
           <System />
         </div>
         <div className={style.col3}>
-          <Network />
+          <Log />
         </div>
       </div>
     </div>

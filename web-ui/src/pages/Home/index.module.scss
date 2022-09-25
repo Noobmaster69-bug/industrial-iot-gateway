@@ -9,22 +9,25 @@
     width: 100%;
     height: 100%;
     display: flex;
+    flex: 1;
     padding-bottom: 8px;
     .col1 {
       height: 100%;
       width: 100%;
-      padding-right: 7px;
+      padding-right: 8px;
+      overflow: "auto";
     }
     .col2 {
-      padding-left: 9px;
+      padding-left: 8px;
       height: 100%;
-      width: 50%;
+      width: 100%;
     }
   }
   .row2 {
     width: 100%;
     height: 100%;
     display: flex;
+    flex: 1;
     padding-top: 8px;
     .col1,
     .col2,

@@ -13,7 +13,7 @@ import { BiUserCircle } from "react-icons/bi";
 import { FaUserCog } from "react-icons/fa";
 import { useLogOut, useUser } from "hooks";
 import Loading from "./Loading";
-export default function SideBarLayout({ title }) {
+export default function SideBarLayout({ title, icon = () => <div /> }) {
   const location = useLocation();
   const currentPath = location.pathname;
   const [sideBar, setSiteBar] = useState(false);
@@ -45,8 +45,8 @@ export default function SideBarLayout({ title }) {
         </div>
         <hr />
         <div className={style.LinksHolder}>
-          {pageTypes.map((type) => (
-            <div className={style["type-holder"]}>
+          {pageTypes.map((type, index) => (
+            <div className={style["type-holder"]} key={index + "type"}>
               <div className={style["type-label"]}>{type}</div>
               <div>
                 {router
@@ -90,7 +90,10 @@ export default function SideBarLayout({ title }) {
           >
             <AiOutlineMenu size={25} className={style.icon} />
           </div>
-          {/* <h2>{title}</h2> */}
+          <h1>
+            {icon(35)}
+            {title}
+          </h1>
           <span style={{ flex: "1 1", boxSizing: "border-box" }} />
           <div
             className={style["user-holder"]}
