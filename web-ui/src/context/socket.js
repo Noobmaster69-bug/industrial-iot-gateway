@@ -11,13 +11,13 @@ export function SocketProvider({ children }) {
     upload: [],
     download: [],
   });
-  const [log, setLog] = useState([]);
+  const [logs, setLogs] = useState([]);
   const [isConnected, setIsConnected] = useState(false);
   useEffect(() => {
     const socket = io("http://localhost:33333");
     socket.on("connect", () => {
+      setIsConnected(true);
       socket.on("performance", (msg) => {
-        setIsConnected(true);
         setPerformance((data) => {
           let tmp = data;
           tmp.upload.push({
@@ -36,8 +36,13 @@ export function SocketProvider({ children }) {
         });
       });
       socket.on("__log", (msg) => {
-        setLog((log) => {
-          return [...log, msg];
+        setLogs((log) => {
+          let tmp = log;
+          tmp.push(msg);
+          if (tmp.length > 40) {
+            tmp = tmp.slice(tmp.length - 10, tmp.length);
+          }
+          return [...tmp, msg];
         });
       });
     });
@@ -47,7 +52,7 @@ export function SocketProvider({ children }) {
   }, []);
   return (
     <Socket.Provider
-      value={{ performance, log, isConnected }}
+      value={{ performance, logs, isConnected }}
       children={children}
     />
   );

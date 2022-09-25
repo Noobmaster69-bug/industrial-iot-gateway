@@ -4,12 +4,16 @@ import Devices from "./Devices";
 import Issues from "./Issues";
 import System from "./System";
 import Network from "./Network";
+import Log from "./Log";
 export default function Home() {
   return (
     <div className={style.container}>
       <div className={style.row1}>
         <div className={style.col1}>
           <Performance />
+        </div>
+        <div className={style.col2}>
+          <Log />
         </div>
       </div>
       <div className={style.row2}>
