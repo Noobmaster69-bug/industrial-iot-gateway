@@ -51,25 +51,27 @@ export default function SideBarLayout({ title, icon = () => <div /> }) {
               <div>
                 {router
                   .filter((route) => (route.type || "other") === type)
-                  .map((route, index) => (
+                  .map(({ path, label, Icon }, index) => (
                     <div
                       className={style["link-container"]}
                       key={index + "sidebar"}
                     >
                       <Link
                         to={
-                          route.path === currentPath.slice(0, route.path.length)
+                          path === currentPath.slice(0, path.length)
                             ? location.pathname
-                            : route.path
+                            : path
                         }
                         className={clsx([
                           style.LinkHolder,
-                          currentPath.slice(0, route.path.length) ===
-                            route.path && style.LinkHolderActive,
+                          currentPath.slice(0, path.length) === path &&
+                            style.LinkHolderActive,
                         ])}
                       >
-                        <div className={style.iconHolder}>{route.icon}</div>
-                        <span>{route.label}</span>
+                        <div className={style.iconHolder}>
+                          <Icon size={20} />
+                        </div>
+                        <span>{label}</span>
                       </Link>
                     </div>
                   ))}
@@ -90,10 +92,12 @@ export default function SideBarLayout({ title, icon = () => <div /> }) {
           >
             <AiOutlineMenu size={25} className={style.icon} />
           </div>
-          <h1>
-            {icon(35)}
-            {title}
-          </h1>
+          <div className={style.title}>
+            {router
+              .find(({ path }) => path === currentPath.slice(0, path.length))
+              .Icon({ size: 40 })}
+            <h1 style={{ paddingLeft: "8px" }}>{title}</h1>
+          </div>
           <span style={{ flex: "1 1", boxSizing: "border-box" }} />
           <div
             className={style["user-holder"]}

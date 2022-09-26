@@ -15,11 +15,13 @@
       height: 100%;
       width: 100%;
       padding-right: 8px;
+      flex: 2;
     }
     .col2 {
       padding-left: 8px;
       height: 100%;
-      width: 50%;
+      width: 100%;
+      flex: 1;
     }
   }
   .row2 {
