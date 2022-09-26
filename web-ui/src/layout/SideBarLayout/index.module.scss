@@ -214,7 +214,9 @@ hr {
   border-style: solid;
   border-color: rgb(45, 55, 72);
 }
-
+.outlet {
+  height: calc(100% - var(--top-bar-height));
+}
 @media (min-width: 1024px) {
   .blur {
     display: none;
@@ -222,9 +224,7 @@ hr {
   .sideBar {
     position: initial !important;
   }
-  .outlet {
-    height: calc(100% - var(--top-bar-height));
-  }
+
   .top-bar {
     .imgContainer {
       display: none !important;

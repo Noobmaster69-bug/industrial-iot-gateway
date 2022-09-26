@@ -11,13 +11,13 @@ export default function Log() {
     );
   }
   return (
-    <div
-      className={style.container}
-      style={{ backgroundColor: "#fff", overflowY: "auto" }}
-    >
-      {logs.map((log, index) => (
-        <div key={index + "log"}>{log}</div>
-      ))}
+    <div className={style.container} style={{ backgroundColor: "#fff" }}>
+      <h2>System Log</h2>
+      <div className={style.content}>
+        {logs.map((log, index) => (
+          <div key={index + "log"}>{log}</div>
+        ))}
+      </div>
     </div>
   );
 }

@@ -37,10 +37,10 @@ export function SocketProvider({ children }) {
       });
       socket.on("__log", (msg) => {
         setLogs((log) => {
-          let tmp = log;
+          let tmp = [...log];
           tmp.push(msg);
           if (tmp.length > 40) {
-            tmp = tmp.slice(tmp.length - 10, tmp.length);
+            tmp = tmp.slice(log.length - 10, log.length);
           }
           return tmp;
         });

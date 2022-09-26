@@ -6,15 +6,16 @@ export function SizeProvider({ children }) {
   const [size, setSize] = useState(
     document.getElementById("root").getBoundingClientRect()
   );
+  function changeSize() {
+    const { width, height } = document
+      .getElementById("root")
+      .getBoundingClientRect();
+    setSize({ width, height });
+  }
   useEffect(() => {
-    window.addEventListener("resize", () => {
-      const { width, height } = document
-        .getElementById("root")
-        .getBoundingClientRect();
-      setSize({ width, height });
-    });
+    window.addEventListener("resize", changeSize);
     return () => {
-      window.removeEventListener("resize");
+      window.removeEventListener("resize", changeSize);
     };
   }, []);
   return <Size.Provider value={{ size }} children={children} />;
