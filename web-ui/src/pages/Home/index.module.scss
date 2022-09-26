@@ -19,7 +19,7 @@
     .col2 {
       padding-left: 8px;
       height: 100%;
-      width: 100%;
+      width: 50%;
     }
   }
   .row2 {
@@ -39,6 +39,8 @@
       padding-right: 8px;
       display: flex;
       flex-direction: column;
+      flex: 1;
+      min-width: 0;
       .row1 {
         height: 100%;
         padding-bottom: 8px;
@@ -51,9 +53,13 @@
     .col2 {
       padding-left: 8px;
       padding-right: 8px;
+      flex: 1;
+      min-width: 0;
     }
     .col3 {
       padding-left: 8px;
+      flex: 1;
+      min-width: 0;
     }
   }
 }

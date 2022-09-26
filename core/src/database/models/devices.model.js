@@ -11,45 +11,52 @@ module.exports = (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
       },
       upProtocolId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
       },
       downProtocolId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
       },
       isProvision: {
         type: DataTypes.BOOLEAN,
-        allowNull: false,
         defaultValue: false,
       },
-      ModelId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+      state: {
+        type: DataTypes.STRING,
+      },
+      status: {
+        type: DataTypes.VIRTUAL,
+        get() {
+          if (this.downProtocolId === null || this.upProtocolId === null) {
+            return "Config not completed";
+          } else {
+            return this.state;
+          }
+        },
       },
     },
     {
       timestamps: false,
       scopes: {
         channels() {
-          const { Models } = sequelize.models;
+          const { Channels } = sequelize.models;
           return {
             include: [
               {
-                model: Models,
-                include: Object.values(Models.associations),
+                model: Channels,
+                include: Object.values(Channels.associations),
               },
             ],
           };
         },
         model() {
-          const { Models } = sequelize.models;
+          const { Channels } = sequelize.Channels;
           return {
             include: [
               {
-                model: Models,
+                model: Channels,
               },
             ],
           };

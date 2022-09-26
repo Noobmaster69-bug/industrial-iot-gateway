@@ -1,7 +1,5 @@
 module.exports = async ({ models }) => {
   const { Channels, Protocols, Devices, Models } = models;
-  Models.hasMany(Devices);
-  Devices.belongsTo(Models);
 
   Protocols.hasMany(Devices, {
     foreignKey: "upProtocolId",
@@ -19,4 +17,7 @@ module.exports = async ({ models }) => {
 
   Models.hasMany(Channels);
   Channels.belongsTo(Models);
+
+  Devices.hasMany(Channels);
+  Channels.belongsTo(Devices);
 };

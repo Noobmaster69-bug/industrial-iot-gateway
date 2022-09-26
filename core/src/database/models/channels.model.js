@@ -9,7 +9,9 @@ module.exports = (sequelize, DataTypes) => {
       },
       ModelId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+      },
+      DeviceId: {
+        type: DataTypes.INTEGER,
       },
       ServiceId: {
         type: DataTypes.INTEGER,
@@ -37,6 +39,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       timestamps: false,
+      validate: {
+        FoiregnKey() {
+          if (this.ModelId === null && this.DeviceId === null) {
+            throw new Error("ModelId and DeviceId cannot both null");
+          }
+        },
+      },
     }
   );
 };

@@ -10,6 +10,17 @@ module.exports = function () {
       res.sendStatus(400);
     }
   });
+  Router.post("/", async (req, res) => {
+    const { Devices } = require("../database");
+    const { body } = req;
+    try {
+      await Devices.create(body);
+      res.sendStatus(201);
+    } catch (err) {
+      console.error(err);
+      res.sendStatus(400);
+    }
+  });
   Router.get("/:mode", async (req, res) => {
     const { mode } = req.params;
     try {

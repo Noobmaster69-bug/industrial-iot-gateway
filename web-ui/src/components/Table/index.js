@@ -127,6 +127,7 @@ export default function Table(props) {
                 />
               </div>
             </td>
+            Add new Item
             <td />
           </tr>
         </thead>

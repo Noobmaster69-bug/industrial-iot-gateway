@@ -3,13 +3,13 @@
  */
 
 const fs = require("fs");
-
+const chalk = require("chalk");
 //copy stdout.write function
 let fn = process.stdout.write;
 
 process.stdout.write = function () {
   const timestamp = timeStamp();
-  arguments["0"] = timestamp + " - " + arguments["0"];
+  arguments["0"] = chalk.greenBright(timestamp) + " - " + arguments["0"];
   fn.apply(process.stdout, arguments);
 
   //write log to file
@@ -24,7 +24,7 @@ process.stdout.write = function () {
 fn = process.stderr.write;
 process.stderr.write = function () {
   const timestamp = timeStamp();
-  arguments["0"] = timestamp + " - " + arguments["0"];
+  arguments["0"] = chalk.redBright(timestamp) + " - " + arguments["0"];
   fn.apply(process.stderr, arguments);
 
   //write err to file

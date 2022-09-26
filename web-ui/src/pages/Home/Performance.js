@@ -11,6 +11,93 @@ export default function Performance() {
       </div>
     );
   }
+  const optionsRam = {
+    colors: ["#259EFA"],
+    chart: {
+      animations: {
+        enabled: false,
+        animateGradually: {
+          enabled: false,
+        },
+        dynamicAnimation: {
+          enabled: false,
+        },
+      },
+    },
+    plotOptions: {
+      radialBar: {
+        startAngle: -135,
+        endAngle: 135,
+        hollow: {
+          margin: 15,
+          size: "70%",
+        },
+        dataLabels: {
+          showOn: "always",
+          name: {
+            offsetY: -10,
+            show: true,
+            color: "#888",
+            fontSize: "13px",
+          },
+          value: {
+            color: "#111",
+            fontSize: "30px",
+            show: true,
+          },
+        },
+      },
+    },
+    stroke: {
+      lineCap: "round",
+    },
+    labels: ["Memory"],
+  };
+  const optionsCPU = {
+    colors: ["#259EFA"],
+    chart: {
+      animations: {
+        enabled: false,
+        animateGradually: {
+          enabled: false,
+        },
+        dynamicAnimation: {
+          enabled: false,
+        },
+      },
+    },
+    plotOptions: {
+      radialBar: {
+        startAngle: -135,
+        endAngle: 135,
+        hollow: {
+          margin: 15,
+          size: "70%",
+        },
+        dataLabels: {
+          showOn: "always",
+          name: {
+            offsetY: -10,
+            show: true,
+            color: "#888",
+            fontSize: "13px",
+          },
+          value: {
+            color: "#111",
+            fontSize: "30px",
+            show: true,
+          },
+        },
+      },
+    },
+    stroke: {
+      lineCap: "round",
+    },
+    labels: ["CPU"],
+    fill: {
+      colors: "#00E396",
+    },
+  };
   const options = {
     plotOptions: {
       radialBar: {
@@ -58,14 +145,80 @@ export default function Performance() {
       lineCap: "round",
     },
   };
-
+  const optionsDisk = {
+    colors: ["#259EFA"],
+    chart: {
+      animations: {
+        enabled: false,
+        animateGradually: {
+          enabled: false,
+        },
+        dynamicAnimation: {
+          enabled: false,
+        },
+      },
+    },
+    plotOptions: {
+      radialBar: {
+        startAngle: -135,
+        endAngle: 135,
+        hollow: {
+          margin: 15,
+          size: "70%",
+        },
+        dataLabels: {
+          showOn: "always",
+          name: {
+            offsetY: -10,
+            show: true,
+            color: "#888",
+            fontSize: "13px",
+          },
+          value: {
+            color: "#111",
+            fontSize: "30px",
+            show: true,
+          },
+        },
+      },
+    },
+    stroke: {
+      lineCap: "round",
+    },
+    labels: ["Disk"],
+    fill: { colors: "#FEB019" },
+  };
   return (
     <div className={style.container} style={{ backgroundColor: "#fff" }}>
       <h2 className={style.header}>Performance</h2>
       <div className={style.content}>
-        <Chart
+        {/* <Chart
           options={options}
           series={[performance.disk, performance.ram, performance.cpu]}
+          type="radialBar"
+          className={style.chart}
+          height="100%"
+          width="100%"
+        /> */}
+        <Chart
+          options={optionsRam}
+          series={[performance.ram]}
+          type="radialBar"
+          className={style.chart}
+          height="100%"
+          width="100%"
+        />
+        <Chart
+          options={optionsCPU}
+          series={[performance.cpu]}
+          type="radialBar"
+          className={style.chart}
+          height="100%"
+          width="100%"
+        />
+        <Chart
+          options={optionsDisk}
+          series={[performance.disk]}
           type="radialBar"
           className={style.chart}
           height="100%"
