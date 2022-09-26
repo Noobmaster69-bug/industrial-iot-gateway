@@ -16,7 +16,7 @@ export function SocketProvider({ children }) {
   const [isConnected, setIsConnected] = useState(false);
   const ansi = new ANSI({ fg: "#595959", colors: { 10: "#35c78b" } });
   useEffect(() => {
-    const socket = io("http://localhost:33333");
+    const socket = io("http://localhost:33333", { withCredentials: true });
     socket.on("connect", () => {
       setIsConnected(true);
       socket.on("performance", (msg) => {

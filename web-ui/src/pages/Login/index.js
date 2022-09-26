@@ -1,21 +1,16 @@
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import style from "./index.module.scss";
 import clsx from "clsx";
 import { useLogin } from "hooks/api";
 export default function Login() {
   const [inputs, setInputs] = useState([0, 0]);
-  const { mutate } = useLogin(loginSuccess);
-  const nevigate = useNavigate();
+  const { mutate } = useLogin();
   function onSubmit(form) {
     form.preventDefault();
     mutate({
       username: form.target.username.value,
       password: form.target.username.value,
     });
-  }
-  function loginSuccess() {
-    nevigate("/home");
   }
   return (
     <div className={style.container}>

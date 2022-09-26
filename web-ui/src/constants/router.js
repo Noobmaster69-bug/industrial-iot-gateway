@@ -1,3 +1,6 @@
+import Home from "pages/Home";
+import Login from "pages/Login";
+import { lazy } from "react";
 import {
   AiFillHome,
   AiOutlineApartment,
@@ -8,14 +11,14 @@ import { BsFillCpuFill } from "react-icons/bs";
 export default [
   {
     path: "/login",
-    component: "pages/Login",
+    component: () => <Login />,
     layout: null,
     layoutProps: "",
     navBar: false,
   },
   {
     path: "/overview",
-    component: "pages/Home",
+    component: () => <Home />,
     layout: "SideBar",
     layoutProps: {
       title: "Overview",
@@ -29,7 +32,7 @@ export default [
   },
   {
     path: "/devices",
-    component: "pages/Devices",
+    component: lazy(() => import("pages/Devices")),
     layout: "SideBar",
     layoutProps: {
       title: "Devices",
@@ -44,55 +47,55 @@ export default [
     label: "Devices",
     type: "MANAGEMENT",
   },
-  {
-    path: "/models",
-    component: "pages/Models",
-    layout: "SideBar",
-    layoutProps: {
-      title: "Models",
-      icon: (x) => (
-        <BsFillCpuFill
-          size={x}
-          style={{ marginRight: "8px", fill: "#262626" }}
-        />
-      ),
-    },
-    icon: <AiTwotoneReconciliation size={20} />,
-    label: "Models",
-    type: "MANAGEMENT",
-  },
-  {
-    path: "/task-management",
-    component: "pages/Models",
-    layout: "SideBar",
-    layoutProps: {
-      title: "Models",
-      icon: (x) => (
-        <BsFillCpuFill
-          size={x}
-          style={{ marginRight: "8px", fill: "#262626" }}
-        />
-      ),
-    },
-    icon: <AiTwotoneReconciliation size={20} />,
-    label: "Tasks",
-    type: "MANAGEMENT",
-  },
-  {
-    path: "/services-management",
-    component: "pages/Models",
-    layout: "SideBar",
-    layoutProps: {
-      title: "Models",
-      icon: (x) => (
-        <BsFillCpuFill
-          size={x}
-          style={{ marginRight: "8px", fill: "#262626" }}
-        />
-      ),
-    },
-    icon: <AiOutlineApartment size={20} />,
-    label: "Services",
-    type: "MANAGEMENT",
-  },
+  // {
+  //   path: "/models",
+  //   component: "pages/Models",
+  //   layout: "SideBar",
+  //   layoutProps: {
+  //     title: "Models",
+  //     icon: (x) => (
+  //       <BsFillCpuFill
+  //         size={x}
+  //         style={{ marginRight: "8px", fill: "#262626" }}
+  //       />
+  //     ),
+  //   },
+  //   icon: <AiTwotoneReconciliation size={20} />,
+  //   label: "Models",
+  //   type: "MANAGEMENT",
+  // },
+  // {
+  //   path: "/task-management",
+  //   component: "pages/Models",
+  //   layout: "SideBar",
+  //   layoutProps: {
+  //     title: "Models",
+  //     icon: (x) => (
+  //       <BsFillCpuFill
+  //         size={x}
+  //         style={{ marginRight: "8px", fill: "#262626" }}
+  //       />
+  //     ),
+  //   },
+  //   icon: <AiTwotoneReconciliation size={20} />,
+  //   label: "Tasks",
+  //   type: "MANAGEMENT",
+  // },
+  // {
+  //   path: "/services-management",
+  //   component: "pages/Models",
+  //   layout: "SideBar",
+  //   layoutProps: {
+  //     title: "Models",
+  //     icon: (x) => (
+  //       <BsFillCpuFill
+  //         size={x}
+  //         style={{ marginRight: "8px", fill: "#262626" }}
+  //       />
+  //     ),
+  //   },
+  //   icon: <AiOutlineApartment size={20} />,
+  //   label: "Services",
+  //   type: "MANAGEMENT",
+  // },
 ];

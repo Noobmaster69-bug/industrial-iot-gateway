@@ -15,10 +15,28 @@ const app = express();
   const io = require("socket.io")(httpServer, {
     cors: {
       methods: ["GET", "POST"],
+      origin: "http://localhost:3000",
       credentials: true,
     },
   });
   httpServer.listen(port);
+  io.use((socket, next) => {
+    const cookie = require("cookie");
+    const jwt = require("jsonwebtoken");
+    const jwtOptions = require("./const.json");
+    const { token } = cookie.parse(socket.handshake.headers.cookie);
+    if (token) {
+      const jwt_payload = jwt.verify(token, jwtOptions.secretOrKey);
+      if (jwt_payload.id) {
+        next();
+      } else {
+        throw new Error();
+      }
+    } else {
+      throw new Error();
+    }
+  });
+
   io.on("connection", (client) => {
     console.log("user connected");
     require("./src/io")(client);

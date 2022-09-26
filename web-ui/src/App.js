@@ -12,23 +12,16 @@ import Layout from "layout";
 import { useUser } from "hooks/api";
 function App() {
   const { data: user, isFetched, isFetching } = useUser();
-  const nevigate = useNavigate();
-  const location = useLocation();
-  useEffect(() => {
-    if (user === undefined && isFetched) {
-      nevigate("login");
-    } else if (isFetching) {
-    } else {
-      if (location.pathname === "/login" || location.pathname === "/") {
-        nevigate("overview");
-      }
-    }
-  }, [isFetched, location.pathname, nevigate, user, isFetching]);
+  // const nevigate = useNavigate();
+  // const location = useLocation();
+  if (isFetching) {
+    return <div></div>;
+  }
   return (
     <Routes>
       <Route index element={<Navigate to="login" />}></Route>
       {router.map((route, index) => {
-        const Element = lazy(() => import(`${route.component}`));
+        const Element = route.component;
         return (
           <Route
             element={<Layout type={route.layout} props={route.layoutProps} />}
