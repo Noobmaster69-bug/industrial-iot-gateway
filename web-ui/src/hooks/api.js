@@ -98,7 +98,9 @@ export function useUser() {
       staleTime: 2 * 3600 * 1000,
       retry: false,
       onSuccess: () => {
-        nevigate("overview");
+        if (location.pathname === "/login") {
+          nevigate("overview");
+        }
       },
       onError: () => {
         if (location.pathname !== "/login") {

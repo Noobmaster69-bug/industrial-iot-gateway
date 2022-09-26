@@ -52,11 +52,18 @@ module.exports = (sequelize, DataTypes) => {
           };
         },
         model() {
-          const { Channels } = sequelize.Channels;
+          const { Protocols } = sequelize.models;
           return {
             include: [
               {
-                model: Channels,
+                model: Protocols,
+                as: "upProtocol",
+                include: Object.values(Protocols.associations),
+              },
+              {
+                model: Protocols,
+                as: "downProtocol",
+                include: Object.values(Protocols.associations),
               },
             ],
           };

@@ -1,6 +1,5 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { BsCloudCheck, BsCloudSlash, BsArrowBarUp } from "react-icons/bs";
-import { AiOutlineDelete } from "react-icons/ai";
 import ReactTooltip from "react-tooltip";
 
 // import Tables from "components/Tables";
@@ -19,6 +18,11 @@ export default function Devices() {
         label: "Name",
       },
       {
+        id: "status",
+        numberic: false,
+        label: "Status",
+      },
+      {
         id: "isProvision",
         numberic: true,
         label: "Provision Status",
@@ -34,24 +38,16 @@ export default function Devices() {
         label: "Down Protocol",
       },
       {
-        id: "modelName",
-        numberic: false,
-        label: "Model Name",
-      },
-      {
         id: "provision",
-        numberic: false,
-        label: "",
-        isSort: false,
-      },
-      {
-        id: "delete",
         numberic: false,
         label: "",
         isSort: false,
       },
     ];
   }, []);
+  const onDeleteRow = (row) => {
+    deleteDevice(row);
+  };
   const tableData = useMemo(
     () =>
       ((data) => {
@@ -61,9 +57,9 @@ export default function Devices() {
               value: <div>{datum.name}</div>,
               key: datum.name,
             },
-            modelName: {
-              value: <div>{datum.Model.name}</div>,
-              key: datum.Model.name,
+            status: {
+              value: <div>{datum.status}</div>,
+              key: datum.status,
             },
             isProvision: {
               value: (
@@ -87,11 +83,11 @@ export default function Devices() {
               key: datum.isProvision ? 1 : 0,
             },
             upProtocol: {
-              value: <div>1</div>,
+              value: <div>{datum?.upProtocol?.Service?.name}</div>,
               key: datum.name,
             },
             downProtocol: {
-              value: <div>2</div>,
+              value: <div>{datum?.downProtocol?.Service?.name}</div>,
               key: datum.name,
             },
             provision: {
@@ -119,45 +115,21 @@ export default function Devices() {
                   Are you sure about provision?
                 </ConfirmBox>
               ),
-              // key: datum.name,
-            },
-            delete: {
-              value: (
-                <ConfirmBox
-                  onConfirm={() => {
-                    deleteDevice(datum.id);
-                  }}
-                  trigger={
-                    <div
-                      style={{
-                        cursor: "pointer",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                      data-tip="Delete Devices"
-                      data-effect="solid"
-                      data-place="top"
-                      data-for="delete"
-                    >
-                      <ReactTooltip id="delete" />
-                      <AiOutlineDelete size={25} />
-                    </div>
-                  }
-                >
-                  Are you sure about delete?
-                </ConfirmBox>
-              ),
-              // key: datum.name,
             },
           };
         });
       })(devicesData),
-    [devicesData, deleteDevice]
+    [devicesData]
   );
   return (
     <div className={style.container}>
-      <Table head={head} className={style.table} data={tableData} checkbox />
+      <Table
+        head={head}
+        className={style.table}
+        data={tableData}
+        checkbox
+        onDeleteRow={onDeleteRow}
+      />
     </div>
   );
 }

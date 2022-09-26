@@ -1,20 +1,19 @@
 import { useEffect, useState } from "react";
-import { AiOutlineSearch } from "react-icons/ai";
+import { AiOutlineSearch, AiOutlinePlus, AiOutlineEdit } from "react-icons/ai";
+import { BsTrash } from "react-icons/bs";
 import style from "./index.module.scss";
+import ReactTooltip from "react-tooltip";
 /**
  * @typedef {Array.<{id: string, label: string, numberic: boolean, isSort: boolean, className: string}>} head
  */
 /**
  * @typedef {Array.<{}>} data
  */
-/**
- * @typedef {{head: head, data: data, className: string, onSelect: function onSelect(data) {} }} props
- */
 
 /**
  *
- * @param {props} props
- * @returns
+ * @param {{head: head, data: data, className: string, onSelect: function onSelect(data) {} }} props
+ * @returns {import("react").ReactComponentElement}
  */
 export default function Table(props) {
   const { head = [], data = [], className = "", checkbox, searchID } = props;
@@ -112,7 +111,10 @@ export default function Table(props) {
       <table className={style.table}>
         <thead>
           <tr>
-            <td colSpan={head.length + (checkbox & 1) - 1}>
+            <td
+              colSpan={head.length + (checkbox & 1)}
+              className={style["search-cell"]}
+            >
               <div className={style["search-bar"]}>
                 <AiOutlineSearch />
                 <input
@@ -127,8 +129,30 @@ export default function Table(props) {
                 />
               </div>
             </td>
-            Add new Item
-            <td />
+            <td
+              className={style["delete-cell"]}
+              data-tip="Delete all devices"
+              data-effect="solid"
+              data-place="left"
+              data-for="delete all"
+            >
+              <button className={style["delete-button"]}>
+                <BsTrash size={25} />
+              </button>
+              <ReactTooltip id="delete all" />
+            </td>
+            <td
+              className={style["add-cell"]}
+              data-tip="Add device"
+              data-effect="solid"
+              data-place="bottom"
+              data-for="add"
+            >
+              <button className={style["add-button"]}>
+                <AiOutlinePlus size={25} />
+              </button>
+              <ReactTooltip id="add" />
+            </td>
           </tr>
         </thead>
         <tbody>
@@ -174,13 +198,42 @@ export default function Table(props) {
                       />
                     </td>
                   )}
-                  {head.map((headData) => {
-                    return (
-                      <td key={headData.id + "cell"}>
-                        {row[headData.id].value}
-                      </td>
-                    );
-                  })}
+                  {[
+                    ...head.map((headData) => {
+                      return (
+                        <td key={headData.id + "cell"}>
+                          {row[headData.id].value}
+                        </td>
+                      );
+                    }),
+
+                    <td
+                      key={head.length + "cell"}
+                      className={style["action-cell"]}
+                      data-tip="Delete device"
+                      data-effect="solid"
+                      data-place="left"
+                      data-for="delete"
+                    >
+                      <button className={style["action-button"]}>
+                        <BsTrash size={20} />
+                      </button>
+                      <ReactTooltip id="delete" />
+                    </td>,
+                    <td
+                      key={head.length + 1 + "cell"}
+                      className={style["action-cell"]}
+                      data-tip="Edit device"
+                      data-effect="solid"
+                      data-place="left"
+                      data-for="edit"
+                    >
+                      <button className={style["action-button"]}>
+                        <AiOutlineEdit size={20} />
+                      </button>
+                      <ReactTooltip id="edit" />
+                    </td>,
+                  ]}
                 </tr>
               );
             })}
@@ -191,5 +244,5 @@ export default function Table(props) {
   );
 }
 function Loading() {
-  return <div>Nothing here</div>;
+  return <div></div>;
 }
