@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { BsCloudCheck, BsCloudSlash, BsArrowBarUp } from "react-icons/bs";
+import { BsArrowBarUp } from "react-icons/bs";
 import ReactTooltip from "react-tooltip";
 
 // import Tables from "components/Tables";
@@ -18,14 +18,14 @@ export default function Devices() {
         label: "Name",
       },
       {
+        id: "modelName",
+        numberic: false,
+        label: "Model",
+      },
+      {
         id: "status",
         numberic: false,
         label: "Status",
-      },
-      {
-        id: "isProvision",
-        numberic: true,
-        label: "Provision Status",
       },
       {
         id: "upProtocol",
@@ -57,30 +57,13 @@ export default function Devices() {
               value: <div>{datum.name}</div>,
               key: datum.name,
             },
+            modelName: {
+              value: <div>{datum.name}</div>,
+              key: datum.name,
+            },
             status: {
               value: <div>{datum.status}</div>,
               key: datum.status,
-            },
-            isProvision: {
-              value: (
-                <div>
-                  {datum.isProvision ? (
-                    <div
-                      data-tip="This device has provisioned"
-                      data-effect="solid"
-                    >
-                      <BsCloudCheck size={25} color="#00ad55" />
-                      <ReactTooltip />
-                    </div>
-                  ) : (
-                    <div data-tip="This device has not provisioned">
-                      <BsCloudSlash size={25} color="#f30d0d" />
-                      <ReactTooltip />
-                    </div>
-                  )}
-                </div>
-              ),
-              key: datum.isProvision ? 1 : 0,
             },
             upProtocol: {
               value: <div>{datum?.upProtocol?.Service?.name}</div>,
@@ -97,24 +80,24 @@ export default function Devices() {
                   //   mutate(data.id);
                   // }}
                   trigger={
-                    <div
-                      style={{
-                        cursor: "pointer",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
+                    <button
                       data-tip="Provision"
                       data-effect="solid"
+                      className={style["button"]}
                     >
                       <ReactTooltip />
                       <BsArrowBarUp size={25} />
-                    </div>
+                    </button>
                   }
                 >
                   Are you sure about provision?
                 </ConfirmBox>
               ),
+              style: {
+                cursor: "pointer",
+                width: "50px",
+                textAlign: "center",
+              },
             },
           };
         });

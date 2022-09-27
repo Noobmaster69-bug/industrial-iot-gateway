@@ -28,7 +28,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       modelName: {
         type: DataTypes.STRING,
-        allowNull: false,
       },
       manufacture: {
         type: DataTypes.STRING,

@@ -201,7 +201,10 @@ export default function Table(props) {
                   {[
                     ...head.map((headData) => {
                       return (
-                        <td key={headData.id + "cell"}>
+                        <td
+                          key={headData.id + "cell"}
+                          style={row[headData.id].style || {}}
+                        >
                           {row[headData.id].value}
                         </td>
                       );

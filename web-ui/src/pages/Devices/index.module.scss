@@ -11,3 +11,14 @@
     transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   }
 }
+.button {
+  width: 42px;
+  height: 42px;
+  border: none;
+  background-color: white;
+  border-radius: 12px;
+  cursor: pointer;
+  &:hover {
+    background-color: var(--button-hover);
+  }
+}
