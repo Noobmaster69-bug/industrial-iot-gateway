@@ -11,9 +11,9 @@ module.exports.sync = async () => {
   try {
     // Configuring dynamic models
     const models = [
-      require("./models/services.models"),
+      require("./models/services.model"),
       require("./models/protocol.model"),
-      require("./models/models.model"),
+      require("./models/template.model"),
       require("./models/metadata.model"),
       require("./models/devices.model"),
       require("./models/channels.model"),
@@ -36,9 +36,12 @@ module.exports.sync = async () => {
     );
     const [config, justCreated] = await Configuration.findOrCreate({
       where: { id: 1 },
-      defaults,
+      defaults: {
+        ...defaults,
+        secretOrKey: require("crypto").randomBytes(16).toString("base64"),
+      },
     });
-    const [user, userCreated] = await Accounts.findOrCreate({
+    const [{}, {}] = await Accounts.findOrCreate({
       where: { id: 1 },
       defaults: {
         userName: "admin",
@@ -46,7 +49,7 @@ module.exports.sync = async () => {
         role: "admin",
       },
     });
-    global._config = config.toJSON();
+    global.__config = config.toJSON();
     if (justCreated) {
       await module.exports.ReloadConfig(sequelize, DataTypes);
     }
@@ -66,7 +69,7 @@ module.exports.ReloadConfig = async (sequelize, DataTypes) => {
   }
   if (data.models) {
     for (const model of data.models) {
-      await module.exports.Models.create(model);
+      await module.exports.Template.create(model);
     }
   }
   if (data.protocols) {
@@ -88,7 +91,7 @@ module.exports.ReloadConfig = async (sequelize, DataTypes) => {
 
 //Export DAO
 module.exports.Services = require("./dao/services")(sequelize);
-module.exports.Models = require("./dao/models")(sequelize);
+module.exports.Template = require("./dao/template")(sequelize);
 module.exports.Devices = require("./dao/devices.js")(sequelize);
 module.exports.Tasks = require("./dao/tasks")(sequelize);
 module.exports.Protocol = require("./dao/protocols")(sequelize);

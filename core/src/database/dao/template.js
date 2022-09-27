@@ -2,7 +2,7 @@ module.exports = (sequelize) => {
   return {
     async create(model) {
       let { channels, protocol, ...modelFields } = model;
-      const { Models, Channels, Services } = sequelize.models;
+      const { Templates, Channels, Services } = sequelize.models;
       const Service = await Services.findOne({
         where: {
           name: protocol,
@@ -23,7 +23,7 @@ module.exports = (sequelize) => {
       );
       try {
         await sequelize.transaction(async (t) => {
-          await Models.create(
+          await Templates.create(
             { ServiceId: Service.id, ...modelFields, Channels: channels },
             {
               include: [
@@ -41,9 +41,9 @@ module.exports = (sequelize) => {
       }
     },
     async getAll(scope) {
-      const { Models, Channels, Services } = sequelize.models;
+      const { Templates, Channels, Services } = sequelize.models;
       try {
-        return await Models.scope(scope || 0).findAll();
+        return await Templates.scope(scope || 0).findAll();
       } catch (err) {
         throw err;
       }

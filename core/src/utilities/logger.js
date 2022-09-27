@@ -8,13 +8,16 @@ const chalk = require("chalk");
 let fn = process.stdout.write;
 
 process.stdout.write = function () {
+  const {
+    __config: {},
+  } = global;
   const timestamp = timeStamp();
   arguments["0"] = chalk.greenBright(timestamp) + " - " + arguments["0"];
   fn.apply(process.stdout, arguments);
 
   //write log to file
-  if (_config.logging) {
-    fs.appendFile(_config.out_file || "./log.txt", arguments[0], (err) => {
+  if (__config.logging) {
+    fs.appendFile(__config.out_file || "./log.txt", arguments[0], (err) => {
       if (err) throw err;
     });
   }
@@ -23,13 +26,17 @@ process.stdout.write = function () {
 //copy stderr.write function
 fn = process.stderr.write;
 process.stderr.write = function () {
+  const {
+    __config: {},
+  } = global;
+
   const timestamp = timeStamp();
   arguments["0"] = chalk.redBright(timestamp) + " - " + arguments["0"];
   fn.apply(process.stderr, arguments);
 
   //write err to file
-  if (_config.logging) {
-    fs.appendFile(_config.error_file || "./err.txt", arguments[0], (err) => {
+  if (__config.logging) {
+    fs.appendFile(__config.error_file || "./err.txt", arguments[0], (err) => {
       if (err) throw err;
     });
   }

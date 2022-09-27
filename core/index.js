@@ -3,7 +3,6 @@ const express = require("express");
 const app = express();
 (async () => {
   await require("./src/database/").sync();
-
   //config middleware
   require("./src/middleware")(app, express);
   //config route
@@ -23,7 +22,8 @@ const app = express();
   io.use((socket, next) => {
     const cookie = require("cookie");
     const jwt = require("jsonwebtoken");
-    const jwtOptions = require("./const.json");
+    const { __config = {} } = global;
+    const jwtOptions = __config;
     const { token } = cookie.parse(socket.handshake.headers.cookie);
     if (token) {
       const jwt_payload = jwt.verify(token, jwtOptions.secretOrKey);

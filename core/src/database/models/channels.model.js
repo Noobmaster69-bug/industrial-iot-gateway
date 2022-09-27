@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      ModelId: {
+      TemplateId: {
         type: DataTypes.INTEGER,
       },
       DeviceId: {

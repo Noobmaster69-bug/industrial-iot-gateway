@@ -1,7 +1,11 @@
 module.exports = (app) => {
   const jwt = require("jsonwebtoken");
-  const jwtOptions = require("../../const.json");
+
   app.use("/api", (req, res, next) => {
+    const {
+      __config: {},
+    } = global;
+    const jwtOptions = __config;
     try {
       if (req?.cookies?.token) {
         const jwt_payload = jwt.verify(

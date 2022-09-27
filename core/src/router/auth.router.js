@@ -1,12 +1,14 @@
-module.exports = (app) => {
+module.exports = () => {
   const { Accounts } = require("../database");
 
   const jwt = require("jsonwebtoken");
-  const jwtOptions = require("../../const.json");
+
   const Router = require("express").Router();
 
   Router.post("/", async (req, res) => {
     const { username, password } = req.body;
+    const { __config = {} } = global;
+    const jwtOptions = __config;
     Accounts.validator({ userName: username, password })
       .then((user) => {
         const { id, role } = user;
@@ -20,6 +22,8 @@ module.exports = (app) => {
       .catch((err) => res.status(401).send(err.message));
   });
   Router.get("/", async (req, res) => {
+    const { __config = {} } = global;
+    const jwtOptions = __config;
     try {
       if (req?.cookies?.token) {
         const jwt_payload = jwt.verify(

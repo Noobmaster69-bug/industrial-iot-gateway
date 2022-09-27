@@ -26,6 +26,16 @@ module.exports = (sequelize, DataTypes) => {
       state: {
         type: DataTypes.STRING,
       },
+      modelName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      manufacture: {
+        type: DataTypes.STRING,
+      },
+      type: {
+        type: DataTypes.STRING,
+      },
       status: {
         type: DataTypes.VIRTUAL,
         get() {

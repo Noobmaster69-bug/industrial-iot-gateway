@@ -20,6 +20,9 @@ module.exports = async function (sequelize, DataTypes) {
         type: DataTypes.STRING,
         defaultValue: "./error",
       },
+      secretOrKey: {
+        type: DataTypes.STRING,
+      },
     },
     {
       freezeTableName: true,
