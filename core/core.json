@@ -3,7 +3,7 @@
     {
       "name": "modbus-rtu",
       "cwd": "/home/ds-modbus",
-      "type": "downServices",
+      "type": "downService",
       "script": "index.js",
       "isManaged": false,
       "out_file": "./log1.txt",

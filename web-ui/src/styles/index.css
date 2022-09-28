@@ -46,6 +46,7 @@ h3 {
   --side-bar-width: 280px;
   --top-bar-height: 64px;
 
+   --color: color: #595959;
   --button-hover: rgba(107, 114, 128, 0.04);
   box-sizing: border-box;
   margin: 0;

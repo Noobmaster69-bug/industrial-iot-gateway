@@ -1,23 +1,26 @@
 import Popup from "reactjs-popup";
-import style from "./ConfirmBox.module.scss";
+import style from "./dialogbox.module.scss";
 import clsx from "clsx";
-export default function ConfirmBox({
+export default function DialogBox({
   children,
   onConfirm = () => {},
   trigger,
   cancel = "Cancel",
   confirm = "Confirm",
+  className,
 }) {
   return (
     <Popup
       trigger={trigger}
       modal
       contentStyle={{ borderRadius: "12px", width: "max-content" }}
+      nested
     >
       {(close) => (
-        <div className={style.PopUp}>
+        <div className={clsx([style.container, className])}>
           <div className={style.content}>{children}</div>
-          <div className={style.toolBar}>
+          <span style={{ flex: "1 1", boxSizing: "border-box" }} />
+          <div className={style["tool-bar"]}>
             <div
               className={clsx([style.cancel, style.button])}
               onClick={() => close()}

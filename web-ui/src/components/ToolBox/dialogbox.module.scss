@@ -1,22 +1,16 @@
-.PopUp {
+.container {
+  //   width: 500px;
+  //   height: 500px;
   height: max-content;
   width: max-content;
-  user-select: none;
   display: flex;
-  justify-content: space-between;
   flex-direction: column;
-  .content {
-    padding: 12px 12px;
-    text-align: center;
-    font-size: large;
-    font-weight: bold;
-  }
-  .toolBar {
+  .tool-bar {
     display: flex;
     height: 72px;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
-    padding: 8px;
+    padding: 16px;
     .button {
       padding: 8px;
       width: 72px;

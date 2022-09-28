@@ -154,6 +154,24 @@ export function useLogOut() {
     }
   );
 }
+export function useProtocol() {
+  return useQuery(
+    "protocols",
+    async () => {
+      const data = await Axios.get("http://localhost:33333/api/services", {
+        withCredentials: true,
+      }).then(({ data }) => data);
+      if (data) {
+        return data;
+      }
+      return undefined;
+    },
+    {
+      staleTime: 2 * 3600 * 1000,
+      retry: false,
+    }
+  );
+}
 // export function useProvision({ onSuccess = () => {} }) {
 //   const queryClient = useQueryClient();
 //   const errorToast = Toast("error");

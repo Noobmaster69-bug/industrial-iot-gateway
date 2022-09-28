@@ -7,6 +7,7 @@ import Table from "components/Table";
 import style from "./index.module.scss";
 import { useDevices, useDeleteDevice } from "hooks/api";
 import { ConfirmBox } from "components/ToolBox";
+import AddBox from "./AddBox";
 export default function Devices() {
   const { data: devicesData } = useDevices();
   const { mutate: deleteDevice } = useDeleteDevice();
@@ -112,6 +113,7 @@ export default function Devices() {
         data={tableData}
         checkbox
         onDeleteRow={onDeleteRow}
+        AddContent={<AddBox />}
       />
     </div>
   );

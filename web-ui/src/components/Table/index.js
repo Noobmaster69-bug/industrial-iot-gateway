@@ -3,6 +3,7 @@ import { AiOutlineSearch, AiOutlinePlus, AiOutlineEdit } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
 import style from "./index.module.scss";
 import ReactTooltip from "react-tooltip";
+import DialogBox from "components/ToolBox/DialogBox";
 /**
  * @typedef {Array.<{id: string, label: string, numberic: boolean, isSort: boolean, className: string}>} head
  */
@@ -16,7 +17,15 @@ import ReactTooltip from "react-tooltip";
  * @returns {import("react").ReactComponentElement}
  */
 export default function Table(props) {
-  const { head = [], data = [], className = "", checkbox, searchID } = props;
+  const {
+    head = [],
+    data = [],
+    className = "",
+    checkbox,
+    searchID,
+    AddContent = <div></div>,
+    onAdd = () => {},
+  } = props;
   const [rows, setRows] = useState(data);
   const [sortMethod, setSortMethod] = useState({ id: null, state: null });
   const [regex, setRegex] = useState();
@@ -148,10 +157,18 @@ export default function Table(props) {
               data-place="bottom"
               data-for="add"
             >
-              <button className={style["add-button"]}>
-                <AiOutlinePlus size={25} />
-              </button>
-              <ReactTooltip id="add" />
+              <DialogBox
+                trigger={
+                  <button className={style["add-button"]}>
+                    <AiOutlinePlus size={25} />
+                    <ReactTooltip id="add" />
+                  </button>
+                }
+                onConfirm={() => onAdd()}
+                confirm="Add"
+              >
+                {AddContent}
+              </DialogBox>
             </td>
           </tr>
         </thead>

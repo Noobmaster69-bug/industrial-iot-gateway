@@ -1,19 +1,11 @@
-import { lazy, useEffect } from "react";
-import {
-  Routes,
-  Route,
-  Navigate,
-  useNavigate,
-  useLocation,
-} from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import router from "constants/router";
 import Layout from "layout";
 import { useUser } from "hooks/api";
 function App() {
-  const { data: user, isFetched, isFetching } = useUser();
-  // const nevigate = useNavigate();
-  // const location = useLocation();
+  const { isFetching } = useUser();
+
   if (isFetching) {
     return <div></div>;
   }
