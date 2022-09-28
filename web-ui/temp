@@ -1,3 +1,14 @@
+<DialogBox
+  trigger={
+    <button className={style["add-button"]}>
+      <AiOutlinePlus size={25} />
+      <ReactTooltip id="add" />
+    </button>
+  }
+  onConfirm={() => onAdd()}
+  confirm="Add"
+></DialogBox>;
+
 // const [select, setSelect] = useState([]);
 // const { data: devicesData } = useDevices();
 // const { mutate: deleteDevice } = useDeleteDevice();

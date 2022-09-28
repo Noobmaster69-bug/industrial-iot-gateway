@@ -1,0 +1,29 @@
+.button {
+  padding: 8px;
+  width: 72px;
+  text-align: center;
+  border-radius: 8px;
+  user-select: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.4s;
+}
+.cancel {
+  margin-right: 16px;
+  border: 1px solid rgba(209, 67, 67, 0.5);
+  color: rgb(209, 67, 67);
+  &:hover {
+    background-color: rgba(209, 67, 67, 0.07);
+  }
+}
+.confirm {
+  border: 1px solid rgb(16, 185, 129, 0.5);
+  color: rgb(16, 185, 129);
+  background-color: rgb(16, 185, 129);
+  color: white;
+  &:hover {
+    background-color: rgb(16, 185, 129, 0.04);
+    color: rgb(16, 185, 129);
+  }
+}

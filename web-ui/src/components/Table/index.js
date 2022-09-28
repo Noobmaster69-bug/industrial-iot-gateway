@@ -118,7 +118,7 @@ export default function Table(props) {
   return (
     <div className={`${style.container} ${className}`}>
       <table className={style.table}>
-        <thead>
+        <thead className={style.header}>
           <tr>
             <td
               colSpan={head.length + (checkbox & 1)}
@@ -157,18 +157,10 @@ export default function Table(props) {
               data-place="bottom"
               data-for="add"
             >
-              <DialogBox
-                trigger={
-                  <button className={style["add-button"]}>
-                    <AiOutlinePlus size={25} />
-                    <ReactTooltip id="add" />
-                  </button>
-                }
-                onConfirm={() => onAdd()}
-                confirm="Add"
-              >
-                {AddContent}
-              </DialogBox>
+              <button className={style["add-button"]} onClick={() => onAdd()}>
+                <AiOutlinePlus size={25} />
+                <ReactTooltip id="add" />
+              </button>
             </td>
           </tr>
         </thead>

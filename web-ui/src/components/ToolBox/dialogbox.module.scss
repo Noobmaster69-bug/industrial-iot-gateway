@@ -1,10 +1,12 @@
 .container {
   //   width: 500px;
   //   height: 500px;
+  // background-color: var(--background);
   height: max-content;
   width: max-content;
   display: flex;
   flex-direction: column;
+
   .tool-bar {
     display: flex;
     height: 72px;

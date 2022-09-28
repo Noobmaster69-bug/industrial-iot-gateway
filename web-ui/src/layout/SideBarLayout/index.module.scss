@@ -5,6 +5,7 @@
   display: flex;
   .sideBar {
     // top: 50px;
+
     z-index: 999;
     position: fixed;
     user-select: none;
@@ -30,6 +31,7 @@
       height: 42.5px;
       margin-bottom: 4px;
     }
+
     .LinksHolder {
       padding-top: 20px;
       .LinkHolder {
@@ -77,6 +79,13 @@
         margin-left: 32px;
         color: rgb(107, 114, 128);
       }
+    }
+    hr {
+      margin: 24px 0;
+      flex-shrink: 0;
+      border-width: 0px 0px thin;
+      border-style: solid;
+      border-color: rgb(45, 55, 72);
     }
   }
   .container {
@@ -207,13 +216,7 @@
     visibility: visible;
   }
 }
-hr {
-  margin: 24px 0;
-  flex-shrink: 0;
-  border-width: 0px 0px thin;
-  border-style: solid;
-  border-color: rgb(45, 55, 72);
-}
+
 .outlet {
   height: calc(100% - var(--top-bar-height));
 }

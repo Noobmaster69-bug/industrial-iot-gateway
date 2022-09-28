@@ -13,7 +13,13 @@ export default function DialogBox({
     <Popup
       trigger={trigger}
       modal
-      contentStyle={{ borderRadius: "12px", width: "max-content" }}
+      contentStyle={{
+        borderRadius: "8px",
+        width: "max-content",
+        backgroundColor: "var(--background)",
+        padding: 0,
+        overflow: "hidden",
+      }}
       nested
     >
       {(close) => (

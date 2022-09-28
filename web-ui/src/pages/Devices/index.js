@@ -7,10 +7,12 @@ import Table from "components/Table";
 import style from "./index.module.scss";
 import { useDevices, useDeleteDevice } from "hooks/api";
 import { ConfirmBox } from "components/ToolBox";
-import AddBox from "./AddBox";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import AddDevice from "./AddDevice";
 export default function Devices() {
   const { data: devicesData } = useDevices();
   const { mutate: deleteDevice } = useDeleteDevice();
+  const nevigate = useNavigate();
   const head = useMemo(() => {
     return [
       {
@@ -106,15 +108,25 @@ export default function Devices() {
     [devicesData]
   );
   return (
-    <div className={style.container}>
-      <Table
-        head={head}
-        className={style.table}
-        data={tableData}
-        checkbox
-        onDeleteRow={onDeleteRow}
-        AddContent={<AddBox />}
+    <Routes>
+      <Route
+        index
+        element={
+          <div className={style.container}>
+            <Table
+              head={head}
+              className={style.table}
+              data={tableData}
+              checkbox
+              onDeleteRow={onDeleteRow}
+              onAdd={() => {
+                nevigate("new");
+              }}
+            />
+          </div>
+        }
       />
-    </div>
+      <Route path="new" element={<AddDevice />} />
+    </Routes>
   );
 }
