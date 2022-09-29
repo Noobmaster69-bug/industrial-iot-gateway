@@ -4,19 +4,22 @@ import clsx from "clsx";
 export default function DialogBox({
   children,
   onConfirm = () => {},
+  onCancel = () => {},
   trigger,
   cancel = "Cancel",
   confirm = "Confirm",
   className,
+  open,
 }) {
   return (
     <Popup
+      open={open}
       trigger={trigger}
       modal
       contentStyle={{
         borderRadius: "8px",
         width: "max-content",
-        backgroundColor: "var(--background)",
+        // backgroundColor: "var(--background)",
         padding: 0,
         overflow: "hidden",
       }}
@@ -29,7 +32,10 @@ export default function DialogBox({
           <div className={style["tool-bar"]}>
             <div
               className={clsx([style.cancel, style.button])}
-              onClick={() => close()}
+              onClick={() => {
+                onCancel();
+                close();
+              }}
             >
               {cancel}
             </div>
@@ -37,7 +43,7 @@ export default function DialogBox({
               className={clsx([style.confirm, style.button])}
               onClick={() => {
                 onConfirm();
-                close();
+                // close();
               }}
             >
               {confirm}

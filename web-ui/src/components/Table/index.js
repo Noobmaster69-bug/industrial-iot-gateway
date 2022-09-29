@@ -3,7 +3,6 @@ import { AiOutlineSearch, AiOutlinePlus, AiOutlineEdit } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
 import style from "./index.module.scss";
 import ReactTooltip from "react-tooltip";
-import DialogBox from "components/ToolBox/DialogBox";
 /**
  * @typedef {Array.<{id: string, label: string, numberic: boolean, isSort: boolean, className: string}>} head
  */
@@ -23,7 +22,6 @@ export default function Table(props) {
     className = "",
     checkbox,
     searchID,
-    AddContent = <div></div>,
     onAdd = () => {},
   } = props;
   const [rows, setRows] = useState(data);
@@ -157,7 +155,14 @@ export default function Table(props) {
               data-place="bottom"
               data-for="add"
             >
-              <button className={style["add-button"]} onClick={() => onAdd()}>
+              <button
+                className={style["add-button"]}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onAdd();
+                }}
+                type="none"
+              >
                 <AiOutlinePlus size={25} />
                 <ReactTooltip id="add" />
               </button>

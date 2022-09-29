@@ -5,8 +5,9 @@
   flex-direction: column;
   overflow: auto;
   .table {
+    // height: 100%;
     width: 100%;
-    height: max-content;
+    // height: max-content;
     border-collapse: collapse;
     tr {
       height: 50px;
