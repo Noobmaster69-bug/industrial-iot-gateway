@@ -37,7 +37,7 @@ module.exports = () => {
             userName: username,
             role,
           } = await Accounts.getUserbyId(jwt_payload.id);
-          res.send({ id, username, role });
+          res.send({ id, username, role, isLogIn: true });
         } else {
           throw new Error("No user id found");
         }
@@ -45,7 +45,7 @@ module.exports = () => {
         throw new Error("No cookie found");
       }
     } catch (err) {
-      res.sendStatus(401);
+      res.send({ isLogIn: false });
     }
   });
   Router.delete("/", async (req, res) => {

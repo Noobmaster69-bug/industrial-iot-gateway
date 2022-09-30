@@ -60,6 +60,12 @@ module.exports = (sequelize, DataTypes) => {
       unique: {
         type: DataTypes.STRING,
       },
+      label: {
+        type: DataTypes.STRING,
+      },
+      placeholder: {
+        type: DataTypes.STRING,
+      },
     },
     {
       timestamps: false,

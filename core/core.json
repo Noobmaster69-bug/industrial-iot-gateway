@@ -26,7 +26,9 @@
           "key": "fc",
           "type": "ENUM",
           "values": ["03"],
-          "defaultValue": "03"
+          "defaultValue": "03",
+          "label": "Function Code",
+          "placeholder": "03"
         },
         {
           "kind": "channel",
@@ -51,27 +53,36 @@
             "UInt16BE",
             "UInt16LE"
           ],
-          "defaultValue": "Int16BE"
+          "defaultValue": "Int16BE",
+          "label": "Data Type",
+          "placeholder": "Int16BE"
         },
         {
           "kind": "channel",
           "key": "addr",
-          "type": "INTEGER"
+          "type": "INTEGER",
+          "label": "Address",
+          "placeholder": "01"
         },
         {
           "kind": "protocol",
           "key": "path",
-          "type": "STRING"
+          "type": "STRING",
+          "placeholder": "/dev/ttyUSB0"
         },
         {
           "kind": "protocol",
           "key": "baudRate",
-          "type": "INTEGER"
+          "type": "INTEGER",
+          "label": "Baudrate",
+          "placeholder": "9600, 19200, 115200,..."
         },
         {
           "kind": "protocol",
           "key": "slaveID",
-          "type": "INTEGER"
+          "type": "INTEGER",
+          "label": "Slave ID",
+          "placeholder": "1->255"
         },
         {
           "kind": "protocol",
@@ -116,7 +127,8 @@
           "kind": "protocol",
           "key": "host",
           "type": "STRING",
-          "allowNull": "false"
+          "allowNull": "false",
+          "placeholder": "localhost"
         },
         {
           "kind": "protocol",
@@ -127,7 +139,8 @@
         {
           "kind": "protocol",
           "key": "port",
-          "type": "INTEGER"
+          "type": "INTEGER",
+          "defaultValue": 1883
         },
         {
           "kind": "protocol",
@@ -136,62 +149,6 @@
           "values": ["mqtt", "mqtts", "tcp", "tls", "ws", "wss", "wxs", "alis"],
           "defaultValue": "mqtt",
           "allowNull": "false"
-        }
-      ]
-    }
-  ],
-  "models": [
-    {
-      "name": "WS 1",
-      "type": "Irradiance Sensor",
-      "manufacture": "",
-      "protocol": "modbus-rtu",
-      "channels": [
-        {
-          "name": "Irradiation",
-          "readWrite": "R",
-          "fc": "03",
-          "addr": "6",
-          "parse": "UInt16BE",
-          "scale": 1,
-          "offset": 0
-        }
-      ]
-    }
-  ],
-  "protocols": [
-    {
-      "name": "modbus",
-      "ServiceId": "1",
-      "path": "/dev/ttyUSB0",
-      "baudRate": "9600",
-      "slaveID": "2"
-    },
-    {
-      "name": "mqtt",
-      "ServiceId": "2",
-      "host": "95.111.200.178",
-      "protocol": "mqtt",
-      "topic": "62d7bfe61b0acb0c43676260"
-    }
-  ],
-  "devices": [
-    {
-      "name": "Weather Station 1",
-      "ModelId": 1,
-      "upProtocolId": 2,
-      "downProtocolId": 1
-    }
-  ],
-  "tasks": [
-    {
-      "DeviceId": 1,
-      "type": "ReadDeviceData",
-      "interval": 5000,
-      "startTime": "2022-03-01T17:00:00.000Z",
-      "channels": [
-        {
-          "id": 1
         }
       ]
     }

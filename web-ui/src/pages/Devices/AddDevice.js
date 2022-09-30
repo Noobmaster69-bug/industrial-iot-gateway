@@ -6,7 +6,7 @@ import { BsArrowLeft } from "react-icons/bs";
 import AddChanel from "./AddChannel";
 import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
-
+import _ from "lodash";
 export default function AddBox() {
   const { data: protocols, isLoading } = useProtocol();
   const downServices = (protocols || []).filter(
@@ -73,8 +73,6 @@ export default function AddBox() {
     }, {});
     return channelData;
   });
-  console.log(tableData);
-  console.log(head);
   function onSubmit(event) {
     event.preventDefault();
     const result = new FormData(event.target);
@@ -176,9 +174,10 @@ export default function AddBox() {
               </table>
             </div>
           </div>
+
           <div className={style["protocol-panel"]}>
             <div className={style["panel-header"]}>
-              <h3>Protocol Panel</h3>
+              <h3>Up Protocol Panel</h3>
               <select
                 onChange={(event) => {
                   const value = event.target.value;
@@ -208,13 +207,13 @@ export default function AddBox() {
                     </td>
                     <td>
                       <input
-                        name="protocol>>name"
+                        name="upProtocol>>name"
                         placeholder="AWS Server,..."
                       />
                     </td>
                   </tr>
                   {(upService?.protocolProps || []).map((props, key) => (
-                    <tr key={"protocol" + key}>
+                    <tr key={"upProtocol" + key}>
                       <td>
                         <label>
                           <h4>
@@ -224,18 +223,21 @@ export default function AddBox() {
                       </td>
                       <td>
                         {props.type === "ENUM" ? (
-                          <select name={"protocol>>" + props.key}>
+                          <select name={"upProtocol>>" + props.key}>
                             {JSON.parse(props.values).map((value, index) => (
-                              <option value={value} key={"protocol>>" + index}>
+                              <option
+                                value={value}
+                                key={"upProtocol>>" + index}
+                              >
                                 {value}
                               </option>
                             ))}
                           </select>
                         ) : (
                           <input
-                            name={"protocol>>" + props.key}
+                            name={"upProtocol>>" + props.key}
                             placeholder={props.placeholder}
-                            required={props.allowNull}
+                            required={!props.allowNull}
                             type={DataTypetoInputType(props.type)}
                             defaultValue={props.defaultValue}
                           />
@@ -247,7 +249,81 @@ export default function AddBox() {
               </table>
             </div>
           </div>
-
+          <div className={style["protocol-panel"]}>
+            <div className={style["panel-header"]}>
+              <h3>Down Protocol Panel</h3>
+              <select
+                onChange={(event) => {
+                  const value = event.target.value;
+                  setDownService(value);
+                }}
+                value={downService}
+              >
+                {(protocols || [])
+                  .filter((protocol) => protocol.type === "downService")
+                  .map((protocol, index) => {
+                    return (
+                      <option value={protocol} key={index + "protocol"}>
+                        {protocol.name}
+                      </option>
+                    );
+                  })}
+              </select>
+            </div>
+            <hr />
+            <div className={style["form-container"]}>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>
+                      <label>
+                        <h4>Name</h4>
+                      </label>
+                    </td>
+                    <td>
+                      <input
+                        name="downProtocol>>name"
+                        placeholder="Modbus Device,..."
+                      />
+                    </td>
+                  </tr>
+                  {(downService?.protocolProps || []).map((props, key) => (
+                    <tr key={"downProtocol" + key}>
+                      <td>
+                        <label>
+                          <h4>
+                            {props.key[0].toUpperCase() + props.key.slice(1)}
+                          </h4>
+                        </label>
+                      </td>
+                      <td>
+                        {props.type === "ENUM" ? (
+                          <select name={"downProtocol>>" + props.key}>
+                            {JSON.parse(props.values).map((value, index) => (
+                              <option
+                                value={value}
+                                key={"downProtocol>>" + index}
+                              >
+                                {value}
+                              </option>
+                            ))}
+                          </select>
+                        ) : (
+                          <input
+                            name={"downProtocol>>" + props.key}
+                            placeholder={props.placeholder}
+                            required={!props.allowNull}
+                            type={DataTypetoInputType(props.type)}
+                            defaultValue={props.defaultValue}
+                          />
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
           <div className={style["channel-panel"]}>
             <div className={style["panel-header"]}>
               <h3>Channel Panel</h3>
@@ -256,6 +332,7 @@ export default function AddBox() {
                   const value = event.target.value;
                   setDownService(value);
                 }}
+                value={downService}
               >
                 {(protocols || [])
                   .filter((protocol) => protocol.type === "downService")
@@ -278,6 +355,12 @@ export default function AddBox() {
                 // onDeleteRow={onDeleteRow}
                 onAdd={() => {
                   setOpen(true);
+                }}
+                onDeleteRow={(row) => {
+                  const index = tableData.findIndex((channel) =>
+                    _.isEqual(row, channel)
+                  );
+                  setChannel(channels.filter((channel, id) => id !== index));
                 }}
               />
             </div>

@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: {
         type: DataTypes.STRING,
       },
-      manufacture: {
+      manufacturer: {
         type: DataTypes.STRING,
       },
       type: {

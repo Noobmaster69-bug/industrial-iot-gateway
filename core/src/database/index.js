@@ -59,33 +59,12 @@ module.exports.sync = async () => {
 };
 module.exports.ReloadConfig = async (sequelize, DataTypes) => {
   const fs = require("fs");
-
   const data = JSON.parse(fs.readFileSync(__dirname + "/../../core.json"));
   if (data.services) {
     for (const service of data.services) {
       await module.exports.Services.create(service);
     }
     await resync(sequelize, DataTypes);
-  }
-  if (data.models) {
-    for (const model of data.models) {
-      await module.exports.Template.create(model);
-    }
-  }
-  if (data.protocols) {
-    for (const protocol of data.protocols) {
-      await module.exports.Protocol.create(protocol);
-    }
-  }
-  if (data.devices) {
-    for (const device of data.devices) {
-      await module.exports.Devices.create(device);
-    }
-  }
-  if (data.tasks) {
-    for (const task of data.tasks) {
-      await module.exports.Tasks.create(task);
-    }
   }
 };
 

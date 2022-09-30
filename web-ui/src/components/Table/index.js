@@ -23,6 +23,8 @@ export default function Table(props) {
     checkbox,
     searchID,
     onAdd = () => {},
+    onDeleteRow = () => {},
+    onEditRow = () => {},
   } = props;
   const [rows, setRows] = useState(data);
   const [sortMethod, setSortMethod] = useState({ id: null, state: null });
@@ -168,8 +170,6 @@ export default function Table(props) {
               </button>
             </td>
           </tr>
-        </thead>
-        <tbody>
           <tr className={style.head}>
             {checkbox && (
               <td className={style.checkbox}>
@@ -186,7 +186,11 @@ export default function Table(props) {
                 {e.label}
               </td>
             ))}
+            <td />
+            <td />
           </tr>
+        </thead>
+        <tbody>
           {Sort()
             .filter((e) => {
               if ((searchID || head[0]?.id) && regex) {
@@ -232,7 +236,13 @@ export default function Table(props) {
                       data-place="left"
                       data-for="delete"
                     >
-                      <button className={style["action-button"]}>
+                      <button
+                        className={style["action-button"]}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          onDeleteRow(row);
+                        }}
+                      >
                         <BsTrash size={20} />
                       </button>
                       <ReactTooltip id="delete" />
@@ -245,7 +255,13 @@ export default function Table(props) {
                       data-place="left"
                       data-for="edit"
                     >
-                      <button className={style["action-button"]}>
+                      <button
+                        className={style["action-button"]}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          onEditRow(row);
+                        }}
+                      >
                         <AiOutlineEdit size={20} />
                       </button>
                       <ReactTooltip id="edit" />

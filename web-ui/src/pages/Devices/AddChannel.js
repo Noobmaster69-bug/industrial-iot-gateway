@@ -9,6 +9,7 @@ export default function AddChanel({
 }) {
   const [addChannel, setAddChannel] = [open, setOpen];
   const form = useRef();
+  const input = useRef();
   function DataTypetoInputType(type) {
     switch (type) {
       case "INTEGER":
@@ -21,16 +22,23 @@ export default function AddChanel({
     <DialogBox
       open={addChannel}
       onConfirm={() => {
-        const formData = new FormData(form.current);
-        const data = Object.fromEntries(formData);
-        onConfirm(data);
-        setAddChannel(false);
+        input.current.click();
       }}
       onCancel={() => {
         setAddChannel(false);
       }}
     >
-      <form className={style.container} ref={form}>
+      <form
+        className={style.container}
+        ref={form}
+        onSubmit={(e) => {
+          e.preventDefault();
+          const formData = new FormData(form.current);
+          const data = Object.fromEntries(formData);
+          onConfirm(data);
+          setAddChannel(false);
+        }}
+      >
         <div className={style.body}>
           <div className={style["protocol-panel"]}>
             <div className={style["panel-header"]}>
@@ -135,7 +143,7 @@ export default function AddChanel({
                           <input
                             name={props.key}
                             placeholder={props.placeholder}
-                            required={props.allowNull}
+                            required={!props.allowNull}
                             type={DataTypetoInputType(props.type)}
                             defaultValue={props.defaultValue}
                           />
@@ -148,6 +156,14 @@ export default function AddChanel({
             </div>
           </div>
         </div>
+        <button
+          // type="submit"
+          hidden
+          ref={input}
+          onClick={() => {
+            console.log("click");
+          }}
+        />
       </form>
     </DialogBox>
   );

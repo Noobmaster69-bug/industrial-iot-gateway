@@ -2,6 +2,7 @@ import { createContext } from "react";
 import io from "socket.io-client";
 import { useState, useEffect, useContext } from "react";
 import ANSI from "ansi-to-html";
+import { useUser } from "hooks";
 const Socket = createContext();
 export const useSocket = () => useContext(Socket);
 export function SocketProvider({ children }) {
@@ -14,9 +15,15 @@ export function SocketProvider({ children }) {
   });
   const [logs, setLogs] = useState([]);
   const [isConnected, setIsConnected] = useState(false);
-  const ansi = new ANSI({ fg: "#595959", colors: { 10: "#35c78b" } });
+  const {
+    data: { isLogIn },
+  } = useUser();
   useEffect(() => {
-    const socket = io("http://localhost:33333", { withCredentials: true });
+    const ansi = new ANSI({ fg: "#595959", colors: { 10: "#35c78b" } });
+    const socket = io("http://localhost:33333", {
+      withCredentials: true,
+      autoConnect: false,
+    });
     socket.on("connect", () => {
       setIsConnected(true);
       socket.on("performance", (msg) => {
@@ -64,11 +71,15 @@ export function SocketProvider({ children }) {
         });
       });
     });
+    if (isLogIn) {
+      socket.connect();
+    } else {
+      socket.disconnect();
+    }
     return () => {
       socket.removeAllListeners();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isLogIn]);
   return (
     <Socket.Provider
       value={{ performance, logs, isConnected }}

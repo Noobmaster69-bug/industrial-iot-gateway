@@ -97,14 +97,15 @@ export function useUser() {
     {
       staleTime: 2 * 3600 * 1000,
       retry: false,
-      onSuccess: () => {
-        if (location.pathname === "/login") {
-          nevigate("overview");
-        }
-      },
-      onError: () => {
-        if (location.pathname !== "/login") {
-          window.location.href = "login";
+      onSuccess: (data) => {
+        if (data.isLogIn) {
+          if (location.pathname === "/login") {
+            nevigate("overview");
+          }
+        } else {
+          if (location.pathname !== "/login") {
+            window.location.href = "/login";
+          }
         }
       },
     }
@@ -122,7 +123,7 @@ export function useLogin() {
         },
         { withCredentials: true }
       ).then(({ data }) => data);
-      axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
+      // axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
       return data;
     },
     {
@@ -138,7 +139,6 @@ export function useLogin() {
   );
 }
 export function useLogOut() {
-  const queryClient = useQueryClient();
   return useMutation(
     async () => {
       const data = await Axios.delete("http://localhost:33333/login", {
@@ -149,7 +149,7 @@ export function useLogOut() {
     {
       mutationKey: "user",
       onSuccess: () => {
-        queryClient.invalidateQueries(["user"]);
+        window.location.href = "/login";
       },
     }
   );

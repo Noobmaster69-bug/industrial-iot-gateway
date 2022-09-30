@@ -5,15 +5,23 @@
   flex-direction: column;
   overflow: auto;
   .table {
-    // height: 100%;
-    width: 100%;
     // height: max-content;
+    overflow: auto;
     border-collapse: collapse;
     tr {
       height: 50px;
     }
-    thead {
+    td {
       border-bottom: 0.0625rem solid rgb(240, 242, 245);
+      padding: 0;
+
+      margin: 0;
+    }
+    thead {
+      position: sticky;
+      top: 0;
+
+      background-color: white;
       .search-cell {
         padding-left: 16px;
         .search-bar {
@@ -59,8 +67,8 @@
       .delete-cell {
         text-align: center;
         width: 50px;
-        visibility: hidden;
         .delete-button {
+          visibility: hidden;
           border: none;
           padding: 0;
           height: 42px;
@@ -76,10 +84,21 @@
           visibility: visible;
         }
       }
+
+      .checkbox {
+        height: 100%;
+        width: 50px;
+        text-align: center;
+      }
+      .head {
+        background-color: rgb(243, 244, 246);
+        td {
+          font-weight: 600;
+        }
+      }
     }
     tbody {
       tr {
-        border-bottom: 0.0625rem solid rgb(240, 242, 245);
         .checkbox {
           height: 100%;
           width: 50px;
@@ -105,14 +124,6 @@
             visibility: visible;
           }
         }
-      }
-      .head {
-        td {
-          font-weight: 600;
-        }
-      }
-      td {
-        padding-left: 8px;
       }
     }
   }

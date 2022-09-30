@@ -1,9 +1,74 @@
 module.exports = (sequelize) => {
   return {
-    async create(device) {
-      const { Devices } = sequelize.models;
+    async create(input) {
+      const { Devices, Protocols, Channels } = sequelize.models;
       try {
-        await Devices.create(device);
+        let { upProtocol, downProtocol, channels, ...device } = input;
+        //handle upProtocol
+        {
+          let { name, ServiceId, ...protocolProps } = upProtocol;
+          upProtocol[`Protocol_${ServiceId}`] = protocolProps;
+        }
+        //handle downProtocol
+        {
+          let { name, ServiceId, ...protocolProps } = downProtocol;
+          downProtocol[`Protocol_${ServiceId}`] = protocolProps;
+        }
+        //handle channel
+        {
+          channels = channels.map(
+            ({
+              name,
+              readWrite,
+              offset,
+              scale,
+              precision,
+              TemplateId,
+              ...channelProps
+            }) => {
+              return {
+                name,
+                readWrite,
+                offset,
+                scale,
+                precision,
+                TemplateId,
+                ServiceId: downProtocol.ServiceId,
+                [`Channel_${downProtocol.ServiceId}`]: channelProps,
+              };
+            }
+          );
+        }
+        console.log(Channels.associations);
+        await sequelize.transaction(async (t) => {
+          await Devices.create(
+            { ...device, Channels: channels, upProtocol, downProtocol },
+            {
+              include: [
+                {
+                  model: Protocols,
+                  as: "upProtocol",
+                  include:
+                    Protocols.associations[`Protocol_${upProtocol.ServiceId}`],
+                },
+                {
+                  model: Protocols,
+                  as: "downProtocol",
+                  include:
+                    Protocols.associations[
+                      `Protocol_${downProtocol.ServiceId}`
+                    ],
+                },
+                {
+                  model: Channels,
+                  include:
+                    Channels.associations[`Channel_${downProtocol.ServiceId}`],
+                },
+              ],
+              transaction: t,
+            }
+          );
+        });
       } catch (err) {
         throw err;
       }
