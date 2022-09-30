@@ -25,10 +25,11 @@
           "kind": "channel",
           "key": "fc",
           "type": "ENUM",
-          "values": ["03"],
+          "values": ["03", "04", "05"],
           "defaultValue": "03",
           "label": "Function Code",
-          "placeholder": "03"
+          "placeholder": "03",
+          "unique": true
         },
         {
           "kind": "channel",
@@ -55,14 +56,16 @@
           ],
           "defaultValue": "Int16BE",
           "label": "Data Type",
-          "placeholder": "Int16BE"
+          "placeholder": "Int16BE",
+          "unique": "1"
         },
         {
           "kind": "channel",
           "key": "addr",
           "type": "INTEGER",
           "label": "Address",
-          "placeholder": "01"
+          "placeholder": "01",
+          "unique": "1"
         },
         {
           "kind": "protocol",

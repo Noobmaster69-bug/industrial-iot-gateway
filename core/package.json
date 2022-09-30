@@ -6,7 +6,7 @@
   "bin": "./index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "setup": "npm install --omnit-dev --no-color",
+    "setup": "npm install --omnit-dev",
     "setup_armhf": "export AR=\"arm-linux-gnueabihf-ar\" && export CC=\"arm-linux-gnueabihf-gcc\" && export CXX=\"arm-linux-gnueabihf-g++\" &&export LINK=\"arm-linux-gnueabihf-g++\"&&npm install --build-from-source --target_arch=arm --omit=dev",
     "start": "DEV=true nodemon index.js",
     "build": "rm -f -r ./dist && DOCKER_BUILDKIT=1 docker build --output dist . --no-cache=true ",

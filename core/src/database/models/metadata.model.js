@@ -59,6 +59,19 @@ module.exports = (sequelize, DataTypes) => {
       },
       unique: {
         type: DataTypes.STRING,
+        set(data) {
+          if (data === true) {
+            this.setDataValue("unique", "true");
+          } else {
+            this.setDataValue("unique", data);
+          }
+        },
+        get() {
+          if (this.getDataValue("unique") === "true") {
+            return true;
+          }
+          return this.getDataValue("unique");
+        },
       },
       label: {
         type: DataTypes.STRING,

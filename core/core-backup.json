@@ -1,0 +1,156 @@
+{
+  "services": [
+    {
+      "name": "modbus-rtu",
+      "cwd": "/home/ds-modbus",
+      "type": "downService",
+      "script": "index.js",
+      "isManaged": false,
+      "out_file": "./log1.txt",
+      "error_file": "./error1.txt",
+      "APIs": [
+        {
+          "protocol": "REST",
+          "kind": "IPC",
+          "type": "GET",
+          "name": "read modbus",
+          "REST": {
+            "url": "localhost:33334/RTU",
+            "method": "get"
+          }
+        }
+      ],
+      "Metadata": [
+        {
+          "kind": "channel",
+          "key": "fc",
+          "type": "ENUM",
+          "values": ["03"],
+          "defaultValue": "03",
+          "label": "Function Code",
+          "placeholder": "03"
+        },
+        {
+          "kind": "channel",
+          "key": "dataType",
+          "type": "ENUM",
+          "values": [
+            "BigInt64BE",
+            "BigInt64LE",
+            "BigUInt64BE",
+            "BigUInt64BE",
+            "BigUInt64LE",
+            "DoubleBE",
+            "DoubleLE",
+            "FloatBE",
+            "FloatLE",
+            "Int32BE",
+            "Int32LE",
+            "UInt32BE",
+            "UInt32LE",
+            "Int16BE",
+            "Int16LE",
+            "UInt16BE",
+            "UInt16LE"
+          ],
+          "defaultValue": "Int16BE",
+          "label": "Data Type",
+          "placeholder": "Int16BE"
+        },
+        {
+          "kind": "channel",
+          "key": "addr",
+          "type": "INTEGER",
+          "label": "Address",
+          "placeholder": "01"
+        },
+        {
+          "kind": "protocol",
+          "key": "path",
+          "type": "STRING",
+          "placeholder": "/dev/ttyUSB0"
+        },
+        {
+          "kind": "protocol",
+          "key": "baudRate",
+          "type": "INTEGER",
+          "label": "Baudrate",
+          "placeholder": "9600, 19200, 115200,..."
+        },
+        {
+          "kind": "protocol",
+          "key": "slaveID",
+          "type": "INTEGER",
+          "label": "Slave ID",
+          "placeholder": "1->255"
+        },
+        {
+          "kind": "protocol",
+          "key": "parity",
+          "type": "ENUM",
+          "values": ["none", "odd", "even"]
+        }
+      ]
+    },
+    {
+      "name": "mqtt",
+      "cwd": "/home/ubuntu/ds-mqtt",
+      "script": "index.js",
+      "type": "upService",
+      "out_file": "./log2.txt",
+      "error_file": "./error2.txt",
+      "isManaged": false,
+      "APIs": [
+        {
+          "protocol": "REST",
+          "kind": "IPC",
+          "type": "GET",
+          "name": "provision",
+          "REST": {
+            "url": "localhost:33335/provision",
+            "method": "post"
+          }
+        },
+        {
+          "protocol": "REST",
+          "kind": "IPC",
+          "type": "SET",
+          "name": "telemetry",
+          "REST": {
+            "url": "localhost:33335/telemetry",
+            "method": "post"
+          }
+        }
+      ],
+      "Metadata": [
+        {
+          "kind": "protocol",
+          "key": "host",
+          "type": "STRING",
+          "allowNull": "false",
+          "placeholder": "localhost"
+        },
+        {
+          "kind": "protocol",
+          "key": "topic",
+          "type": "STRING",
+          "defaultValue": ""
+        },
+        {
+          "kind": "protocol",
+          "key": "port",
+          "type": "INTEGER",
+          "defaultValue": 1883
+        },
+        {
+          "kind": "protocol",
+          "key": "protocol",
+          "type": "ENUM",
+          "values": ["mqtt", "mqtts", "tcp", "tls", "ws", "wss", "wxs", "alis"],
+          "defaultValue": "mqtt",
+          "allowNull": "false"
+        }
+      ]
+    }
+  ]
+}

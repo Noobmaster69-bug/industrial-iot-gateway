@@ -8,7 +8,7 @@ import style from "./index.module.scss";
 import { useDevices, useDeleteDevice } from "hooks/api";
 import { ConfirmBox } from "components/ToolBox";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import AddDevice from "./AddDevice";
+import AddDevice from "./AddDevice/index.jsx";
 export default function Devices() {
   const { data: devicesData } = useDevices();
   const { mutate: deleteDevice } = useDeleteDevice();

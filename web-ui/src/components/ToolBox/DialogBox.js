@@ -24,6 +24,8 @@ export default function DialogBox({
         overflow: "hidden",
       }}
       nested
+      closeOnEscape={false}
+      closeOnDocumentClick={false}
     >
       {(close) => (
         <div className={clsx([style.container, className])}>
