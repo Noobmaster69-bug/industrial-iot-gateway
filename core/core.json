@@ -28,8 +28,7 @@
           "values": ["03", "04", "05"],
           "defaultValue": "03",
           "label": "Function Code",
-          "placeholder": "03",
-          "unique": true
+          "placeholder": "03"
         },
         {
           "kind": "channel",
@@ -56,16 +55,14 @@
           ],
           "defaultValue": "Int16BE",
           "label": "Data Type",
-          "placeholder": "Int16BE",
-          "unique": "1"
+          "placeholder": "Int16BE"
         },
         {
           "kind": "channel",
           "key": "addr",
           "type": "INTEGER",
           "label": "Address",
-          "placeholder": "01",
-          "unique": "1"
+          "placeholder": "01"
         },
         {
           "kind": "protocol",
