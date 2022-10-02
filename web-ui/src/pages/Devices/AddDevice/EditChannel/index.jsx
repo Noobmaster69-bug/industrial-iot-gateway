@@ -2,11 +2,12 @@ import style from "./index.module.scss";
 import DialogBox from "components/ToolBox/DialogBox";
 import { useRef } from "react";
 
-export default function AddChannel({
+export default function EditChannel({
   downService,
   open = false,
   onConfirm = function () {},
   onCancel = () => {},
+  channel,
 }) {
   const form = useRef();
   const input = useRef();
@@ -42,7 +43,7 @@ export default function AddChannel({
         <div className={style.body}>
           <div className={style["protocol-panel"]}>
             <div className={style["panel-header"]}>
-              <h3>Add Channel</h3>
+              <h3>Edit Channel</h3>
             </div>
             <hr />
             <div className={style["form-container"]}>
@@ -60,6 +61,7 @@ export default function AddChannel({
                         placeholder="Temperature,..."
                         required
                         form="addChannel"
+                        defaultValue={channel?.name?.key}
                       />
                     </td>
                   </tr>
@@ -70,7 +72,11 @@ export default function AddChannel({
                       </label>
                     </td>
                     <td>
-                      <select name="readWrite" form="addChannel">
+                      <select
+                        name="readWrite"
+                        form="addChannel"
+                        defaultValue={channel["readWrite"]?.key}
+                      >
                         <option value="R">Read</option>
                         <option value="W">Write</option>
                         <option value="RW">Read/Write</option>
@@ -88,7 +94,7 @@ export default function AddChannel({
                         name="offset"
                         placeholder="0"
                         type="number"
-                        defaultValue={0}
+                        defaultValue={channel?.offset?.key}
                         form="addChannel"
                       />
                     </td>
@@ -104,7 +110,7 @@ export default function AddChannel({
                         name="scale"
                         placeholder="1"
                         type="number"
-                        defaultValue={1}
+                        defaultValue={channel?.scale?.key}
                         form="addChannel"
                       />
                     </td>
@@ -120,7 +126,7 @@ export default function AddChannel({
                         name="precision"
                         placeholder="NaN"
                         type="number"
-                        defaultValue={Infinity}
+                        defaultValue={channel?.precision?.key}
                         form="addChannel"
                       />
                     </td>
@@ -136,7 +142,11 @@ export default function AddChannel({
                       </td>
                       <td>
                         {props.type === "ENUM" ? (
-                          <select name={props.key} form="addChannel">
+                          <select
+                            name={props.key}
+                            form="addChannel"
+                            defaultValue={channel[props.key]?.key}
+                          >
                             {JSON.parse(props.values).map((value, index) => (
                               <option value={value} key={+index}>
                                 {value}
@@ -149,7 +159,7 @@ export default function AddChannel({
                             placeholder={props.placeholder}
                             required={!props.allowNull}
                             type={DataTypetoInputType(props.type)}
-                            defaultValue={props.defaultValue}
+                            defaultValue={channel[props.key]?.key}
                             form="addChannel"
                           />
                         )}
