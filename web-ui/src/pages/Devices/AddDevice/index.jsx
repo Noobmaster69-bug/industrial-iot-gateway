@@ -10,6 +10,8 @@ import DownProtocol from "./DownProtocol";
 import { useEffect, useState } from "react";
 import Table from "components/Table";
 import _ from "lodash";
+import Toast from "hooks/toast";
+import EditChannel from "./EditChannel";
 export default function AddBox() {
   const { data: protocols, isLoading } = useProtocol();
   const downServices = (protocols || []).filter(
@@ -20,8 +22,10 @@ export default function AddBox() {
   );
   const [downService, setDownService] = useState(downServices[0]);
   const [upService, setUpService] = useState(upServices[0]);
-  const [open, setOpen] = useState(false);
+  const [addChannel, setAddChannel] = useState(false);
+  const [editChannel, setEditChannel] = useState(false);
   const [channels, setChannel] = useState([]);
+  const [currentEditChannel, setCurrentEditChannel] = useState({});
   const nevigate = useNavigate();
   useEffect(() => {
     setDownService(downServices[0]);
@@ -30,7 +34,7 @@ export default function AddBox() {
   if (isLoading) {
     return <div></div>;
   }
-
+  const toast = Toast("error");
   function onSubmit(event) {
     event.preventDefault();
     const result = new FormData(event.target);
@@ -101,6 +105,48 @@ export default function AddBox() {
     }, {});
     return channelData;
   });
+  function validateChannel(data, channels) {
+    const uniqueSimple = downService?.channelsProps.filter(
+      (props) => props.unique === true
+    );
+    for (const props of uniqueSimple) {
+      if (channels.some((channel) => channel[props.key] === data[props.key])) {
+        toast(`${props.label || props.key} must be unique`);
+        return false;
+      }
+    }
+    const uniqueComplexes = downService?.channelsProps
+      .filter((props) => (props.unique || true) !== true)
+      .sort((a, b) => ("" + a.key).localeCompare(b.key));
+    const uniqueGroups = uniqueComplexes.reduce((pre, curr, index, array) => {
+      if (curr.unique === array[index - 1]?.unique) {
+        pre[pre.length - 1].push(curr);
+        return pre;
+      }
+      pre.push([curr]);
+      return pre;
+    }, []);
+    for (const group of uniqueGroups) {
+      if (
+        channels.some((channel) =>
+          group.every((member) => data[member.key] === channel[member.key])
+        )
+      ) {
+        toast(
+          `${group.reduce(
+            (pre, curr) => pre + ", " + (curr.label || curr.key),
+            ""
+          )} must be unique`
+        );
+        return false;
+      }
+    }
+    if (channels.some((channel) => channel.name === data.name)) {
+      toast("Name must be unique");
+      return false;
+    }
+    return true;
+  }
   return (
     <>
       <form onSubmit={onSubmit} className={style.container}>
@@ -161,13 +207,17 @@ export default function AddBox() {
                 checkbox
                 // onDeleteRow={onDeleteRow}
                 onAdd={() => {
-                  setOpen(true);
+                  setAddChannel(true);
                 }}
                 onDeleteRow={(row) => {
                   const index = tableData.findIndex((channel) =>
                     _.isEqual(row, channel)
                   );
                   setChannel(channels.filter((channel, id) => id !== index));
+                }}
+                onEditRow={(row) => {
+                  setCurrentEditChannel(row);
+                  setEditChannel(true);
                 }}
               />
             </div>
@@ -176,11 +226,41 @@ export default function AddBox() {
       </form>
       <AddChanel
         downService={downService}
-        open={[open, setOpen]}
+        open={addChannel}
         onConfirm={(data) => {
-          setChannel([...channels, data]);
+          if (validateChannel(data, channels)) {
+            setChannel([...channels, data]);
+            setAddChannel(false);
+          }
         }}
-        channels={channels}
+        onCancel={() => {
+          addChannel(false);
+        }}
+      />
+      <EditChannel
+        downService={downService}
+        open={editChannel}
+        onConfirm={(data) => {
+          const preData = Object.keys(currentEditChannel).reduce(
+            (pre, curr) => {
+              return { ...pre, [curr]: currentEditChannel[curr].key };
+            },
+            {}
+          );
+          const index = channels.findIndex((channel) =>
+            _.isEqual(preData, channel)
+          );
+          const tempChannels = [...channels].filter(({}, i) => index !== i);
+          if (validateChannel(data, tempChannels)) {
+            channels[index] = data;
+            setChannel(channels);
+            setEditChannel(false);
+          }
+        }}
+        onCancel={() => {
+          setEditChannel(false);
+        }}
+        channel={currentEditChannel}
       />
     </>
   );
