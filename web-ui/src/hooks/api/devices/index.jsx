@@ -39,7 +39,7 @@ export function useCreateDevice({ onSuccess = () => {} }) {
     "devices",
     async (data) => {
       const device = await axios
-        .post("/devices/", { data })
+        .post("/devices/", { ...data })
         .then(({ data }) => data);
       return device;
     },
