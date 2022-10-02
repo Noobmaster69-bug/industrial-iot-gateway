@@ -1,4 +1,4 @@
-import { useProtocol } from "hooks";
+import { useCreateDevice, useProtocol } from "hooks";
 import style from "./index.module.scss";
 import { BsArrowLeft } from "react-icons/bs";
 import clsx from "clsx";
@@ -10,7 +10,7 @@ import DownProtocol from "./DownProtocol";
 import { useEffect, useState } from "react";
 import Table from "components/Table";
 import _ from "lodash";
-import Toast from "hooks/toast";
+import { Toast } from "hooks";
 import EditChannel from "./EditChannel";
 export default function AddBox() {
   const { data: protocols, isLoading } = useProtocol();
@@ -26,6 +26,11 @@ export default function AddBox() {
   const [editChannel, setEditChannel] = useState(false);
   const [channels, setChannel] = useState([]);
   const [currentEditChannel, setCurrentEditChannel] = useState({});
+  const { mutate: createDevice } = useCreateDevice({
+    onSuccess: () => {
+      nevigate(-1);
+    },
+  });
   const nevigate = useNavigate();
   useEffect(() => {
     setDownService(downServices[0]);
@@ -57,6 +62,7 @@ export default function AddBox() {
     protocol.upProtocol.ServiceId = upService.id;
     protocol.downProtocol.ServiceId = downService.id;
     const data = { name, manufacturer, modelName, type, channels, ...protocol };
+    createDevice(data);
   }
 
   const head = [
