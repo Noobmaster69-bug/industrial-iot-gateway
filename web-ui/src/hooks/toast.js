@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-export default function Toast(type) {
+export function Toast(type) {
   if (type) {
     return (msg) => {
       toast[type](msg, {
