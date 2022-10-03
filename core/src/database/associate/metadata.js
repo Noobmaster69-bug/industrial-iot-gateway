@@ -22,8 +22,8 @@ module.exports = async function (sequelize, DataTypes) {
       const channel = sequelize.define(`Channel_${service.id}`, schema, {
         timestamps: false,
       });
-      Channels.hasOne(channel);
-      channel.belongsTo(Channels);
+      Channels.hasOne(channel, { onDelete: "CASCADE", onUpdate: "CASCADE" });
+      channel.belongsTo(Channels, { onDelete: "CASCADE", onUpdate: "CASCADE" });
       await Channels.sync();
       await channel.sync();
     }
@@ -49,8 +49,8 @@ module.exports = async function (sequelize, DataTypes) {
     const configs = sequelize.define(`Protocol_${service.id}`, schema, {
       timestamps: false,
     });
-    Protocols.hasOne(configs);
-    configs.belongsTo(Protocols);
+    Protocols.hasOne(configs, { onDelete: "CASCADE", onUpdate: "CASCADE" });
+    configs.belongsTo(Protocols, { onDelete: "CASCADE", onUpdate: "CASCADE" });
     await Protocols.sync();
     await configs.sync();
   }
