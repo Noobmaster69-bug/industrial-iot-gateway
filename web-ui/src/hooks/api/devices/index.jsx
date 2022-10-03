@@ -69,7 +69,7 @@ export function useDeleteDevice(onSuccess = () => {}) {
       staleTime: 60000,
       onSuccess: () => {
         onSuccess();
-        successToast("Complete");
+        successToast("Success");
         queryClient.invalidateQueries("devices");
       },
       onError: (error, variables, context) => {
