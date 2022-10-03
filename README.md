@@ -2,9 +2,8 @@
 
 ## Introduction
 
-In industrial enviroment, there are many devices with many protocols need to collect data, an IoT Gateway require to read all of them and programmer have to update code to support all of protocols.
-
-This software is design in microservice achitechture to help programmer can easily "attach" new protocol support feature to existing program by running new protocol program in a new process and register them to the `Core` service.
+In the industrial environment, there are many devices with many protocols that need to collect data, an IoT Gateway requires reading all of them and programmers have to update code to support all of the protocols.
+This software is designed in microservice architecture to help programmer can easily "plug" new protocol support features into the existing program by running a new protocol program in a new process and registering them to this program.
 
 ## Feature
 
