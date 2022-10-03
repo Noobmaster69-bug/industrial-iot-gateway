@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { BsArrowBarUp } from "react-icons/bs";
 import ReactTooltip from "react-tooltip";
 
@@ -13,6 +13,8 @@ export default function Devices() {
   const { data: devicesData } = useDevices();
   const { mutate: deleteDevice } = useDeleteDevice();
   const nevigate = useNavigate();
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const [deviceDeleteId, setDeviceDeleteId] = useState(null);
   const head = useMemo(() => {
     return [
       {
@@ -49,7 +51,10 @@ export default function Devices() {
     ];
   }, []);
   const onDeleteRow = (row) => {
-    deleteDevice(row);
+    const deviceName = row.name.key;
+    const id = devicesData.find((device) => (device.name = deviceName)).id;
+    setDeviceDeleteId(id);
+    setDeleteConfirm(true);
   };
   const tableData = useMemo(
     () =>
@@ -123,6 +128,18 @@ export default function Devices() {
                 nevigate("new");
               }}
             />
+            <ConfirmBox
+              open={deleteConfirm}
+              onClose={() => {
+                setDeleteConfirm(false);
+                setDeviceDeleteId(null);
+              }}
+              onConfirm={() => {
+                deleteDevice(deviceDeleteId);
+              }}
+            >
+              Delete device?
+            </ConfirmBox>
           </div>
         }
       />

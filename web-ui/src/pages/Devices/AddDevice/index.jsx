@@ -240,7 +240,7 @@ export default function AddBox() {
           }
         }}
         onCancel={() => {
-          addChannel(false);
+          setAddChannel(false);
         }}
       />
       <EditChannel

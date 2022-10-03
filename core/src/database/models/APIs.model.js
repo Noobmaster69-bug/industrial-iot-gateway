@@ -57,10 +57,10 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         allowNull: true,
       },
-      APIId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
+      // APIId: {
+      //   type: DataTypes.INTEGER,
+      //   allowNull: false,
+      // },
       url: {
         type: DataTypes.STRING,
         allowNull: false,

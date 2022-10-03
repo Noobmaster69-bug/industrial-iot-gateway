@@ -39,7 +39,6 @@ module.exports = (sequelize) => {
             }
           );
         }
-        console.log(Channels.associations);
         await sequelize.transaction(async (t) => {
           await Devices.create(
             { ...device, Channels: channels, upProtocol, downProtocol },

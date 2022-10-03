@@ -7,12 +7,16 @@ export default function ConfirmBox({
   trigger,
   cancel = "Cancel",
   confirm = "Confirm",
+  open = false,
+  onClose = () => {},
 }) {
   return (
     <Popup
+      open={open}
       trigger={trigger}
       modal
       contentStyle={{ borderRadius: "12px", width: "max-content" }}
+      onClose={onClose}
     >
       {(close) => (
         <div className={style.PopUp}>

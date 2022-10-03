@@ -8,10 +8,6 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         allowNull: false,
       },
-      ServiceId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
       kind: {
         type: DataTypes.ENUM,
         values: ["channel", "protocol"],
