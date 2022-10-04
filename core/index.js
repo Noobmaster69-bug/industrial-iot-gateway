@@ -1,4 +1,4 @@
-require("./src/utilities");
+// require("./src/utilities");
 const express = require("express");
 const app = express();
 (async () => {
