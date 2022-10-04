@@ -21,11 +21,10 @@ module.exports = function () {
       res.sendStatus(400);
     }
   });
-  Router.get("/:mode", async (req, res) => {
-    const { mode } = req.params;
+  Router.get("/all", async (req, res) => {
     try {
       const { Devices } = require("../database");
-      const devices = await Devices.getAll(mode);
+      const devices = await Devices.getAll("all");
       res.send(devices);
     } catch (err) {
       console.error(err);

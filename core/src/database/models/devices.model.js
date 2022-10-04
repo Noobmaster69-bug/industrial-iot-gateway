@@ -49,30 +49,33 @@ module.exports = (sequelize, DataTypes) => {
     {
       timestamps: false,
       scopes: {
-        channels() {
-          const { Channels } = sequelize.models;
+        basic() {
+          const { Channels, Protocols } = sequelize.models;
+          let ChannelInclude;
+          let ProtocolInclude;
+          {
+            let { Devices, ...ChannelAssociations } = Channels.associations;
+            ChannelInclude = Object.values(ChannelAssociations);
+          }
+          {
+            const { Devices, ...ProtocolAssociations } = Protocols.associations;
+            ProtocolInclude = Object.values(ProtocolAssociations);
+          }
           return {
             include: [
               {
                 model: Channels,
-                include: Object.values(Channels.associations),
+                include: ChannelInclude,
               },
-            ],
-          };
-        },
-        model() {
-          const { Protocols } = sequelize.models;
-          return {
-            include: [
               {
                 model: Protocols,
+                include: ProtocolInclude,
                 as: "upProtocol",
-                include: Object.values(Protocols.associations),
               },
               {
                 model: Protocols,
+                include: ProtocolInclude,
                 as: "downProtocol",
-                include: Object.values(Protocols.associations),
               },
             ],
           };
