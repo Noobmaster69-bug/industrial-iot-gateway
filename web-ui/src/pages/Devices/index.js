@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { BsArrowBarUp } from "react-icons/bs";
+import { AiOutlineEllipsis } from "react-icons/ai";
 import ReactTooltip from "react-tooltip";
 
 // import Tables from "components/Tables";
@@ -7,8 +8,7 @@ import Table from "components/Table";
 import style from "./index.module.scss";
 import { useDevices, useDeleteDevice } from "hooks/api";
 import { ConfirmBox } from "components/ToolBox";
-import { Route, Routes, useNavigate } from "react-router-dom";
-import AddDevice from "./AddDevice/index.jsx";
+import { Link, useNavigate } from "react-router-dom";
 export default function Devices() {
   const { data: devicesData } = useDevices();
   const { mutate: deleteDevice } = useDeleteDevice();
@@ -48,6 +48,12 @@ export default function Devices() {
         label: "",
         isSort: false,
       },
+      {
+        id: "detail",
+        numberic: false,
+        label: "",
+        isSort: false,
+      },
     ];
   }, []);
   const onDeleteRow = (row) => {
@@ -81,6 +87,25 @@ export default function Devices() {
               value: <div>{datum?.downProtocol?.Service?.name}</div>,
               key: datum.name,
             },
+            detail: {
+              value: (
+                <Link
+                  data-tip="Click here for more detail"
+                  data-effect="solid"
+                  className={style["button"]}
+                  to={`/devices/${datum.id}`}
+                  data-for="detail"
+                >
+                  <AiOutlineEllipsis size={25} />
+                  <ReactTooltip id="detail" />
+                </Link>
+              ),
+              style: {
+                cursor: "pointer",
+                width: "50px",
+                textAlign: "center",
+              },
+            },
             provision: {
               value: (
                 <ConfirmBox
@@ -92,8 +117,9 @@ export default function Devices() {
                       data-tip="Provision"
                       data-effect="solid"
                       className={style["button"]}
+                      data-for="provision"
                     >
-                      <ReactTooltip />
+                      <ReactTooltip id="provision" />
                       <BsArrowBarUp size={25} />
                     </button>
                   }
@@ -113,37 +139,29 @@ export default function Devices() {
     [devicesData]
   );
   return (
-    <Routes>
-      <Route
-        index
-        element={
-          <div className={style.container}>
-            <Table
-              head={head}
-              className={style.table}
-              data={tableData}
-              checkbox
-              onDeleteRow={onDeleteRow}
-              onAdd={() => {
-                nevigate("new");
-              }}
-            />
-            <ConfirmBox
-              open={deleteConfirm}
-              onClose={() => {
-                setDeleteConfirm(false);
-                setDeviceDeleteId(null);
-              }}
-              onConfirm={() => {
-                deleteDevice(deviceDeleteId);
-              }}
-            >
-              Delete device?
-            </ConfirmBox>
-          </div>
-        }
+    <div className={style.container}>
+      <Table
+        head={head}
+        className={style.table}
+        data={tableData}
+        checkbox
+        onDeleteRow={onDeleteRow}
+        onAdd={() => {
+          nevigate("new");
+        }}
       />
-      <Route path="new" element={<AddDevice />} />
-    </Routes>
+      <ConfirmBox
+        open={deleteConfirm}
+        onClose={() => {
+          setDeleteConfirm(false);
+          setDeviceDeleteId(null);
+        }}
+        onConfirm={() => {
+          deleteDevice(deviceDeleteId);
+        }}
+      >
+        Delete device?
+      </ConfirmBox>
+    </div>
   );
 }
