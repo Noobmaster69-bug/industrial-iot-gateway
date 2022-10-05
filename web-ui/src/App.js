@@ -24,6 +24,9 @@ function App() {
             >
               <Route index element={<Element />} />
               <Route element={<Element />} path="*" />
+              {(route.paths || []).map(({ path, component: Component }, id) => (
+                <Route key={"key " + id} path={path} element={<Component />} />
+              ))}
             </Route>
           );
         })}

@@ -48,6 +48,16 @@ export default [
     Icon: ({ size, fill }) => <BsFillCpuFill size={size} fill={fill} />,
     label: "Devices",
     type: "MANAGEMENT",
+    paths: [
+      {
+        path: "new",
+        component: lazy(() => import("pages/Devices/AddDevice")),
+      },
+      {
+        path: ":id",
+        component: lazy(() => import("pages/Devices/Detail")),
+      },
+    ],
   },
   // {
   //   path: "/models",

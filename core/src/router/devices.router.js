@@ -1,5 +1,16 @@
 module.exports = function () {
   const Router = require("express").Router();
+  Router.get("/", async (req, res) => {
+    try {
+      const { id } = req.query;
+      const { Devices } = require("../database");
+      const result = await Devices.get(id);
+      res.send(result);
+    } catch (err) {
+      console.error(err);
+      res.sendStatus(400);
+    }
+  });
   Router.get("/count", async (req, res) => {
     const { Devices } = require("../database");
     try {

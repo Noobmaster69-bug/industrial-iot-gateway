@@ -107,7 +107,17 @@ class Devices {
       throw err;
     }
   }
-
+  async get(id) {
+    const { Devices } = this.sequelize.models;
+    try {
+      const queryResult = this.#queryParser(
+        (await Devices.scope("basic").findByPk(id)).toJSON()
+      );
+      return queryResult;
+    } catch (err) {
+      throw err;
+    }
+  }
   /**
    *
    * @param {number} id
@@ -167,12 +177,14 @@ class Devices {
         name: upProtocol.name,
         id: upProtocol.id,
         ServiceId: upProtocol.ServiceId,
+        Service: { name: upProtocol.Service.name },
         ...upProtocolProps,
       },
       downProtocol: {
         name: downProtocol.name,
         id: downProtocol.id,
-        ServiceId: downProtocol.ServiceId,
+        ServiceId: upProtocol.ServiceId,
+        Service: { name: downProtocol.Service.name },
         ...downProtocolProps,
       },
       channels: channels.map((channel) => {

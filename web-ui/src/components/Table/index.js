@@ -3,6 +3,7 @@ import { AiOutlineSearch, AiOutlinePlus, AiOutlineEdit } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
 import style from "./index.module.scss";
 import ReactTooltip from "react-tooltip";
+import clsx from "clsx";
 /**
  * @typedef {Array.<{id: string, label: string, numberic: boolean, isSort: boolean, className: string}>} head
  */
@@ -25,6 +26,9 @@ export default function Table(props) {
     onAdd = () => {},
     onDeleteRow = () => {},
     onEditRow = () => {},
+    addBox = true,
+    removeBox = true,
+    editBox = true,
   } = props;
   const [rows, setRows] = useState(data);
   const [sortMethod, setSortMethod] = useState({ id: null, state: null });
@@ -121,7 +125,11 @@ export default function Table(props) {
         <thead className={style.header}>
           <tr>
             <td
-              colSpan={head.length + (checkbox & 1)}
+              colSpan={
+                head.length +
+                (checkbox & 1) +
+                ((editBox || removeBox) && (!removeBox || !addBox) && 1)
+              }
               className={style["search-cell"]}
             >
               <div className={style["search-bar"]}>
@@ -144,11 +152,17 @@ export default function Table(props) {
               data-effect="solid"
               data-place="left"
               data-for="delete all"
+              style={{
+                display:
+                  ((removeBox || editBox) &&
+                    (!editBox || !addBox || removeBox)) ||
+                  "none",
+              }}
             >
               <button className={style["delete-button"]}>
                 <BsTrash size={25} />
+                <ReactTooltip id="delete all" />
               </button>
-              <ReactTooltip id="delete all" />
             </td>
             <td
               className={style["add-cell"]}
@@ -156,9 +170,15 @@ export default function Table(props) {
               data-effect="solid"
               data-place="bottom"
               data-for="add"
+              style={{
+                display: addBox || "none",
+              }}
             >
               <button
-                className={style["add-button"]}
+                className={clsx(
+                  style["add-button"],
+                  addBox || style["add-button-inactive"]
+                )}
                 onClick={(e) => {
                   e.preventDefault();
                   onAdd();
@@ -181,13 +201,36 @@ export default function Table(props) {
                 />
               </td>
             )}
-            {head.map((e) => (
-              <td key={"head" + e.id} onClick={() => onSort(e)}>
+            {head.map((e, id) => (
+              <td
+                key={"head" + e.id}
+                onClick={() => onSort(e)}
+                colSpan={
+                  1 +
+                  (id === head.length - 1 &&
+                    (!editBox || !removeBox) &&
+                    (editBox || removeBox || addBox) &&
+                    1)
+                }
+              >
                 {e.label}
               </td>
             ))}
-            <td />
-            <td />
+            <td
+              style={{
+                display:
+                  ((editBox || removeBox) &&
+                    (editBox || !addBox) &&
+                    (!editBox || removeBox)) ||
+                  "none",
+              }}
+            />
+            <td
+              style={{
+                display:
+                  ((editBox || addBox) && (editBox || removeBox)) || "none",
+              }}
+            />
           </tr>
         </thead>
         <tbody>
@@ -217,11 +260,18 @@ export default function Table(props) {
                     </td>
                   )}
                   {[
-                    ...head.map((headData) => {
+                    ...head.map((headData, id) => {
                       return (
                         <td
                           key={headData.id + "cell"}
                           style={row[headData.id].style || {}}
+                          colSpan={
+                            1 +
+                            (id === head.length - 1 &&
+                              (!editBox || !removeBox) &&
+                              (editBox || removeBox || addBox) &&
+                              1)
+                          }
                         >
                           {row[headData.id].value}
                         </td>
@@ -230,7 +280,10 @@ export default function Table(props) {
 
                     <td
                       key={head.length + "cell"}
-                      className={style["action-cell"]}
+                      className={clsx(
+                        style["action-cell"],
+                        removeBox || style["action-cell-hidden"]
+                      )}
                       data-tip="Delete device"
                       data-effect="solid"
                       data-place="left"
@@ -244,12 +297,15 @@ export default function Table(props) {
                         }}
                       >
                         <BsTrash size={20} />
+                        <ReactTooltip id="delete" />
                       </button>
-                      <ReactTooltip id="delete" />
                     </td>,
                     <td
                       key={head.length + 1 + "cell"}
-                      className={style["action-cell"]}
+                      className={clsx(
+                        style["action-cell"],
+                        editBox || style["action-cell-hidden"]
+                      )}
                       data-tip="Edit device"
                       data-effect="solid"
                       data-place="left"
@@ -263,8 +319,8 @@ export default function Table(props) {
                         }}
                       >
                         <AiOutlineEdit size={20} />
+                        <ReactTooltip id="edit" />
                       </button>
-                      <ReactTooltip id="edit" />
                     </td>,
                   ]}
                 </tr>

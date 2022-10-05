@@ -23,7 +23,7 @@ export function useDevices() {
     "devices",
     async () => {
       const data = await axios
-        .get("/devices/model")
+        .get("/devices/all")
         .then(({ data }) => data)
         .catch((err) => console.log(JSON.stringify(err)));
       return data;
