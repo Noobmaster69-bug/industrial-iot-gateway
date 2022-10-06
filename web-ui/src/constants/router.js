@@ -1,11 +1,7 @@
 import Home from "pages/Home";
 import Login from "pages/Login";
 import { lazy } from "react";
-import {
-  AiFillHome,
-  AiOutlineApartment,
-  AiTwotoneReconciliation,
-} from "react-icons/ai";
+import { AiFillHome } from "react-icons/ai";
 import { BsFillCpuFill } from "react-icons/bs";
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [

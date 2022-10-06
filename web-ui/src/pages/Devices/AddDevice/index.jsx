@@ -256,6 +256,7 @@ export default function AddBox() {
           const index = channels.findIndex((channel) =>
             _.isEqual(preData, channel)
           );
+          // eslint-disable-next-line no-empty-pattern
           const tempChannels = [...channels].filter(({}, i) => index !== i);
           if (validateChannel(data, tempChannels)) {
             channels[index] = data;

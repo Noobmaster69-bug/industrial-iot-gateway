@@ -1,7 +1,6 @@
 import Axios from "axios";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Toast } from "hooks";
+import { useQuery } from "react-query";
+
 const axios = Axios.create({
   baseURL: "http://localhost:33333/api",
   withCredentials: true,
@@ -10,14 +9,6 @@ const axios = Axios.create({
     "Content-Type": "application/json",
   },
 });
-function errorToast(msg) {
-  const toast = Toast("error");
-  toast(msg);
-}
-function successToast(msg) {
-  const toast = Toast("success");
-  toast(msg);
-}
 
 export function useModels() {
   return useQuery(

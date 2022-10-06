@@ -1,7 +1,6 @@
 import { useProtocol } from "hooks";
 import style from "./index.module.scss";
 import { BsArrowLeft } from "react-icons/bs";
-import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
 import BasicPanel from "./BacisDetails";
 import UpProtocol from "./UpProtocol";

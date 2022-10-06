@@ -1,6 +1,5 @@
 import Axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useLocation, useNavigate } from "react-router-dom";
 import { Toast } from "hooks";
 const axios = Axios.create({
   baseURL: "http://localhost:33333/api",
