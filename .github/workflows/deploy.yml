@@ -20,4 +20,4 @@ jobs:
           target_branch: main
           build_dir: web-ui/build
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
