@@ -29,6 +29,7 @@ jobs:
             git pull origin main
             git status
             cd web-ui
+            npm install
             npm run build
             cd ..
             cd core
