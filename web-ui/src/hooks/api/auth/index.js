@@ -55,7 +55,7 @@ export function useLogin() {
   return useMutation(
     async ({ username, password }) => {
       const data = await axios
-        .post({
+        .post("", {
           username,
           password,
         })
