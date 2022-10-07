@@ -20,10 +20,13 @@ export function SocketProvider({ children }) {
   } = useUser();
   useEffect(() => {
     const ansi = new ANSI({ fg: "#595959", colors: { 10: "#35c78b" } });
-    const socket = io("http://localhost:33333", {
-      withCredentials: true,
-      autoConnect: false,
-    });
+    const socket = io(
+      `${process.env.REACT_APP_BASE_URL || "http://localhost:33333"}`,
+      {
+        withCredentials: true,
+        autoConnect: false,
+      }
+    );
     socket.on("connect", () => {
       setIsConnected(true);
       socket.on("performance", (msg) => {
