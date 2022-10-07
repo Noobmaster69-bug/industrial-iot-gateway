@@ -1,6 +1,9 @@
 module.exports = function (app, express) {
   app.use(
-    require("cors")({ origin: "http://localhost:3000", credentials: true })
+    require("cors")({
+      origin: process.env.ORIGIN || "http://localhost:3000",
+      credentials: true,
+    })
   );
   app.use(express.json()); // for parsing application/json
   app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded

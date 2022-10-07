@@ -10,15 +10,25 @@ function errorToast(msg) {
 //   const toast = Toast("success");
 //   toast(msg);
 // }
+const axios = Axios.create({
+  baseURL: `http://${process.env.REACT_APP_BASE_URL || "localhost:33333"}/api`,
+  withCredentials: true,
+  headers: {
+    "Access-Control-Allow-Origin": "*",
+    "Content-Type": "application/json",
+  },
+});
 export function useUser() {
   const nevigate = useNavigate();
   const location = useLocation();
   return useQuery(
     "user",
     async () => {
-      const data = await Axios.get("http://localhost:33333/login", {
-        withCredentials: true,
-      }).then(({ data }) => data);
+      const data = await axios
+        .get("http://localhost:33333/login", {
+          withCredentials: true,
+        })
+        .then(({ data }) => data);
       if (data) {
         return data;
       }
@@ -45,14 +55,16 @@ export function useLogin() {
   const queryClient = useQueryClient();
   return useMutation(
     async ({ username, password }) => {
-      const data = await Axios.post(
-        "http://localhost:33333/login",
-        {
-          username,
-          password,
-        },
-        { withCredentials: true }
-      ).then(({ data }) => data);
+      const data = await axios
+        .post(
+          "http://localhost:33333/login",
+          {
+            username,
+            password,
+          },
+          { withCredentials: true }
+        )
+        .then(({ data }) => data);
       return data;
     },
     {
@@ -69,7 +81,7 @@ export function useLogin() {
 export function useLogOut() {
   return useMutation(
     async () => {
-      const data = await Axios.delete("http://localhost:33333/login", {
+      const data = await axios.delete("http://localhost:33333/login", {
         withCredentials: true,
       });
       return data;

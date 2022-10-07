@@ -1,6 +1,9 @@
 // require("./src/utilities");
 const express = require("express");
 const app = express();
+if (!process.env.DEV) {
+  require("dotenv").config({ path: "./.env.production" });
+}
 (async () => {
   await require("./src/database/").sync();
   //config middleware
@@ -14,7 +17,7 @@ const app = express();
   const io = require("socket.io")(httpServer, {
     cors: {
       methods: ["GET", "POST"],
-      origin: "http://localhost:3000",
+      origin: process.env.ORIGIN || "http://localhost:3000",
       credentials: true,
     },
   });

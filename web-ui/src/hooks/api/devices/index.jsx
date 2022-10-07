@@ -2,7 +2,7 @@ import Axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Toast } from "hooks";
 const axios = Axios.create({
-  baseURL: "http://localhost:33333/api",
+  baseURL: `http://${process.env.REACT_APP_BASE_URL || "localhost:33333"}/api`,
   withCredentials: true,
   headers: {
     "Access-Control-Allow-Origin": "*",
