@@ -15,9 +15,17 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "16.17"
-      - run: cd core && npm run setup && npm run test
-      - run: cd web-ui && npm install && npm run build
-      - run: echo ${{ secrets.KEY }} | scp -i /dev/stdin -r ./web-ui/build ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/var/www/${{ secrets.HOST }}/public
+        env:
+          REACT_APP_BASE_URL: https://94-237-2-157.sg-sin1.upcloud.host:33333
+          ORIGIN: http://94-237-2-157.sg-sin1.upcloud.host:443
+        run: cd core && npm run setup && npm run test
+        run: cd web-ui && npm install && npm run build
+      - name: Deploy Web ui
+        env: 
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          KEY: ${{ secrets.KEY }}
+        run: echo $KEY | scp -i /dev/stdin -r ./web-ui/build $USERNAME@$HOST:/var/www/$HOST/public
       - name: Deploy Core
         uses: appleboy/ssh-action@master
         with:
