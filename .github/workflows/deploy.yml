@@ -21,9 +21,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "16.17"
-        name: Build and test core
+      - name: Build and test core
         run: cd core && npm run setup && npm run test
-        name: Build web-ui
+      - name: Build web-ui
         run: cd web-ui && npm install && npm run build
       - name: Deploy Web ui
         uses: appleboy/scp-action@master
