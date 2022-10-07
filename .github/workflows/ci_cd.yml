@@ -30,6 +30,7 @@ jobs:
           key: ${{ secrets.KEY }}
           source: "./web-ui/build/*"
           target: "/var/www/${{ secrets.HOST }}/public/"
+          strip_components: 2
       - name: Deploy Core
         uses: appleboy/ssh-action@master
         with:
