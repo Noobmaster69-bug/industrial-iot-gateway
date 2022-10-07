@@ -35,7 +35,7 @@ const port = process.env.PORT || 33333;
       credentials: true,
     },
   });
-  server.listen(port);
+  server.listen(port, "0.0.0.0");
   io.use((socket, next) => {
     const cookie = require("cookie");
     const jwt = require("jsonwebtoken");
