@@ -12,16 +12,19 @@ jobs:
       HOST: ${{ secrets.HOST }}
       USERNAME: ${{ secrets.USERNAME }}
       KEY: ${{ secrets.KEY }}
-      REACT_APP_BASE_URL: https://94-237-2-157.sg-sin1.upcloud.host:33444
-      ORIGIN: http://94-237-2-157.sg-sin1.upcloud.host:443
+      REACT_APP_BASE_URL: https://${{ secrets.HOST }}:${{ secrets.CORE_PORT }}
+      ORIGIN: http://${{ secrets.HOST }}
     steps:
-      - uses: actions/checkout@v3
+      - name: Clone main
+        uses: actions/checkout@v3
       - name: CI
         uses: actions/setup-node@v3
         with:
           node-version: "16.17"
-      - run: cd core && npm run setup && npm run test
-      - run: cd web-ui && npm install && npm run build
+        name: Build and test core
+        run: cd core && npm run setup && npm run test
+        name: Build web-ui
+        run: cd web-ui && npm install && npm run build
       - name: Deploy Web ui
         uses: appleboy/scp-action@master
         with:
@@ -29,7 +32,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           source: "./web-ui/build/*"
-          target: "/var/www/${{ secrets.HOST }}/public/"
+          target: "/var/www/html"
           strip_components: 2
       - name: Deploy Core
         uses: appleboy/ssh-action@master
@@ -40,5 +43,5 @@ jobs:
           port: 22
           script: |
             service nginx reload
-            cd ~/deploy/industrial-iot-gateway
+            cd ~/industrial-iot-gateway
             git pull origin main

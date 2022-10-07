@@ -8,7 +8,7 @@
     "start": "nodemon --inspect index.js",
     "setup_armhf": "export AR=\"arm-linux-gnueabihf-ar\" && export CC=\"arm-linux-gnueabihf-gcc\" && export CXX=\"arm-linux-gnueabihf-g++\" &&export LINK=\"arm-linux-gnueabihf-g++\"&&npm install --build-from-source --target_arch=arm --omit=dev",
     "setup": "npm install --omit=dev",
-    "build": "rm -f -r ./dist && DOCKER_BUILDKIT=1 docker build --output dist . --no-cache=true && ./sshpass -p $(cat pass.config) scp -F ./ssh.config ./dist/mqtt moxa:~",
+    "build": "rm -f -r ./dist && DOCKER_BUILDKIT=1 docker build --output dist . --no-cache=true",
     "clean": "rm -f -r ./dist & rm -f -r ./node_modules & rm -f -r ./store"
   },
   "repository": {
