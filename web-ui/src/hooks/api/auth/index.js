@@ -11,7 +11,9 @@ function errorToast(msg) {
 //   toast(msg);
 // }
 const axios = Axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL || "http://localhost:33333"}/api`,
+  baseURL: `${
+    process.env.REACT_APP_BASE_URL || "http://localhost:33333"
+  }/login`,
   withCredentials: true,
   headers: {
     "Access-Control-Allow-Origin": "*",
@@ -24,11 +26,7 @@ export function useUser() {
   return useQuery(
     "user",
     async () => {
-      const data = await axios
-        .get("http://localhost:33333/login", {
-          withCredentials: true,
-        })
-        .then(({ data }) => data);
+      const data = await axios.get().then(({ data }) => data);
       if (data) {
         return data;
       }
@@ -56,14 +54,10 @@ export function useLogin() {
   return useMutation(
     async ({ username, password }) => {
       const data = await axios
-        .post(
-          "http://localhost:33333/login",
-          {
-            username,
-            password,
-          },
-          { withCredentials: true }
-        )
+        .post({
+          username,
+          password,
+        })
         .then(({ data }) => data);
       return data;
     },
@@ -81,9 +75,7 @@ export function useLogin() {
 export function useLogOut() {
   return useMutation(
     async () => {
-      const data = await axios.delete("http://localhost:33333/login", {
-        withCredentials: true,
-      });
+      const data = await axios.delete();
       return data;
     },
     {
