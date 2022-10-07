@@ -28,10 +28,5 @@ jobs:
             cd ~/deploy/industrial-iot-gateway
             git pull origin main
             git status
-            cd web-ui
-            npm install
-            npm run build
-            cd ..
             cd core
             npm run setup
-            pm2 index.js --name core

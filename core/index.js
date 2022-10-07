@@ -1,6 +1,7 @@
 // require("./src/utilities");
 const express = require("express");
 const app = express();
+const fs = require("fs");
 if (!process.env.DEV) {
   require("dotenv").config({ path: "./.env.production" });
 }
@@ -12,16 +13,30 @@ if (!process.env.DEV) {
   require("./src/router")(app, express);
 
   const port = process.env.PORT || 33333;
-  const { createServer } = require("http");
-  const httpServer = createServer(app);
-  const io = require("socket.io")(httpServer, {
+
+  let server;
+  if (!process.env.DEV) {
+    const http = require("http");
+    server = http.createServer(app);
+  } else {
+    const https = require("https");
+    server = https.createServer(
+      {
+        key: fs.readFileSync("./ssl/private.key"),
+        cert: fs.readFileSync("./ssl/certificate.crt"),
+        ca: [fs.readFileSync("./ssl/ca_bundle.crt")],
+      },
+      app
+    );
+  }
+  const io = require("socket.io")(server, {
     cors: {
       methods: ["GET", "POST"],
       origin: process.env.ORIGIN || "http://localhost:3000",
       credentials: true,
     },
   });
-  httpServer.listen(port);
+  server.listen(port);
   io.use((socket, next) => {
     const cookie = require("cookie");
     const jwt = require("jsonwebtoken");

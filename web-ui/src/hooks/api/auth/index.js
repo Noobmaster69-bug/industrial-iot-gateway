@@ -11,7 +11,7 @@ function errorToast(msg) {
 //   toast(msg);
 // }
 const axios = Axios.create({
-  baseURL: `http://${process.env.REACT_APP_BASE_URL || "localhost:33333"}/api`,
+  baseURL: `${process.env.REACT_APP_BASE_URL || "http://localhost:33333"}/api`,
   withCredentials: true,
   headers: {
     "Access-Control-Allow-Origin": "*",
