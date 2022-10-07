@@ -5,6 +5,7 @@ import Layout from "layout";
 import { useUser } from "hooks/api";
 import { SocketProvider } from "context";
 function App() {
+  console.log(process.env.REACT_APP_BASE_URL);
   const { isFetching } = useUser();
 
   if (isFetching) {
