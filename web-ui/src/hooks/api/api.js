@@ -2,7 +2,7 @@ import Axios from "axios";
 import { useQuery } from "react-query";
 
 const axios = Axios.create({
-  baseURL: "http://localhost:33333/api",
+  baseURL: `${process.env.REACT_APP_BASE_URL || "http://localhost:33333"}/api`,
   withCredentials: true,
   headers: {
     "Access-Control-Allow-Origin": "*",
@@ -27,9 +27,11 @@ export function useProtocol() {
   return useQuery(
     "protocols",
     async () => {
-      const data = await Axios.get("http://localhost:33333/api/services", {
-        withCredentials: true,
-      }).then(({ data }) => data);
+      const data = await axios
+        .get("/services/", {
+          withCredentials: true,
+        })
+        .then(({ data }) => data);
       if (data) {
         return data;
       }

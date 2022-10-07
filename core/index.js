@@ -16,9 +16,6 @@ if (!process.env.DEV) {
 
   let server;
   if (!process.env.DEV) {
-    const http = require("http");
-    server = http.createServer(app);
-  } else {
     const https = require("https");
     server = https.createServer(
       {
@@ -28,6 +25,9 @@ if (!process.env.DEV) {
       },
       app
     );
+  } else {
+    const http = require("http");
+    server = http.createServer(app);
   }
   const io = require("socket.io")(server, {
     cors: {

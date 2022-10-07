@@ -29,6 +29,6 @@ jobs:
           key: ${{ secrets.KEY }}
           port: 22
           script: |
-            cd /var/www/html
+            cd /var/www/94-237-2-157.sg-sin1.upcloud.host/public#
             git pull
             service nginx reload
