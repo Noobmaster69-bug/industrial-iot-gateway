@@ -23,7 +23,7 @@ jobs:
       - run: cd core && npm run setup && npm run test
       - run: cd web-ui && npm install && npm run build
       - name: Deploy Web ui
-        run: echo $KEY | scp -i /dev/stdin -r ./web-ui/build $USERNAME@$HOST:/var/www/$HOST/public
+        run: echo $KEY | scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /dev/stdin -r ./web-ui/build $USERNAME@$HOST:/var/www/$HOST/public
       - name: Deploy Core
         uses: appleboy/ssh-action@master
         with:
