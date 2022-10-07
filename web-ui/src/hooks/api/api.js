@@ -1,6 +1,5 @@
 import Axios from "axios";
 import { useQuery } from "react-query";
-console.log(process.env.REACT_APP_BASE_URL);
 const axios = Axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL || "http://localhost:33333"}/api`,
   withCredentials: true,

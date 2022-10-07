@@ -5,14 +5,13 @@ const fs = require("fs");
 if (!process.env.DEV) {
   require("dotenv").config({ path: "./.env.production" });
 }
+const port = process.env.PORT || 33333;
 (async () => {
   await require("./src/database/").sync();
   //config middleware
   require("./src/middleware")(app, express);
   //config route
   require("./src/router")(app, express);
-
-  const port = process.env.PORT || 33333;
 
   let server;
   if (!process.env.DEV) {
@@ -66,7 +65,7 @@ if (!process.env.DEV) {
     io.emit("__error", msg);
   });
 })()
-  .then(() => console.log("core is listening on port 33333"))
+  .then(() => console.log("core is listening on port " + port))
   .catch((err) => {
     console.error(err);
     process.exit(1);

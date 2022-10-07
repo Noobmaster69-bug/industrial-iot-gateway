@@ -12,7 +12,7 @@ jobs:
       HOST: ${{ secrets.HOST }}
       USERNAME: ${{ secrets.USERNAME }}
       KEY: ${{ secrets.KEY }}
-      REACT_APP_BASE_URL: https://94-237-2-157.sg-sin1.upcloud.host:33333
+      REACT_APP_BASE_URL: https://94-237-2-157.sg-sin1.upcloud.host:33434
       ORIGIN: http://94-237-2-157.sg-sin1.upcloud.host:443
     steps:
       - uses: actions/checkout@v3
