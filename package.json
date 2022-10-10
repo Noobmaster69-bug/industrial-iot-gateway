@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "install": "git config --local core.hooksPath .githooks"
+  }
+}

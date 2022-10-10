@@ -1,6 +1,8 @@
 FROM tranuyson/cross-compiler:debian9.13 AS cc
 COPY .. /tmp/core
 WORKDIR /tmp/core
+RUN apt install -y dos2unix
+RUN dos2unix compile.sh
 RUN npm run clean
 RUN sh compile.sh
 WORKDIR /tmp/

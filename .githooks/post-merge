@@ -1,0 +1,3 @@
+#/bin/sh
+npm install --prefix ./core/ ./core/
+npm install --prefix ./web-ui/ ./web-ui/

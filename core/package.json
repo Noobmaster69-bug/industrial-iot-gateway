@@ -5,7 +5,7 @@
   "main": "index.js",
   "bin": "./index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 0",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "setup": "npm install --omnit-dev",
     "setup_armhf": "export AR=\"arm-linux-gnueabihf-ar\" && export CC=\"arm-linux-gnueabihf-gcc\" && export CXX=\"arm-linux-gnueabihf-g++\" &&export LINK=\"arm-linux-gnueabihf-g++\"&&npm install --build-from-source --target_arch=arm --omit=dev",
     "start": "DEV=true nodemon index.js",
@@ -37,8 +37,10 @@
     "script": "*.js",
     "assets": [
       "node_modules/sqlite3/lib/binding/**/*.node",
+      "node_modules/bcrypt/lib/binding/**/*.node",
       "./core.json",
-      "./config.json"
+      "./config.json",
+      "./.env.production"
     ],
     "targets": [
       "node16-linux-armv7"

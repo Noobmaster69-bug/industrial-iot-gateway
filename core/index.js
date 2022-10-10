@@ -1,70 +1,28 @@
 const express = require("express");
 const app = express();
-const fs = require("fs");
-if (!process.env.DEV) {
-  require("dotenv").config({ path: "./.env.production" });
-}
-const port = process.env.PORT || 33333;
 (async () => {
-  await require("./src/database/").sync();
-  //config middleware
+  const config = await require("./src/database/").sync();
+  const { http_port, https_port, ssl } = config.toJSON();
   require("./src/middleware")(app, express);
-  //config route
   require("./src/router")(app, express);
 
-  let server;
-  if (!process.env.DEV) {
-    const https = require("https");
-    server = https.createServer(
-      {
-        key: fs.readFileSync("./ssl/private.key"),
-        cert: fs.readFileSync("./ssl/certificate.crt"),
-        ca: [fs.readFileSync("./ssl/ca_bundle.crt")],
-      },
-      app
-    );
-  } else {
-    const http = require("http");
-    server = http.createServer(app);
+  if (ssl) {
+    const https_server = require("https").createServer(config.getSSL(), app);
+    require("./src/io")(https_server);
+    https_server.listen(https_port);
   }
-  const io = require("socket.io")(server, {
-    cors: {
-      methods: ["GET", "POST"],
-      origin: process.env.ORIGIN || "http://localhost:3000",
-      credentials: true,
-    },
-  });
-  server.listen(port, "0.0.0.0");
-  io.use((socket, next) => {
-    const cookie = require("cookie");
-    const jwt = require("jsonwebtoken");
-    const { __config = {} } = global;
-    const jwtOptions = __config;
-    const { token } = cookie.parse(socket.handshake.headers.cookie);
-    if (token) {
-      const jwt_payload = jwt.verify(token, jwtOptions.secretOrKey);
-      if (jwt_payload.id) {
-        next();
-      } else {
-        throw new Error();
-      }
-    } else {
-      throw new Error();
-    }
-  });
-
-  io.on("connection", (client) => {
-    console.log("user connected");
-    require("./src/io")(client);
-  });
-  process.on("__log", (msg) => {
-    io.emit("__log", msg);
-  });
-  process.on("__error", (msg) => {
-    io.emit("__error", msg);
-  });
+  const http_server = require("http").createServer(app);
+  require("./src/io")(http_server);
+  http_server.listen(http_port);
+  return { http_port, https_port, ssl };
 })()
-  .then(() => console.log("core is listening on port " + port))
+  .then(({ ssl, http_port, https_port }) => {
+    console.log(
+      `core is listening on port ${http_port}(http)${
+        ssl ? ` and ${https_port}(https)` : ""
+      }`
+    );
+  })
   .catch((err) => {
     console.error(err);
     process.exit(1);

@@ -7,16 +7,6 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      // TemplateId: {
-      //   type: DataTypes.INTEGER,
-      // },
-      // DeviceId: {
-      //   type: DataTypes.INTEGER,
-      // },
-      // ServiceId: {
-      //   type: DataTypes.INTEGER,
-      //   allowNull: false,
-      // },
       name: {
         type: DataTypes.STRING,
       },

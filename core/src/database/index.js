@@ -1,4 +1,4 @@
-const { Sequelize, DataTypes } = require("sequelize");
+const { Sequelize, DataTypes, Model } = require("sequelize");
 const sequelize = new Sequelize({
   dialect: "sqlite",
   storage: "./db.sqlite",
@@ -23,7 +23,7 @@ module.exports.sync = async () => {
       require("./models/configure.model"),
     ];
     for (const model of models) {
-      model(sequelize, DataTypes);
+      model(sequelize, DataTypes, Model);
     }
     //add associate
     await require("./associate")(sequelize, DataTypes);
@@ -31,13 +31,12 @@ module.exports.sync = async () => {
     //loading system config
     const fs = require("fs");
     const { Configuration, Accounts } = sequelize.models;
-    const defaults = JSON.parse(
-      fs.readFileSync(__dirname + "/../../config.json", "utf8")
-    );
     const [config, justCreated] = await Configuration.findOrCreate({
       where: { id: 1 },
       defaults: {
-        ...defaults,
+        ...JSON.parse(
+          fs.readFileSync(__dirname + "/../../config.json", "utf8")
+        ),
         secretOrKey: require("crypto").randomBytes(16).toString("base64"),
       },
     });
@@ -49,10 +48,11 @@ module.exports.sync = async () => {
         role: "admin",
       },
     });
-    global.__config = config.toJSON();
+    // global.__config = config.toJSON();
     if (justCreated) {
       await module.exports.ReloadConfig(sequelize, DataTypes);
     }
+    return config;
   } catch (err) {
     console.error(err);
   }

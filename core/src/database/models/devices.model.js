@@ -13,12 +13,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
       },
-      // upProtocolId: {
-      //   type: DataTypes.INTEGER,
-      // },
-      // downProtocolId: {
-      //   type: DataTypes.INTEGER,
-      // },
       isProvision: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
