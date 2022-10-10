@@ -53,5 +53,16 @@ module.exports = function () {
       res.sendStatus(400);
     }
   });
+  Router.put("/", async (req, res) => {
+    const { body } = req;
+    try {
+      const { Devices } = require("../database");
+      await Devices.update(body);
+      res.sendStatus(200);
+    } catch (err) {
+      console.error(err);
+      res.sendStatus(400);
+    }
+  });
   return Router;
 };

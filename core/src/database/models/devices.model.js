@@ -1,6 +1,26 @@
-module.exports = (sequelize, DataTypes) => {
-  sequelize.define(
-    "Devices",
+/**
+ * @typedef {import('sequelize/types').Sequelize} sequelize
+ * @typedef {import('sequelize/types').DataTypes} DataTypes
+ * @typedef {import('sequelize/types').Model} Model
+ */
+
+/**
+ *
+ * @param {sequelize} sequelize
+ * @param {DataTypes} DataTypes
+ * @param {Model} Model
+ * @returns {import('sequelize/types').ModelCtor}
+ */
+module.exports = (sequelize, DataTypes, Model) => {
+  class Devices extends Model {
+    toJSON() {
+      const values = this.get();
+      return JSON.parse(
+        JSON.stringify(values, (k, v) => (v === null ? undefined : v))
+      );
+    }
+  }
+  Devices.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -41,6 +61,8 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
+      sequelize,
+      modelName: "Devices",
       timestamps: false,
       scopes: {
         basic() {
@@ -77,4 +99,5 @@ module.exports = (sequelize, DataTypes) => {
       },
     }
   );
+  return Devices;
 };

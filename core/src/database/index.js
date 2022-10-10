@@ -4,7 +4,7 @@ const sequelize = new Sequelize({
   storage: "./db.sqlite",
   logging: false,
   // transactionType: "IMMEDIATE",
-  // logging: (msg) => console.log(msg),
+  logging: (msg) => console.log(msg),
 });
 const resync = require("./associate/metadata");
 module.exports.sync = async () => {
