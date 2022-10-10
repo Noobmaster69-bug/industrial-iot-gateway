@@ -1,1 +1,3 @@
-require("./logger");
+exports = (__config) => {
+  require("./logger")(__config);
+};

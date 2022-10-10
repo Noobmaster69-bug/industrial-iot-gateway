@@ -1,4 +1,4 @@
-module.exports = async (server) => {
+module.exports = async (server, secretOrKey) => {
   const io = require("socket.io")(server, {
     cors: {
       methods: ["GET", "POST"],
@@ -9,8 +9,7 @@ module.exports = async (server) => {
   io.use((socket, next) => {
     const cookie = require("cookie");
     const jwt = require("jsonwebtoken");
-    const { __config = {} } = global;
-    const jwtOptions = __config;
+    const jwtOptions = { secretOrKey };
     const { token } = cookie.parse(socket.handshake.headers.cookie);
     if (token) {
       const jwt_payload = jwt.verify(token, jwtOptions.secretOrKey);

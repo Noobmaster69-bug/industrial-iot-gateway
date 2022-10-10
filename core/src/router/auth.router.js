@@ -1,4 +1,4 @@
-module.exports = () => {
+module.exports = (secretOrKey) => {
   const { Accounts } = require("../database");
 
   const jwt = require("jsonwebtoken");
@@ -7,8 +7,7 @@ module.exports = () => {
 
   Router.post("/", async (req, res) => {
     const { username, password } = req.body;
-    const { __config = {} } = global;
-    const jwtOptions = __config;
+    const jwtOptions = { secretOrKey };
     Accounts.validator({ userName: username, password })
       .then((user) => {
         const { id, role } = user;
@@ -22,8 +21,7 @@ module.exports = () => {
       .catch((err) => res.status(401).send(err.message));
   });
   Router.get("/", async (req, res) => {
-    const { __config = {} } = global;
-    const jwtOptions = __config;
+    const jwtOptions = { secretOrKey };
     try {
       if (req?.cookies?.token) {
         const jwt_payload = jwt.verify(
