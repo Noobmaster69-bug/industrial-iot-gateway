@@ -26,6 +26,16 @@ module.exports = (sequelize, DataTypes) => {
       precision: {
         type: DataTypes.REAL,
       },
+      DeviceId: {
+        type: DataTypes.INTEGER,
+      },
+      TemplateId: {
+        type: DataTypes.INTEGER,
+      },
+      ServiceId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
     },
     {
       timestamps: false,
@@ -36,6 +46,10 @@ module.exports = (sequelize, DataTypes) => {
           }
         },
       },
+      indexes: [
+        { unique: true, fields: ["name", "DeviceId"] },
+        { unique: true, fields: ["name", "TemplateId"] },
+      ],
     }
   );
 };
