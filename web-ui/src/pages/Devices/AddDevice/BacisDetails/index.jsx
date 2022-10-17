@@ -1,5 +1,17 @@
 import style from "./index.module.scss";
-export default function BasicPanel() {
+export default function BasicPanel({
+  formData = {
+    name: "",
+    manufacturer: "",
+    modelName: "",
+    type: "",
+  },
+  onChange = () => {},
+}) {
+  function handleChange(e) {
+    onChange({ ...formData, [e.target.name]: e.target.value });
+  }
+
   return (
     <div className={style["basic-panel"]}>
       <h3 className={style["panel-header"]}>Basic Details</h3>
@@ -19,6 +31,8 @@ export default function BasicPanel() {
                   name="name"
                   placeholder="Inverter 1,..."
                   required
+                  value={formData.name}
+                  onChange={handleChange}
                 />
               </td>
             </tr>
@@ -33,6 +47,8 @@ export default function BasicPanel() {
                   type="text"
                   name="manufacturer"
                   placeholder="Schneider,..."
+                  value={formData.manufacturer}
+                  onChange={handleChange}
                 />
               </td>
             </tr>
@@ -43,7 +59,13 @@ export default function BasicPanel() {
                 </label>
               </td>
               <td>
-                <input type="text" name="modelName" placeholder="SUN2000,..." />
+                <input
+                  type="text"
+                  name="modelName"
+                  placeholder="SUN2000,..."
+                  value={formData.modelName}
+                  onChange={handleChange}
+                />
               </td>
             </tr>
             <tr>
@@ -53,7 +75,13 @@ export default function BasicPanel() {
                 </label>
               </td>
               <td>
-                <input type="text" name="type" placeholder="Inverter,..." />
+                <input
+                  type="text"
+                  name="type"
+                  placeholder="Inverter,..."
+                  value={formData.type}
+                  onChange={handleChange}
+                />
               </td>
             </tr>
           </tbody>

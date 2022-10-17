@@ -105,46 +105,6 @@
       background-color: var(--top-bars-background);
       display: flex;
       flex-direction: row;
-
-      .imgContainer {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-        width: 100%;
-        cursor: pointer;
-        img {
-          background-color: var(--bars-color);
-          height: 50px;
-        }
-      }
-      .title {
-        display: flex;
-        align-items: center;
-        padding-left: 30px;
-      }
-      .user-holder {
-        display: flex;
-        align-items: center;
-        user-select: none;
-        cursor: pointer;
-        height: 60%;
-        align-self: center;
-        width: max-content;
-        margin-right: 8px;
-        border-radius: 12px;
-        padding: 4px;
-        padding-left: 10px;
-        &:hover {
-          background-color: rgba(107, 114, 128, 0.04);
-        }
-        .tool-tip-label {
-          font-weight: bold;
-          display: flex;
-          align-items: center;
-          padding: 10px;
-        }
-      }
     }
   }
 }
@@ -155,66 +115,6 @@
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
   inset: 0px;
-}
-.tool-tip {
-  position: relative;
-  display: inline-block;
-  z-index: 999;
-  .tool-tip-text {
-    display: flex;
-    flex-direction: column;
-    padding: 12px;
-    visibility: hidden;
-    width: 240px;
-    background-color: var(--bars-background);
-    border-radius: 6px;
-    padding: 12px 0;
-    position: absolute;
-    z-index: 1;
-    top: 150%;
-    left: -180%;
-    margin-left: -60px;
-    height: max-content;
-    div {
-      display: flex;
-      width: 100%;
-      height: max-content;
-      padding: 10px 32px;
-      text-align: start;
-      color: var(--bars-color);
-      .tool-tip-icon {
-        fill: var(--bars-color);
-      }
-      .tool-tip-content {
-        padding-left: 8px;
-        color: var(--bars-color);
-      }
-      &:hover {
-        .tool-tip-icon {
-          fill: #fff;
-        }
-        .tool-tip-content {
-          color: #fff;
-        }
-      }
-    }
-    &:hover {
-      visibility: visible;
-    }
-  }
-  .tool-tip-text::after {
-    content: "";
-    position: absolute;
-    bottom: 100%;
-    left: 75%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent transparent black transparent;
-  }
-  .tool-tip-text-active {
-    visibility: visible;
-  }
 }
 
 .outlet {
@@ -227,7 +127,6 @@
   .sideBar {
     position: initial !important;
   }
-
   .top-bar {
     .imgContainer {
       display: none !important;

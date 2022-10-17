@@ -1,3 +1,3 @@
-exports = (__config) => {
+module.exports = (__config) => {
   require("./logger")(__config);
 };

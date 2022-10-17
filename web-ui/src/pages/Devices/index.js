@@ -3,14 +3,13 @@ import { BsArrowBarUp } from "react-icons/bs";
 import { AiOutlineEllipsis } from "react-icons/ai";
 import ReactTooltip from "react-tooltip";
 
-// import Tables from "components/Tables";
 import Table from "components/Table";
 import style from "./index.module.scss";
-import { useDevices, useDeleteDevice } from "hooks/api";
+import { useAllDevices, useDeleteDevice } from "apis";
 import { ConfirmBox } from "components/ToolBox";
 import { Link, useNavigate } from "react-router-dom";
 export default function Devices() {
-  const { data: devicesData } = useDevices();
+  const { data: devicesData } = useAllDevices();
   const { mutate: deleteDevice } = useDeleteDevice();
   const nevigate = useNavigate();
   const [deleteConfirm, setDeleteConfirm] = useState(false);
@@ -58,7 +57,7 @@ export default function Devices() {
   }, []);
   const onDeleteRow = (row) => {
     const deviceName = row.name.key;
-    const id = devicesData.find((device) => (device.name = deviceName)).id;
+    const id = devicesData.find((device) => device.name === deviceName).id;
     setDeviceDeleteId(id);
     setDeleteConfirm(true);
   };
@@ -148,6 +147,10 @@ export default function Devices() {
         onDeleteRow={onDeleteRow}
         onAdd={() => {
           nevigate("new");
+        }}
+        onEditRow={(row) => {
+          const { id } = devicesData.find((data) => data.name === row.name.key);
+          nevigate(`${id}/edit`);
         }}
       />
       <ConfirmBox

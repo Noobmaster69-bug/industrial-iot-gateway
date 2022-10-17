@@ -2,7 +2,7 @@
  * @module logger require this file to your project to attach timestamp to your console.log/error and export log to file
  */
 
-exports = (__config) => {
+module.exports = (__config) => {
   const fs = require("fs");
   const chalk = require("chalk");
   //copy stdout.write function

@@ -1,4 +1,4 @@
-import { useCreateDevice, useProtocol } from "hooks";
+import { useCreateDevice, useProtocol } from "apis";
 import style from "./index.module.scss";
 import { BsArrowLeft } from "react-icons/bs";
 import clsx from "clsx";
@@ -8,20 +8,16 @@ import BasicPanel from "./BacisDetails";
 import UpProtocol from "./UpProtocol";
 import DownProtocol from "./DownProtocol";
 import { useEffect, useState } from "react";
-import Table from "components/Table";
 import _ from "lodash";
-import { Toast } from "hooks";
+import { errorToast as toast } from "utilities";
 import EditChannel from "./EditChannel";
+import Channels from "./Channels";
 export default function AddBox() {
   const { data: protocols, isLoading } = useProtocol();
   const downServices = (protocols || []).filter(
     (protocol) => protocol.type === "downService"
   );
-  const upServices = (protocols || []).filter(
-    (protocol) => protocol.type === "upService"
-  );
   const [downService, setDownService] = useState(downServices[0]);
-  const [upService, setUpService] = useState(upServices[0]);
   const [addChannel, setAddChannel] = useState(false);
   const [editChannel, setEditChannel] = useState(false);
   const [channels, setChannel] = useState([]);
@@ -31,73 +27,31 @@ export default function AddBox() {
       nevigate(-1);
     },
   });
+  const [formData, setFormData] = useState({
+    name: "",
+    manufacturer: "",
+    modelName: "",
+    type: "",
+    upProtocol: {},
+    downProtocol: {},
+    channels: [],
+  });
   const nevigate = useNavigate();
   useEffect(() => {
+    console.log(formData);
+  }, [formData]);
+  useEffect(() => {
     setDownService(downServices[0]);
-    setUpService(upServices[0]);
-  }, [downServices, protocols, upServices]);
+  }, [downServices, protocols]);
   if (isLoading) {
     return <div></div>;
   }
-  const toast = Toast("error");
   function onSubmit(event) {
     event.preventDefault();
-    const result = new FormData(event.target);
-    const { name, manufacturer, modelName, type, ...submitData } =
-      Object.fromEntries(result);
-    const protocol = Object.keys(submitData).reduce((pre, curr) => {
-      if (curr.split(">>")[0] === "downProtocol") {
-        pre.downProtocol = {
-          ...pre.downProtocol,
-          [curr.split(">>")[1]]: submitData[curr],
-        };
-      } else if (curr.split(">>")[0] === "upProtocol") {
-        pre.upProtocol = {
-          ...pre.upProtocol,
-          [curr.split(">>")[1]]: submitData[curr],
-        };
-      }
-      return pre;
-    }, {});
-    protocol.upProtocol.ServiceId = upService.id;
-    protocol.downProtocol.ServiceId = downService.id;
-    const data = { name, manufacturer, modelName, type, channels, ...protocol };
-    createDevice(data);
+    console.log(formData);
+    createDevice(formData);
   }
 
-  const head = [
-    {
-      id: "name",
-      numberic: false,
-      label: "Name",
-    },
-    {
-      id: "readWrite",
-      numberic: false,
-      label: "Read Write",
-    },
-    {
-      id: "offset",
-      numberic: false,
-      label: "Offset",
-    },
-    {
-      id: "scale",
-      numberic: false,
-      label: "Scale",
-    },
-    {
-      id: "precision",
-      numberic: false,
-      label: "Precision",
-    },
-    ...(downService?.channelsProps || []).map((props) => ({
-      id: props.key,
-      numberic: false,
-      label:
-        props.label || props.key.charAt(0).toUpperCase() + props.key.slice(1),
-    })),
-  ];
   const tableData = channels.map((channel) => {
     const channelProps = Object.keys(channel);
     const channelData = channelProps.reduce((pre, curr) => {
@@ -153,6 +107,10 @@ export default function AddBox() {
     }
     return true;
   }
+  function handleChange(newFormData) {
+    setFormData((formData) => ({ ...formData, ...newFormData }));
+  }
+
   return (
     <>
       <form onSubmit={onSubmit} className={style.container}>
@@ -174,68 +132,34 @@ export default function AddBox() {
           />
         </div>
         <div className={style.body}>
-          <BasicPanel />
-          <UpProtocol
-            upServices={upServices}
-            upService={upService}
-            setUpService={setUpService}
+          <BasicPanel formData={formData} onChange={handleChange} />
+          <UpProtocol formData={formData} onChange={handleChange} />
+          <DownProtocol formData={formData} onChange={handleChange} />
+          <Channels
+            formData={formData}
+            onChange={handleChange}
+            onAdd={() => {
+              setAddChannel(true);
+            }}
+            onDeleteRow={(row) => {
+              const index = tableData.findIndex((channel) =>
+                _.isEqual(row, channel)
+              );
+              setChannel(channels.filter((channel, id) => id !== index));
+            }}
+            onEditRow={(row) => {
+              setCurrentEditChannel(row);
+              setEditChannel(true);
+            }}
           />
-          <DownProtocol
-            downService={downService}
-            downServices={downServices}
-            setDownService={setDownService}
-          />
-          <div className={style["channel-panel"]}>
-            <div className={style["panel-header"]}>
-              <h3>Channel Panel</h3>
-              <select
-                onChange={(event) => {
-                  const value = event.target.value;
-                  setDownService(value);
-                }}
-                value={downService}
-              >
-                {downServices.map((protocol, index) => {
-                  return (
-                    <option value={protocol} key={index + "protocol"}>
-                      {protocol.name}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-            <hr />
-            <div className={style["table-container"]}>
-              <Table
-                head={head}
-                className={style.table}
-                data={tableData}
-                checkbox
-                // onDeleteRow={onDeleteRow}
-                onAdd={() => {
-                  setAddChannel(true);
-                }}
-                onDeleteRow={(row) => {
-                  const index = tableData.findIndex((channel) =>
-                    _.isEqual(row, channel)
-                  );
-                  setChannel(channels.filter((channel, id) => id !== index));
-                }}
-                onEditRow={(row) => {
-                  setCurrentEditChannel(row);
-                  setEditChannel(true);
-                }}
-              />
-            </div>
-          </div>
         </div>
       </form>
       <AddChanel
-        downService={downService}
+        formData={formData}
+        onChange={handleChange}
         open={addChannel}
         onConfirm={(data) => {
-          if (validateChannel(data, channels)) {
-            setChannel([...channels, data]);
+          if (!data) {
             setAddChannel(false);
           }
         }}
@@ -244,8 +168,10 @@ export default function AddBox() {
         }}
       />
       <EditChannel
-        downService={downService}
+        formData={formData}
+        onChange={formData}
         open={editChannel}
+        channel={currentEditChannel}
         onConfirm={(data) => {
           const preData = Object.keys(currentEditChannel).reduce(
             (pre, curr) => {
@@ -267,7 +193,6 @@ export default function AddBox() {
         onCancel={() => {
           setEditChannel(false);
         }}
-        channel={currentEditChannel}
       />
     </>
   );

@@ -1,4 +1,4 @@
-import { useProtocol } from "hooks";
+import { useProtocol, useDevices } from "apis";
 import style from "./index.module.scss";
 import { BsArrowLeft } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
@@ -6,18 +6,16 @@ import BasicPanel from "./BacisDetails";
 import UpProtocol from "./UpProtocol";
 import DownProtocol from "./DownProtocol";
 import Table from "components/Table";
-import { useDevices } from "hooks";
 import { useParams } from "react-router-dom";
 export default function Detail() {
   // const {dat};
   const { id } = useParams();
-  const { data: devices, isLoading: loading1 } = useDevices();
+  const { data: thisDevice, isLoading: loading1 } = useDevices(id);
   const { data: protocols, isLoading: loading2 } = useProtocol();
   const nevigate = useNavigate();
   if (loading1 && loading2) {
     return <div></div>;
   }
-  const thisDevice = (devices || []).find((device) => device.id === Number(id));
   const thisDownProtocol = (protocols || []).find(
     (protocol) => protocol.id === thisDevice?.downProtocol?.ServiceId
   );

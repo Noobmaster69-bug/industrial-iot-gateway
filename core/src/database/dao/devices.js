@@ -237,10 +237,11 @@ class Devices {
   async get(id) {
     const { Devices } = this.sequelize.models;
     try {
-      const queryResult = this.#queryParser(
-        (await Devices.scope("basic").findByPk(id)).toJSON()
-      );
-      return queryResult;
+      const queryResult = await Devices.scope("basic").findByPk(id);
+      if (queryResult) {
+        return this.#queryParser(queryResult.toJSON());
+      }
+      throw Error(404);
     } catch (err) {
       throw err;
     }

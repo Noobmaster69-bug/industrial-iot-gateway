@@ -1,13 +1,18 @@
 import style from "./index.module.scss";
 import DialogBox from "components/ToolBox/DialogBox";
 import { useRef } from "react";
-
+import { useProtocol } from "apis";
+import { Toast } from "utilities";
 export default function AddChannel({
-  downService,
+  formData,
+  onChange,
   open = false,
   onConfirm = function () {},
   onCancel = () => {},
 }) {
+  const downService = (useProtocol().data || []).find(
+    (service) => service.id === formData.downProtocol.ServiceId
+  );
   const form = useRef();
   const input = useRef();
   function DataTypetoInputType(type) {
@@ -17,6 +22,49 @@ export default function AddChannel({
       default:
         return "text";
     }
+  }
+  const toast = Toast("error");
+  function validateChannel(data, channels) {
+    const uniqueSimple = downService?.channelsProps.filter(
+      (props) => props.unique === true
+    );
+    for (const props of uniqueSimple) {
+      if (channels.some((channel) => channel[props.key] === data[props.key])) {
+        toast(`${props.label || props.key} must be unique`);
+        return false;
+      }
+    }
+    const uniqueComplexes = downService?.channelsProps
+      .filter((props) => (props.unique || true) !== true)
+      .sort((a, b) => ("" + a.key).localeCompare(b.key));
+    const uniqueGroups = uniqueComplexes.reduce((pre, curr, index, array) => {
+      if (curr.unique === array[index - 1]?.unique) {
+        pre[pre.length - 1].push(curr);
+        return pre;
+      }
+      pre.push([curr]);
+      return pre;
+    }, []);
+    for (const group of uniqueGroups) {
+      if (
+        channels.some((channel) =>
+          group.every((member) => data[member.key] === channel[member.key])
+        )
+      ) {
+        toast(
+          `${group.reduce(
+            (pre, curr) => pre + ", " + (curr.label || curr.key),
+            ""
+          )} must be unique`
+        );
+        return false;
+      }
+    }
+    if (channels.some((channel) => channel.name === data.name)) {
+      toast("Name must be unique");
+      return false;
+    }
+    return true;
   }
   return (
     <DialogBox
@@ -33,9 +81,12 @@ export default function AddChannel({
         ref={form}
         onSubmit={(e) => {
           e.preventDefault();
-          const formData = new FormData(form.current);
-          const data = Object.fromEntries(formData);
-          onConfirm(data);
+          const data = Object.fromEntries(new FormData(form.current));
+          if (validateChannel(data, formData.channels)) {
+            onChange({ channels: [...formData.channels, data] });
+            onConfirm(false);
+          }
+          onConfirm(true);
         }}
         id="addChannel"
       >

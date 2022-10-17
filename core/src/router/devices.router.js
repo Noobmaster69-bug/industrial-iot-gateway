@@ -5,10 +5,15 @@ module.exports = function () {
       const { id } = req.query;
       const { Devices } = require("../database");
       const result = await Devices.get(id);
-      res.send(result);
+      return res.send(result);
     } catch (err) {
-      console.error(err);
-      res.sendStatus(400);
+      switch (err.message) {
+        case "404":
+          return res.sendStatus(404);
+        default:
+          console.error(err);
+          return res.sendStatus(400);
+      }
     }
   });
   Router.get("/count", async (req, res) => {

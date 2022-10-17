@@ -1,13 +1,13 @@
-import { useDevices } from "hooks";
+import { useDevices } from "apis";
 import { useParams } from "react-router-dom";
 import style from "./index.module.scss";
 export default function BasicPanel() {
   const { id } = useParams();
-  const { data: devices, isLoading } = useDevices();
+  const { data: thisDevice, isLoading } = useDevices(id);
   if (isLoading) {
     return <div></div>;
   }
-  const thisDevice = devices.find((device) => device.id === Number(id));
+  // const thisDevice = devices.find((device) => device.id === Number(id));
 
   return (
     <div className={style["basic-panel"]}>

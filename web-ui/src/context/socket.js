@@ -1,8 +1,8 @@
-import { createContext } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 import io from "socket.io-client";
-import { useState, useEffect, useContext } from "react";
 import ANSI from "ansi-to-html";
-import { useUser } from "hooks";
+import { useUser } from "apis";
+
 const Socket = createContext();
 export const useSocket = () => useContext(Socket);
 export function SocketProvider({ children }) {
@@ -15,9 +15,7 @@ export function SocketProvider({ children }) {
   });
   const [logs, setLogs] = useState([]);
   const [isConnected, setIsConnected] = useState(false);
-  const {
-    data: { isLogIn },
-  } = useUser();
+  const { data: user = { isLogIn: false } } = useUser();
   useEffect(() => {
     const ansi = new ANSI({ fg: "#595959", colors: { 10: "#35c78b" } });
     const socket = io(
@@ -74,15 +72,19 @@ export function SocketProvider({ children }) {
         });
       });
     });
-    if (isLogIn) {
+    socket.on("disconnect", () => {
+      setIsConnected(false);
+    });
+    if (user.isLogIn) {
       socket.connect();
     } else {
       socket.disconnect();
     }
     return () => {
       socket.removeAllListeners();
+      socket.disconnect();
     };
-  }, [isLogIn]);
+  }, [user.isLogIn]);
   return (
     <Socket.Provider
       value={{ performance, logs, isConnected }}

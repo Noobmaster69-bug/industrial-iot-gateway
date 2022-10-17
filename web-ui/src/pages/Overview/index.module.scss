@@ -1,0 +1,120 @@
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  .row1 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    padding-bottom: 8px;
+    flex: 1;
+    min-height: 0;
+    .col1 {
+      height: 100%;
+      width: 100%;
+      padding-right: 8px;
+      flex: 2;
+    }
+    .col2 {
+      padding-left: 8px;
+      height: 100%;
+      width: 100%;
+      flex: 1;
+    }
+  }
+  .row2 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    padding-top: 8px;
+    flex: 1;
+    min-height: 0;
+    .col1,
+    .col2,
+    .col3 {
+      width: 100%;
+      height: 100%;
+    }
+    .col1 {
+      padding-right: 8px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-width: 0;
+      .row1 {
+        height: 100%;
+        padding-bottom: 8px;
+      }
+      .row2 {
+        padding-top: 8px;
+        height: 100%;
+      }
+    }
+    .col2 {
+      padding-left: 8px;
+      padding-right: 8px;
+      flex: 1;
+      min-width: 0;
+    }
+    .col3 {
+      padding-left: 8px;
+      flex: 1;
+      min-width: 0;
+    }
+  }
+}
+@media (max-width: 1024px) {
+  .container {
+    height: max-content;
+    height: 350%;
+    overflow: auto;
+    .row1 {
+      flex-direction: column;
+      height: calc(100% * 4 / 7) !important;
+      .col1,
+      .col2 {
+        min-width: 0 !important;
+      }
+      .col1 {
+        flex: 3 !important;
+        padding-right: 0 !important;
+        padding-bottom: 8px;
+        height: calc(75%);
+      }
+      .col2 {
+        flex: 1 !important;
+        height: calc(75%);
+        padding-left: 0 !important;
+        padding-top: 8px;
+      }
+    }
+    .row2 {
+      flex-direction: column;
+      height: calc(100% * 3 / 7) !important;
+      .col1,
+      .col2,
+      .col3 {
+        flex: 1 !important;
+        min-width: 0 !important;
+        height: 100% !important;
+      }
+      .col1 {
+        padding-right: 0 !important;
+        padding-bottom: 8px;
+      }
+      .col2 {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        padding-top: 8px;
+        padding-bottom: 8px;
+      }
+      .col3 {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        padding-top: 8px;
+      }
+    }
+  }
+}

@@ -264,7 +264,7 @@ export default function Table(props) {
                       return (
                         <td
                           key={headData.id + "cell"}
-                          style={row[headData.id].style || {}}
+                          style={row[headData.id]?.style || {}}
                           colSpan={
                             1 +
                             (id === head.length - 1 &&
@@ -273,7 +273,7 @@ export default function Table(props) {
                               1)
                           }
                         >
-                          {row[headData.id].value}
+                          {row[headData.id]?.value || "_"}
                         </td>
                       );
                     }),

@@ -13,12 +13,12 @@
  */
 module.exports = (sequelize, DataTypes, Model) => {
   class Devices extends Model {
-    toJSON() {
-      const values = this.get();
-      return JSON.parse(
-        JSON.stringify(values, (k, v) => (v === null ? undefined : v))
-      );
-    }
+    // toJSON() {
+    //   const values = this.get();
+    //   return JSON.parse(
+    //     JSON.stringify(values, (k, v) => (v === null ? undefined : v))
+    //   );
+    // }
   }
   Devices.init(
     {

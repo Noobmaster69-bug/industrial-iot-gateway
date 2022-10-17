@@ -1,13 +1,12 @@
 import style from "./index.module.scss";
-import { useDevices } from "hooks";
+import { useDevices } from "apis";
 import { useParams } from "react-router-dom";
 export default function UpProtocol() {
   const { id } = useParams();
-  const { data: devices, isLoading } = useDevices();
+  const { data: thisDevice, isLoading } = useDevices(id);
   if (isLoading) {
     return <div></div>;
   }
-  const thisDevice = devices.find((device) => device.id === Number(id));
   return (
     <div className={style["protocol-panel"]}>
       <div className={style["panel-header"]}>
