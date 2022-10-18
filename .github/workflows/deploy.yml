@@ -35,9 +35,9 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
-          source: "./core/core.json"
+          source: "./core/config.json"
           target: "/home/ubuntu/industrial-iot-gateway/core"
-          strip_components: 1
+          strip_components: 2
 
       - name: Deploy Web ui
         uses: appleboy/scp-action@master
