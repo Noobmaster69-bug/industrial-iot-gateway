@@ -51,6 +51,15 @@ jobs:
 
       - name: Deploy Core
         uses: appleboy/ssh-action@master
+        env:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          KEY: ${{ secrets.KEY }}
+          REACT_APP_BASE_URL: https://${{ secrets.HOST }}:${{ secrets.CORE_PORT }}
+          ORIGIN: https://${{ secrets.HOST }}
+          SSL_KEY: ${{secrets.SSL_KEY}}
+          SSL_CERT: ${{secrets.SSL_CERT}}
+          SSL_CA: ${{secrets.SSL_CA}}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
