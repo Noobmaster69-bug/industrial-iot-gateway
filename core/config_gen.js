@@ -10,7 +10,17 @@ const {
   SSL_KEY,
   SSL_CA,
 } = process.env;
-
+console.log({
+  LOGGING,
+  OUT_FILE,
+  ERROR_FILE,
+  ORIGIN,
+  HTTP_PORT,
+  HTTPS_PORT,
+  SSL_CERT,
+  SSL_KEY,
+  SSL_CA,
+});
 const fs = require("fs");
 fs.writeFileSync(
   "./config.json",

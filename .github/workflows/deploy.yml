@@ -58,10 +58,6 @@ jobs:
           port: 22
           envs: ORIGIN,SSL_KEY,SSL_CERT,SSL_CA
           script: |
-            echo "$ORIGIN"
-            echo "$SSL_KEY"
-            echo "$SSL_CERT"
-            echo "$SSL_CA"
             sudo service nginx reload
             cd ~/industrial-iot-gateway
             git pull origin main
