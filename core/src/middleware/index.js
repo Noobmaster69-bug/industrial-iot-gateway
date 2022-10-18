@@ -1,7 +1,8 @@
-module.exports = function (app, express, secretOrKey) {
+module.exports = function (app, express, secretOrKey, origin) {
+  console.log(origin);
   app.use(
     require("cors")({
-      origin: process.env.ORIGIN || "http://localhost:3000",
+      origin: origin || "http://localhost:3000",
       credentials: true,
     })
   );

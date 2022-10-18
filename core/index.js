@@ -3,10 +3,10 @@
   const app = express();
   // init database, load system config
   const config = await require("./src/database/").sync();
-  const { http_port, https_port, ssl, secretOrKey } = config.toJSON();
+  const { http_port, https_port, ssl, secretOrKey, origin } = config.toJSON();
 
   //config express middlewares and routers
-  require("./src/middleware")(app, express, secretOrKey);
+  require("./src/middleware")(app, express, secretOrKey, origin);
   require("./src/router")(app, secretOrKey);
 
   //config https server if ssl is allowed
