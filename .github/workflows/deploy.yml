@@ -56,9 +56,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           port: 22
-          envs: ORIGIN,SSL_KEY,SSL_CERT,SSL_CA
           script: |
             sudo service nginx reload
             cd ~/industrial-iot-gateway
             git pull origin main
-            cd core && npm run generate
