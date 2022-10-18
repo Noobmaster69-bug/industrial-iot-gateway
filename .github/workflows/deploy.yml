@@ -14,9 +14,9 @@ jobs:
       KEY: ${{ secrets.KEY }}
       REACT_APP_BASE_URL: https://${{ secrets.HOST }}:${{ secrets.CORE_PORT }}
       ORIGIN: http://${{ secrets.HOST }}
-      ssl_key: ${{secrets.ssl_key}}
-      ssl_cert: ${{secrets.ssl_cert}}
-      ssl_ca: ${{secrets.ssl_ca}}
+      ssl_key: ${{secrets.SSL_KEY}}
+      ssl_cert: ${{secrets.SSL_CERT}}
+      ssl_ca: ${{secrets.SSL_CA}}
     steps:
       - name: Clone main
         uses: actions/checkout@v3

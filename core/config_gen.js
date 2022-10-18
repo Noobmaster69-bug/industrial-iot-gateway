@@ -6,9 +6,9 @@ const {
   origin,
   http_port,
   https_port,
-  cert,
-  key,
-  ca,
+  ssl_cert,
+  ssl_key,
+  ssl_ca,
 } = process.env;
 
 const fs = require("fs");
@@ -21,8 +21,8 @@ fs.writeFileSync(
     origin,
     http_port,
     https_port,
-    cert,
-    key,
-    ca: [ca],
+    cert: ssl_cert,
+    key: ssl_key,
+    ca: [ssl_ca],
   })
 );
