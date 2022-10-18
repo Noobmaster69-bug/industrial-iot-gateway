@@ -27,7 +27,7 @@ jobs:
       - name: Build and test core
         run: cd core && npm run setup && npm run test && npm run generate
       - name: Build web-ui
-        run: cd web-ui && npm install && npm run build
+        run: cd web-ui && npm install && CI=false npm run build
 
       - name: Copy config
         uses: appleboy/scp-action@master
