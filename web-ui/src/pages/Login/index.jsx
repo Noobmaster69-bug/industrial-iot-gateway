@@ -29,6 +29,7 @@ export default function Login() {
                 name="username"
                 autoComplete="off"
                 required={true}
+                defaultValue="admin"
               />
               <div className={style["form-label"]}>Password</div>
               <Input
@@ -37,6 +38,7 @@ export default function Login() {
                 name="password"
                 autoComplete="off"
                 required={true}
+                defaultValue="admin"
               />
               <div>
                 <input type="submit" className={style.submit} value="Log In" />
