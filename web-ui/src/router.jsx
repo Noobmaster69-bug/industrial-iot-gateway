@@ -5,6 +5,8 @@ import {
   Navigate,
   Outlet,
   RouterProvider,
+  useLocation,
+  useNavigate,
   useRouteError,
 } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -14,7 +16,8 @@ import { AiFillHome } from "react-icons/ai";
 import { BsFillCpuFill } from "react-icons/bs";
 import { SocketProvider } from "context";
 import Devices from "pages/Devices";
-import { lazy } from "react";
+import { lazy, useEffect } from "react";
+import { useUser } from "apis";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -90,10 +93,10 @@ export const routes = [
         path: ":id",
         element: <DeviceDetail />,
       },
-      {
-        path: ":id/edit",
-        element: <EditDevice />,
-      },
+      // {
+      //   path: ":id/edit",
+      //   element: <EditDevice />,
+      // },
     ],
     errorElement: <ErrorPage />,
   },
@@ -102,15 +105,40 @@ export const routes = [
 export const RoutesWrapper = [
   {
     path: "/",
-    element: (
-      <SocketProvider>
-        <Outlet />
-      </SocketProvider>
-    ),
+    element: <AuthWrapper />,
     children: routes,
     errorElement: <ErrorPage />,
   },
 ];
+
+function AuthWrapper({ children }) {
+  const { data, isLoading } = useUser();
+  const location = useLocation();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isLoading) {
+      if (data?.isLogIn) {
+        if (location.pathname === "/login") {
+          navigate("/overview");
+        }
+      } else {
+        if (location.pathname !== "/login") {
+          window.location.href = "/login";
+        }
+      }
+    }
+  }, [data?.isLogIn, location, navigate]);
+  if (isLoading) {
+    return <div></div>;
+  } else {
+    return (
+      <SocketProvider>
+        <Outlet />
+      </SocketProvider>
+    );
+  }
+}
+
 export function ErrorPage() {
   const error = useRouteError();
   return (

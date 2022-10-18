@@ -14,6 +14,9 @@ jobs:
       KEY: ${{ secrets.KEY }}
       REACT_APP_BASE_URL: https://${{ secrets.HOST }}:${{ secrets.CORE_PORT }}
       ORIGIN: http://${{ secrets.HOST }}
+      ssl_key: ${{secrets.ssl_key}}
+      ssl_cert: ${{secrets.ssl_cert}}
+      ssl_ca: ${{secrets.ssl_ca}}
     steps:
       - name: Clone main
         uses: actions/checkout@v3
@@ -22,9 +25,20 @@ jobs:
         with:
           node-version: "16.17"
       - name: Build and test core
-        run: cd core && npm run setup && npm run test
+        run: cd core && npm run setup && npm run test && npm run generate
       - name: Build web-ui
         run: cd web-ui && npm install && npm run build
+
+      - name: Copy config
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          source: "./core/core.json"
+          target: "~/industrial-iot-gateway/core"
+          strip_components: 1
+
       - name: Deploy Web ui
         uses: appleboy/scp-action@master
         with:
@@ -34,6 +48,7 @@ jobs:
           source: "./web-ui/build/*"
           target: "/var/www/html"
           strip_components: 2
+
       - name: Deploy Core
         uses: appleboy/ssh-action@master
         with:

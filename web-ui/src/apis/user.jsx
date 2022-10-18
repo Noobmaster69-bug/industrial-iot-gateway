@@ -1,5 +1,4 @@
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
-import { useLocation, useNavigate, redirect } from "react-router-dom";
 import { errorToast } from "utilities";
 import Axios from "axios";
 const axios = Axios.create({
@@ -14,8 +13,6 @@ const axios = Axios.create({
 });
 export function useUser() {
   const queryClient = useQueryClient();
-  const location = useLocation();
-  const navigate = useNavigate();
   return useQuery(
     ["user"],
     async () => {
@@ -28,17 +25,6 @@ export function useUser() {
     {
       staleTime: 2 * 3600 * 1000,
       retry: false,
-      onSuccess: (data) => {
-        if (data.isLogIn) {
-          if (location.pathname === "/login") {
-            navigate("/overview");
-          }
-        } else {
-          if (location.pathname !== "/login") {
-            window.location.href = "/login";
-          }
-        }
-      },
       onError: () => {
         queryClient.setQueryData(["user"], { isLogIn: false });
       },

@@ -26,6 +26,7 @@ export default function DownProtocol({ formData = {}, onChange = () => {} }) {
     onChange({
       downProtocol: { ...formData.downProtocol, ServiceId: downServices[0].id },
     });
+    // eslint-disable-next-line
   }, []);
   return (
     <div className={style["protocol-panel"]}>
@@ -73,7 +74,7 @@ export default function DownProtocol({ formData = {}, onChange = () => {} }) {
             </tr>
             {(
               downServices.find(
-                (service) => service.id == formData.downProtocol.ServiceId
+                (service) => service.id === formData.downProtocol.ServiceId
               )?.protocolProps || []
             ).map((props, key) => {
               return (

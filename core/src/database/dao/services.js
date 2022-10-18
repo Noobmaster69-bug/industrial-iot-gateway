@@ -76,5 +76,24 @@ module.exports = (sequelize) => {
 
       return result;
     },
+    async getById(id) {
+      const { Services, Metadata } = sequelize.models;
+      let result = await Services.findByPk(id, {
+        include: {
+          model: Metadata,
+        },
+      });
+      if (result) {
+        result = result.toJSON();
+        result.channelsProps = result.Metadata.filter(
+          (datum) => datum.kind === "channel"
+        );
+        result.protocolProps = result.Metadata.filter(
+          (datum) => datum.kind === "protocol"
+        );
+        delete result.Metadata;
+      }
+      return result;
+    },
   };
 };

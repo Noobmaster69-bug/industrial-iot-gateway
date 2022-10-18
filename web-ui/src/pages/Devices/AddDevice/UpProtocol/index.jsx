@@ -23,6 +23,7 @@ export default function UpProtocol({ formData = {}, onChange = () => {} }) {
     onChange({
       upProtocol: { ...formData.upProtocol, ServiceId: upServices[0].id },
     });
+    // eslint-disable-next-line
   }, []);
   return (
     <div className={style["protocol-panel"]}>

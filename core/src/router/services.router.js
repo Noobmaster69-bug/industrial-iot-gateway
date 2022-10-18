@@ -10,10 +10,22 @@ module.exports = function () {
       res.sendStatus(400);
     }
   });
-  Router.get("/", async (req, res) => {
+
+  Router.get("/all", async (req, res) => {
     const { Services } = require("../database");
     try {
       const result = await Services.getAll();
+      res.send(result);
+    } catch (err) {
+      console.error(err);
+      res.sendStatus(400);
+    }
+  });
+  Router.get("/", async (req, res) => {
+    const { id } = req.query;
+    const { Services } = require("../database");
+    try {
+      const result = await Services.getById(id);
       res.send(result);
     } catch (err) {
       console.error(err);

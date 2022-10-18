@@ -1,18 +1,11 @@
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { Suspense, useState } from "react";
 import style from "./index.module.scss";
 
-import { useLogOut, useUser } from "apis";
-import { routes } from "router";
 import SideBar from "./SideBar";
 import TopBar from "./TopBar";
 
-export default function SideBarLayout({
-  title,
-  Icon = () => <div />,
-  label,
-  type,
-}) {
+export default function SideBarLayout({ title, Icon = () => <div /> }) {
   const [sideBar, setSiteBar] = useState(false);
   const [userMenu, setUserMenu] = useState(false);
 

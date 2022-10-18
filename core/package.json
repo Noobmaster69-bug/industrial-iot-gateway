@@ -10,7 +10,8 @@
     "setup_armhf": "export AR=\"arm-linux-gnueabihf-ar\" && export CC=\"arm-linux-gnueabihf-gcc\" && export CXX=\"arm-linux-gnueabihf-g++\" &&export LINK=\"arm-linux-gnueabihf-g++\"&&npm install --build-from-source --target_arch=arm --omit=dev",
     "start": "DEV=true nodemon index.js",
     "build": "rm -f -r ./dist && DOCKER_BUILDKIT=1 docker build --output dist . --no-cache=true ",
-    "clean": "rm -f -r ./node_modules && rm -r ./db.sqlite"
+    "clean": "rm -f -r ./node_modules && rm -r ./db.sqlite",
+    "generate": "node config_gen.js"
   },
   "author": "",
   "license": "ISC",
