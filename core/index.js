@@ -12,13 +12,13 @@
   //config https server if ssl is allowed
   if (ssl) {
     const https_server = require("https").createServer(config.getSSL(), app);
-    require("./src/io")(https_server, secretOrKey);
+    require("./src/io")(https_server, secretOrKey, origin);
     https_server.listen(https_port);
   }
 
   //config http server
   const http_server = require("http").createServer(app);
-  require("./src/io")(http_server, secretOrKey);
+  require("./src/io")(http_server, secretOrKey, origin);
   http_server.listen(http_port);
 
   //load utilities

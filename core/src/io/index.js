@@ -1,8 +1,8 @@
-module.exports = async (server, secretOrKey) => {
+module.exports = async (server, secretOrKey, origin) => {
   const io = require("socket.io")(server, {
     cors: {
       methods: ["GET", "POST"],
-      origin: process.env.ORIGIN || "http://localhost:3000",
+      origin: origin || "http://localhost:3000",
       credentials: true,
     },
   });
