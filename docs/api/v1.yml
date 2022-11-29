@@ -1,0 +1,382 @@
+openapi: 3.0.1
+info:
+  title: API Title
+  version: "1.0"
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: http://localhost:33333/api/v1
+paths:
+  /auth/:
+    get:
+      summary: Check if user is logged in or not
+      tags:
+        - "Auth"
+      responses:
+        "200":
+          description: User logged in
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    example: 1
+                  username:
+                    type: string
+                    example: "admin"
+                  role:
+                    type: string
+                    example: "admin"
+        "400":
+          description: User not logged in
+    post:
+      summary: Login or get access token
+      tags:
+        - "Auth"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: admin
+                password:
+                  type: string
+                  example: admin
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjY5NTM1MzY0fQ.Bj5LwN-vAozJmz-AIyoe4Ok-ENvj4iSaLtU43VwAslHi2diTP0zjVmNGSoULMQSw82hav6199UtapV_iMnp9tOsJYvoCfAeedryQErSkBGOiY6Lr-WGHQbUvcOn_evKXWWtqZCI0LZShrVM0XyS8gxP5l167T4w-g0qpNChIcvA"
+        "404":
+          description: Incorrect username or password
+  /auth/mqtt:
+    post:
+      summary: Auth API for mqtt broker
+      tags:
+        - "Auth"
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: "admin"
+                passsword:
+                  type: string
+                  example: "admin"
+                clientid:
+                  description: JWT or default mqtt client id
+                  type: string
+                  example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjY5NTM1MzY0fQ.Bj5LwN-vAozJmz-AIyoe4Ok-ENvj4iSaLtU43VwAslHi2diTP0zjVmNGSoULMQSw82hav6199UtapV_iMnp9tOsJYvoCfAeedryQErSkBGOiY6Lr-WGHQbUvcOn_evKXWWtqZCI0LZShrVM0XyS8gxP5l167T4w-g0qpNChIcvA"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Invalid username password or clientid"
+  /users/{id}:
+    get:
+      summary: Get User by ID or name
+
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: id
+          description: username or id
+          schema:
+            anyOf:
+              - type: string
+              - type: number
+            default: 1
+          required: true
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: Unauthorized
+
+    delete:
+      summary: Delete user (soft delete ofcourse)
+      tags:
+        - "Users"
+      parameters:
+        - in: path
+          name: id
+          description: username or id
+          schema:
+            anyOf:
+              - type: string
+              - type: number
+            default: 1
+          required: true
+      responses:
+        "200":
+          description: User deleted
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+  /users/:
+    post:
+      summary: Create new user
+      tags:
+        - "Users"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "202":
+          description: Created
+        "400":
+          description: Something wrong
+        "401":
+          description: Unauthorized
+    put:
+      summary: Change passsword only
+      tags:
+        - "Users"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: admin
+                oldPassword:
+                  type: string
+                  example: admin
+                newPassword:
+                  type: string
+                  example: newAdmin
+      responses:
+        "202":
+          description: success
+        "400":
+          description: bad password
+        "401":
+          description: Unauthorized
+
+  /logger/trace:
+    get:
+      summary: Tracing logs
+      tags:
+        - Logger
+      operationId: traceLog
+      description: Query old log
+      parameters:
+        - in: query
+          name: from
+          description: Start time for the search
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: until
+          description: End time for the search
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: limit
+          description: Number of query message
+          schema:
+            type: integer
+            default: 10
+        - in: query
+          name: Start
+          description: Starting row offset
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: order
+          description: asc or desc
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    logsAsJSON:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          level:
+                            type: string
+                          message:
+                            type: string
+                          timestamp:
+                            type: string
+                            format: date-time
+                    logsAsString:
+                      type: array
+                      items:
+                        type: string
+                        example: "info: Nov-22-2022 23:18:04:     hello"
+                    logsAsANSIString:
+                      type: array
+                      items:
+                        type: string
+                        example: "\u001b[32minfo\u001b[39m: Nov-18-2022 00:13:04     \t\u001b[32mhello\u001b[39m"
+
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                      example: "query[parameters]:Invalid value"
+        "401":
+          description: Unauthorized
+  /logger/config:
+    get:
+      summary: Get current config
+      tags:
+        - "Logger"
+      operationId: getLoggerConfig
+      description: Get current logger config
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoggerConfig"
+        "400":
+          description: Some thing wrong
+        "401":
+          description: Unauthorized
+    put:
+      summary: Change current config
+      tags:
+        - Logger
+      operationId: setLoggerConfig
+      description: Change current logger config
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoggerConfig"
+      responses:
+        "202":
+          description: Update success
+        "400":
+          description: Something go wrong
+        "401":
+          description: Unauthorized
+  /healthcheck:
+    get:
+      summary: Get system info
+      tags:
+        - Health Check
+      operationId: healthCheck
+      description: Get system info
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ip:
+                    type: string
+                    format: ipv4
+                    example: "192.168.1.1"
+                  hostname:
+                    type: string
+                    example: "DESKTOP-TI5UK3V"
+                  platform:
+                    type: string
+                    example: "linux"
+                  os:
+                    type: string
+                    example: "Ubuntu 22.04"
+                  type:
+                    type: string
+                    example: "Linux"
+                  arch:
+                    type: string
+                    example: "x64"
+                  cpuCount:
+                    type: number
+                    example: 8
+                  cpuModel:
+                    type: string
+                    example: "Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz"
+        "401":
+          description: Unauthorized
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        * Users access: "Authorization: Bearer <user_token>"
+  schemas:
+    LoggerConfig:
+      type: object
+      properties:
+        dirname:
+          type: string
+          default: "./logs"
+          description: Path to log folder
+        maxFile:
+          type: number
+          default: 100
+          description: Maximum file can exist
+        mqttTopic:
+          type: string
+          default: "$CORE/LOGS/RAW"
+          description: MQTT topic for log in string
+        mqttANSITopic:
+          type: string
+          default: "$CORE/LOGS/ANSI"
+          description: MQTT topic for log in ANSI string (string with colour)
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+          example: admin
+        password:
+          type: string
+          example: admin
+        role:
+          type: string
+          example: admin
+security:
+  - bearerAuth: []
