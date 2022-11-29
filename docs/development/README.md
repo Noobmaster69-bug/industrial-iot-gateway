@@ -4,7 +4,7 @@
 
 Recommend sử dụng [visual studio code](https://code.visualstudio.com/).
 
-Các extendtion được sử dụng:
+Các extension được sử dụng:
 
 - [Sqlite3 viewer](https://marketplace.visualstudio.com/items?itemName=qwtel.sqlite-viewer): dùng để xem database.
 - [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode): auto format code.
