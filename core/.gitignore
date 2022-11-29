@@ -1,7 +1,0 @@
-dist
-node_modules
-ssl
-*.sqlite
-*.txt
-package-lock.json
-config.json
