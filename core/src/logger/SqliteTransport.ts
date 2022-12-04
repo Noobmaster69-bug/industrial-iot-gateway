@@ -18,9 +18,11 @@ interface queryOptions
     QueryOptions,
     keyof { fields: string; from?: Date; until?: Date }
   > {
-  levels?: Array<"info" | "warn" | "error">;
-  from?: Date | string;
-  until?: Date | string;
+  levels: Array<"info" | "warn" | "error">;
+  from: Date | string;
+  until: Date | string;
+  start: number;
+  limit: number;
 }
 interface queryResult {
   rows: Array<logs>;
@@ -61,7 +63,7 @@ class SqliteTransport extends Transport {
     super(options);
     this.name = "sqlite3";
   }
-  override log(info: any, next: () => void): any {
+  public override log(info: any, next: () => void): any {
     const messageAsJson = JSON.parse(info[MESSAGE]);
     Logs.create(messageAsJson)
       .then(() => {
@@ -80,11 +82,9 @@ class SqliteTransport extends Transport {
     ) => void
   ) {
     const levels = options.levels || ["debug", "info", "warn", "error"];
-    const from = options.from ? new Date(options.from) : new Date(0);
-    const until = options.until ? new Date(options.until) : new Date();
-    const start = options.start || 0;
-    const limit = options.limit || Number.MAX_SAFE_INTEGER;
+    const { from, until, start, limit } = options;
     const order = options.order?.toUpperCase() || "DESC";
+
     Logs.findAndCountAll({
       where: {
         level: {

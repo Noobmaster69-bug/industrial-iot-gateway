@@ -1,10 +1,10 @@
 openapi: 3.0.1
 info:
-  title: API Title
+  title: Core API
   version: "1.0"
 servers:
-  - description: SwaggerHub API Auto Mocking
-    url: http://localhost:33333/api/v1
+  - description: Default server
+    url: http://localhost:33333/api/
 paths:
   /auth/:
     get:
@@ -85,25 +85,32 @@ paths:
           description: "OK"
         "400":
           description: "Invalid username password or clientid"
-  /users/{id}:
+  /user:
     get:
       summary: Get User by ID or name
 
       tags:
         - Users
       parameters:
-        - in: path
+        - in: query
           name: id
-          description: username or id
+          description: user id
           schema:
-            anyOf:
-              - type: string
-              - type: number
-            default: 1
-          required: true
+            type: number
+            example: 1
+        - in: query
+          name: username
+          description: user name
+          schema:
+            type: string
+            example: "root"
       responses:
         "200":
           description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDetail"
         "401":
           description: Unauthorized
 
@@ -112,15 +119,18 @@ paths:
       tags:
         - "Users"
       parameters:
-        - in: path
+        - in: query
           name: id
-          description: username or id
+          description: user id
           schema:
-            anyOf:
-              - type: string
-              - type: number
-            default: 1
-          required: true
+            type: number
+            example: 1
+        - in: query
+          name: username
+          description: user name
+          schema:
+            type: string
+            example: "root"
       responses:
         "200":
           description: User deleted
@@ -128,7 +138,6 @@ paths:
           description: Bad request
         "401":
           description: Unauthorized
-  /users/:
     post:
       summary: Create new user
       tags:
@@ -155,9 +164,6 @@ paths:
             schema:
               type: object
               properties:
-                username:
-                  type: string
-                  example: admin
                 oldPassword:
                   type: string
                   example: admin
@@ -166,13 +172,89 @@ paths:
                   example: newAdmin
       responses:
         "202":
-          description: success
+          description: Success
         "400":
-          description: bad password
+          description: Bad password
+        "401":
+          description: Unauthorized
+  /users:
+    get:
+      summary: Get list of users.
+      tags:
+        - Users
+      parameters:
+        - in: query
+          name: id
+          description: user id
+          schema:
+            type: number
+        - in: query
+          name: username
+          description: username
+          schema:
+            type: string
+            example: root
+        - in: query
+          name: role
+          description: user role
+          schema:
+            type: string
+            enum: ["admin"]
+            default: "admin"
+        - in: query
+          name: limit
+          description: Number of query user
+          schema:
+            type: number
+            default: 10
+        - in: query
+          name: start
+          description: Starting row offset
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: order
+          description: asc or desc
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+        - in: query
+          name: orderBy
+          description: Order by value
+          schema:
+            type: string
+            enum: ["username", "role", "createdAt"]
+            default: "username"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: number
+                    description: Total user match
+                    example: 10
+                  limit:
+                    type: number
+                    description: Number of query user
+                  start:
+                    type: number
+                    description: Starting row offset
+                  users:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/UserDetail"
+        "400":
+          description: Error
         "401":
           description: Unauthorized
 
-  /logger/trace:
+  /logger:
     get:
       summary: Tracing logs
       tags:
@@ -186,12 +268,14 @@ paths:
           schema:
             type: string
             format: date-time
+            example: "1970-01-01T00:00:00.000Z"
         - in: query
           name: until
           description: End time for the search
           schema:
             type: string
             format: date-time
+            example: "2022-11-30T07:31:28.380Z"
         - in: query
           name: limit
           description: Number of query message
@@ -199,7 +283,7 @@ paths:
             type: integer
             default: 10
         - in: query
-          name: Start
+          name: start
           description: Starting row offset
           schema:
             type: integer
@@ -218,33 +302,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    logsAsJSON:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          level:
-                            type: string
-                          message:
-                            type: string
-                          timestamp:
-                            type: string
-                            format: date-time
-                    logsAsString:
-                      type: array
-                      items:
-                        type: string
-                        example: "info: Nov-22-2022 23:18:04:     hello"
-                    logsAsANSIString:
-                      type: array
-                      items:
-                        type: string
-                        example: "\u001b[32minfo\u001b[39m: Nov-18-2022 00:13:04     \t\u001b[32mhello\u001b[39m"
-
+                $ref: "#/components/schemas/Logs"
         "400":
           description: Error
           content:
@@ -257,42 +315,6 @@ paths:
                     items:
                       type: string
                       example: "query[parameters]:Invalid value"
-        "401":
-          description: Unauthorized
-  /logger/config:
-    get:
-      summary: Get current config
-      tags:
-        - "Logger"
-      operationId: getLoggerConfig
-      description: Get current logger config
-      responses:
-        "200":
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/LoggerConfig"
-        "400":
-          description: Some thing wrong
-        "401":
-          description: Unauthorized
-    put:
-      summary: Change current config
-      tags:
-        - Logger
-      operationId: setLoggerConfig
-      description: Change current logger config
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/LoggerConfig"
-      responses:
-        "202":
-          description: Update success
-        "400":
-          description: Something go wrong
         "401":
           description: Unauthorized
   /healthcheck:
@@ -347,25 +369,25 @@ components:
       description: |
         * Users access: "Authorization: Bearer <user_token>"
   schemas:
-    LoggerConfig:
-      type: object
-      properties:
-        dirname:
-          type: string
-          default: "./logs"
-          description: Path to log folder
-        maxFile:
-          type: number
-          default: 100
-          description: Maximum file can exist
-        mqttTopic:
-          type: string
-          default: "$CORE/LOGS/RAW"
-          description: MQTT topic for log in string
-        mqttANSITopic:
-          type: string
-          default: "$CORE/LOGS/ANSI"
-          description: MQTT topic for log in ANSI string (string with colour)
+    Logs:
+      type: array
+      items:
+        type: object
+        properties:
+          rows:
+            type: array
+            items:
+              type: object
+              properties:
+                level:
+                  type: string
+                  enum: ["info", "warn", "error"]
+                message:
+                  type: string
+                  example: "Hello World"
+                timestamp:
+                  type: string
+                  format: date-time
     User:
       type: object
       properties:
@@ -378,5 +400,19 @@ components:
         role:
           type: string
           example: admin
+    UserDetail:
+      type: object
+      properties:
+        username:
+          type: string
+          example: root
+        role:
+          type: string
+          enum: ["admin"]
+          example: "admin"
+        createdAt:
+          type: string
+          format: date-time
+
 security:
   - bearerAuth: []

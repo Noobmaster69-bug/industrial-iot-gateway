@@ -1,27 +1,15 @@
-import winston from "winston";
-import SqliteTransport, {
-  init as SqliteInit,
-  queryOptions,
-  queryResult,
-} from "./SqliteTransport";
+import { winstonLogger, WinstonInit } from "./winston";
+//export routes
+export { default as routes } from "./routes";
 
-const winstonLogger = winston.createLogger({
-  transports: [
-    new winston.transports.Console(),
-    new SqliteTransport({
-      level: "info",
-      format: winston.format.combine(
-        winston.format.timestamp(),
-        winston.format.json()
-      ),
-    }),
-  ],
-});
+//export module init function
+export async function LoggerInit() {
+  await WinstonInit();
+}
+
+//export log query function
 
 export default {
-  init: async () => {
-    await SqliteInit();
-  },
   info: (message: any) => {
     winstonLogger.info(message);
   },
@@ -33,20 +21,5 @@ export default {
   },
   debug: (message: any) => {
     winstonLogger.debug(message);
-  },
-  query: async (options?: queryOptions): Promise<queryResult> => {
-    const from = new Date(options?.from || 0);
-    const until = new Date(options?.until || 0);
-    return new Promise((resolve, reject) => {
-      winstonLogger.query(
-        { ...options, fields: ["level", "message", "timestamp"], from, until },
-        (err, result) => {
-          if (err) {
-            reject(err);
-          }
-          resolve(result.sqlite3);
-        }
-      );
-    });
   },
 };
