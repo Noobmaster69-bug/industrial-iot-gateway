@@ -6,6 +6,39 @@ servers:
   - description: Default server
     url: http://localhost:33333/api/
 paths:
+  /plugin:
+    get:
+      summary: Get list of plugin
+      tags:
+        - "Plugin"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  southBound:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        channels:
+                          type: object
+                        protocols:
+                          type: object
+                  northBound:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        protocols:
+                          type: object
   /auth/:
     get:
       summary: Check if user is logged in or not

@@ -1,11 +1,9 @@
 import type { Request, Response } from "express";
-import { RandomChannels, RandomProtocols } from "./random.models";
+import RandomPlugin from "./random";
 class RandomPluginController {
   public static async info(_req: Request, res: Response) {
-    res.send({
-      channels: RandomChannels.getAttributes(),
-      protocols: RandomProtocols.getAttributes(),
-    });
+    const results = await RandomPlugin.getProperties();
+    res.send(results);
   }
 }
 

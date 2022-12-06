@@ -1,4 +1,5 @@
 import southBound from "./southBound";
+import northBound from "./northBound";
 import type { Model, ModelStatic } from "sequelize";
 export { default as routes } from "./plugin.routes";
 
@@ -13,6 +14,9 @@ export async function pluginInit({
     Channels,
     Protocols,
   });
+  await northBound.northBoundInit({
+    Protocols,
+  });
 }
 
-export { southBound };
+export { southBound, northBound };

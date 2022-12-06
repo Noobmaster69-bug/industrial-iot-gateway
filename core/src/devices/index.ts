@@ -1,5 +1,7 @@
 import { Devices, Channels, Protocols } from "./models";
 import { pluginInit } from "plugin";
+import { Schedules } from "scheduler/scheduler.models";
+import { sequelize } from "ultils";
 export async function DevicesInit() {
   Devices.hasMany(Channels, {
     onDelete: "CASCADE",
@@ -29,10 +31,14 @@ export async function DevicesInit() {
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
   });
-  pluginInit({ Channels, Protocols });
-  await Devices.sync();
-  await Channels.sync();
-  await Protocols.sync();
+  Devices.hasMany(Schedules);
+  Schedules.belongsTo(Devices);
+
+  Schedules.belongsToMany(Channels, { through: "SchedulerChannels" });
+  Channels.belongsToMany(Schedules, { through: "SchedulerChannels" });
+
+  await pluginInit({ Channels, Protocols });
+  await sequelize.sync();
 }
 export { Devices, Channels, Protocols };
 export { default as routes } from "./devices.routes";

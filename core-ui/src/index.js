@@ -1,13 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import BrowserRouterProvider from "router";
+import { ToastContainer } from "react-toastify";
+import "styles/index.scss";
+import "react-toastify/dist/ReactToastify.css";
+import "reactjs-popup/dist/index.css";
+import "react-loading-skeleton/dist/skeleton.css";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouterProvider />
+    <ToastContainer />
+    {/* <App /> */}
   </React.StrictMode>
 );
 

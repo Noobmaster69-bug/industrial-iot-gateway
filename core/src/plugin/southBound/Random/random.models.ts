@@ -1,5 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "ultils";
+
+//Channel
 class RandomChannels extends Model {
   declare max: number;
   declare min: number;
@@ -25,6 +27,8 @@ RandomChannels.init(
   },
   { sequelize }
 );
+
+//Protocol
 
 class RandomProtocols extends Model {
   declare seed: number;

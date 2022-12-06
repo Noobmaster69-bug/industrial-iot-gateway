@@ -1,0 +1,25 @@
+* {
+  /* bars*/
+  --bars-background: rgb(17, 24, 39);
+  --sidebar-active-background: #242a38;
+
+  --bars-color: rgb(209, 213, 219);
+  --bars-active-color: rgb(16, 185, 129);
+
+  /* /* outlet * */
+  --diasble-color: #bfbfbf;
+  --border-color: #d9d9d9;
+  --background: #eff1f4;
+  --error-color: #ff4d4f;
+  --top-bars-background: #fff;
+
+  /* size */
+  --side-bar-width: 280px;
+  --top-bar-height: 64px;
+
+  --color: #595959;
+  --button-hover: rgba(107, 114, 128, 0.04);
+  box-sizing: border-box;
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}

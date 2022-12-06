@@ -8,10 +8,12 @@ import { passport } from "auth";
 import logger, { LoggerInit, routes as LoggerRoutes } from "logger";
 import { routes as UserRoutes, UserInit } from "users";
 import { routes as AuthRoutes, AuthInit } from "auth";
+import { routes as healthCheckRoutes } from "healthcheck";
+
 import { routes as pluginRoutes } from "plugin";
-import { routes as devicesRoutes } from "devices";
-import { DevicesInit } from "devices";
-import { schedulerInit, routes as schedulerRoutes } from "scheduler";
+import { routes as devicesRoutes, DevicesInit } from "devices";
+import { routes as schedulerRoutes, schedulerInit } from "scheduler";
+
 async function main() {
   //init express
   const app = express();
@@ -44,11 +46,13 @@ async function main() {
   await schedulerInit();
   //init routes
   app.use("/api", LoggerRoutes);
+  app.use("/api", healthCheckRoutes);
   app.use("/api", UserRoutes);
   app.use("/api", AuthRoutes);
   app.use("/api", pluginRoutes);
   app.use("/api", devicesRoutes);
   app.use("/api", schedulerRoutes);
+
   //run server
   app.listen(33333, () => {
     logger.info("core: listening to port 33333");

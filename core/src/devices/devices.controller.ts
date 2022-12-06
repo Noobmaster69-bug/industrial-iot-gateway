@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 import { sequelize } from "ultils";
 import logger from "logger";
 import { Devices, Channels, Protocols } from "./models";
-import { southBound } from "plugin";
+import { southBound, northBound } from "plugin";
 import _ from "lodash";
 import pluralize from "pluralize";
 interface DeviceBody {
@@ -43,7 +43,10 @@ class DeviceController {
       const downPlugin = await southBound.getPlugin(downProtocol?.plugin);
       const downPluginProps: any = _.omit(downProtocol, ["name", "plugin"]);
 
-      if (downPlugin) {
+      // parse upProtocol object
+      const upPlugin = await northBound.getPlugin(upProtocol?.plugin);
+      const upPluginProps: any = _.omit(upProtocol, ["name", "plugin"]);
+      if (downPlugin && upPlugin) {
         await sequelize.transaction(async (t) => {
           const result = await Devices.create(
             {
@@ -52,13 +55,19 @@ class DeviceController {
               manufacturer,
               type,
               downProtocol: {
+                name: downProtocol?.name,
+                plugin: downProtocol?.plugin,
+                // Eager loading plugin table
+                [pluralize.singular(downPlugin?.Protocols.getTableName() + "")]:
+                  downPluginProps,
+              },
+              upProtocol: {
                 name: upProtocol?.name,
                 plugin: upProtocol?.plugin,
                 // Eager loading plugin table
-                [pluralize.singular(downPlugin.Protocols.getTableName() + "")]:
-                  downPluginProps,
+                [pluralize.singular(upPlugin?.Protocols.getTableName() + "")]:
+                  upPluginProps,
               },
-              upProtocol,
               Channels: channels?.map((channel) => {
                 // Parse channels object
                 const {
@@ -86,7 +95,11 @@ class DeviceController {
             {
               // Include other table
               include: [
-                { model: Protocols, as: "upProtocol" },
+                {
+                  model: Protocols,
+                  as: "upProtocol",
+                  include: [{ model: upPlugin.Protocols }],
+                },
                 {
                   model: Protocols,
                   as: "downProtocol",
