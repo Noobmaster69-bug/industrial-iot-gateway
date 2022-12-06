@@ -7,7 +7,7 @@ const mqttClient = mqtt.connect({
   host: "localhost",
 });
 mqttClient.on("connect", () => {
-  logger.debug("mqtt-local: connected to local mqtt broker");
+  logger.info("mqtt-local: connected to local mqtt broker");
 });
 mqttClient.on("offline", () => {
   logger.warn("mqtt-local: cannot connect to local mqtt broker");

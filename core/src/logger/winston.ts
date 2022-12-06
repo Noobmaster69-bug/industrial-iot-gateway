@@ -21,7 +21,7 @@ const winstonLogger = winston.createLogger({
     }),
     //log to sqlite
     new SqliteTransport({
-      level: "info",
+      level: "error",
       format: winston.format.combine(
         winston.format.timestamp(),
         winston.format.json()
@@ -29,7 +29,7 @@ const winstonLogger = winston.createLogger({
     }),
     //log to mqtt with topic $CORE/LOGS
     new MqttTransport({
-      level: "info",
+      level: "debug",
       format: winston.format.combine(
         winston.format.timestamp(),
         winston.format.json()

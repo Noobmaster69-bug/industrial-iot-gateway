@@ -1,6 +1,7 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "ultils";
 import bcrypt from "bcrypt";
+import logger from "logger";
 
 class Users extends Model {
   declare username: string;
@@ -66,5 +67,18 @@ Users.init(
 
 export async function init() {
   await Users.sync();
+  //create default root user if root user doesn't exits
+  const [_rootUser, justCreated] = await Users.findOrCreate({
+    where: {
+      username: "root",
+    },
+    defaults: {
+      username: "root",
+      password: "root",
+    },
+  });
+  if (justCreated) {
+    logger.info("created default user with username and password are root");
+  }
 }
 export { Users };

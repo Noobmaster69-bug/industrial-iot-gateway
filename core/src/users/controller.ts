@@ -108,6 +108,9 @@ class UserController {
         limit,
         offset: start,
         order: [[orderBy || "username", (order || "desc").toUpperCase()]],
+        attributes: {
+          exclude: ["password"],
+        },
       });
 
       return res.send({

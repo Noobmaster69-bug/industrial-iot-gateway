@@ -5,6 +5,7 @@ export { default as routes } from "./routes";
 //export module init function
 export async function LoggerInit() {
   await WinstonInit();
+  winstonLogger.info("Inited Logger module");
 }
 
 //export log query function
