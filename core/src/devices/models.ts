@@ -33,6 +33,10 @@ Channels.init(
     precision: {
       type: DataTypes.REAL,
     },
+    plugin: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   { sequelize }
 );
@@ -90,41 +94,12 @@ Protocols.init(
         );
       },
     },
+    plugin: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   { sequelize }
 );
 
-export async function init() {
-  Devices.hasMany(Channels, {
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
-  });
-  Channels.belongsTo(Devices, {
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
-  });
-  //device associate
-  Devices.hasOne(Protocols, {
-    as: "upProtocol",
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
-  });
-  Protocols.belongsTo(Devices, {
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
-  });
-
-  Devices.hasOne(Protocols, {
-    as: "downProtocol",
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
-  });
-  Protocols.belongsTo(Devices, {
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
-  });
-  await Devices.sync();
-  await Channels.sync();
-  await Protocols.sync();
-}
 export { Devices, Channels, Protocols };

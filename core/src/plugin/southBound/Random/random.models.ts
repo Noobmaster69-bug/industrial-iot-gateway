@@ -1,11 +1,11 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "ultils";
-class RandomChannel extends Model {
+class RandomChannels extends Model {
   declare max: number;
   declare min: number;
 }
 
-RandomChannel.init(
+RandomChannels.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -26,10 +26,10 @@ RandomChannel.init(
   { sequelize }
 );
 
-class RandomProtocol extends Model {
+class RandomProtocols extends Model {
   declare seed: number;
 }
-RandomProtocol.init(
+RandomProtocols.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -53,4 +53,4 @@ RandomProtocol.init(
   { sequelize }
 );
 
-export { RandomChannel, RandomProtocol };
+export { RandomChannels, RandomProtocols };

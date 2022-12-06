@@ -1,4 +1,4 @@
-import { randomInit } from "./Random";
-export async function southBoundInit() {
-  await randomInit();
-}
+export { default as routes } from "./southBound.routes";
+import SouthBound from "./southBound";
+
+export default SouthBound;
