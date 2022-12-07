@@ -37,7 +37,7 @@ class RandomPlugin {
         max: {
           type: "REAL",
         },
-        main: {
+        min: {
           type: "REAL",
         },
       },

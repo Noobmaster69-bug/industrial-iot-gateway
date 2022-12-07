@@ -5,7 +5,6 @@ import Skeleton from "react-loading-skeleton";
 export default function Network() {
   const { upload, download, isConnected, status } = useMqtt();
   const { data, isLoading, isFetching } = useSystemInfo();
-  console.log(status);
   const options = {
     chart: {
       id: "network",
@@ -77,11 +76,11 @@ export default function Network() {
         </div>
         <div style={{ display: "flex" }}>
           IP Address <span style={{ flex: "1 1 0%" }} />
-          {data.ip}
+          {data?.ip}
         </div>
         <div style={{ display: "flex" }}>
           Host name <span style={{ flex: "1 1 0%" }} />
-          {data.hostname}
+          {data?.hostname}
         </div>
       </div>
     </div>

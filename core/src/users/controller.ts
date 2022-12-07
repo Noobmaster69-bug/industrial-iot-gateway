@@ -105,8 +105,8 @@ class UserController {
             role,
           })
         ),
-        limit,
-        offset: start,
+        limit: limit || 10,
+        offset: start || 0,
         order: [[orderBy || "username", (order || "desc").toUpperCase()]],
         attributes: {
           exclude: ["password"],

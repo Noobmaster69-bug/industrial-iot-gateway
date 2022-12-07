@@ -14,6 +14,9 @@ import Home from "pages/Home";
 import { AiFillHome } from "react-icons/ai";
 import { BsFillCpuFill } from "react-icons/bs";
 import { MqttProvider } from "apis";
+import Devices from "pages/Devices";
+import AddDevice from "pages/Devices/AddDevice";
+import Detail from "pages/Devices/Detail";
 
 const queryClient = new QueryClient({
   logger: {
@@ -61,7 +64,17 @@ export const routes = [
         Icon: BsFillCpuFill,
       };
     },
-    children: [{ index: true, element: <Home /> }],
+    children: [
+      { index: true, element: <Devices /> },
+      {
+        path: "new",
+        element: <AddDevice />,
+      },
+      {
+        path: ":id",
+        element: <Detail />,
+      },
+    ],
   },
 ];
 

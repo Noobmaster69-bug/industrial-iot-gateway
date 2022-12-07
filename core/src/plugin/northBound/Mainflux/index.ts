@@ -28,7 +28,7 @@ class MainfluxPlugin {
   public static async getProperties() {
     return {
       name: "mainflux",
-      protocol: {
+      protocols: {
         thingId: {
           type: "STRING",
         },

@@ -132,5 +132,125 @@ class DeviceController {
       res.status(400).send(err);
     }
   }
+  public static async getAllDevices(req: Request, res: Response) {
+    const { name, limit, start, order, orderBy } = req.query as unknown as {
+      name: string;
+      limit: number;
+      start: number;
+      order: "desc" | "asc";
+      orderBy:
+        | "name"
+        | "modelName"
+        | "upProtocol"
+        | "downProtocol"
+        | "createAt";
+    };
+    let _orderBy: Array<any> = [orderBy || "name"];
+    if (_orderBy[0] === "downProtocol" || _orderBy[0] === "upProtocol") {
+      _orderBy = [{ model: Protocols, as: orderBy[0] }, "name"];
+    }
+    const result = await Devices.findAndCountAll({
+      where: JSON.parse(
+        JSON.stringify({
+          name,
+        })
+      ),
+      limit: limit || 10,
+      offset: start || 0,
+      include: [
+        {
+          model: Protocols,
+          as: "upProtocol",
+          attributes: ["name"],
+        },
+        {
+          model: Protocols,
+          as: "downProtocol",
+          attributes: ["name"],
+        },
+      ],
+      //@ts-ignore
+      order: [[..._orderBy, (order || "DESC").toUpperCase()]],
+    });
+    res.send({
+      limit: limit || 10,
+      start: start || 0,
+      devices: result.rows.map((e) => e.toJSON()),
+      total: result.count,
+    });
+  }
+  public static async getDevice(req: Request, res: Response) {
+    const { id, name } = req.query as unknown as { id: number; name: string };
+    const result = (
+      await Devices.findOne({
+        where: JSON.parse(
+          JSON.stringify({
+            name,
+            id,
+          })
+        ),
+        include: [
+          {
+            model: Protocols,
+            as: "upProtocol",
+            include: (await northBound.list()).map((pln) => pln.Protocols),
+          },
+          {
+            model: Protocols,
+            as: "downProtocol",
+            include: (await southBound.list()).map((pln) => pln.Protocols),
+          },
+          {
+            model: Channels,
+            include: (await southBound.list()).map((pln) => pln.Channels),
+          },
+        ],
+      })
+    )?.toJSON();
+    if (result) {
+      const {
+        name,
+        modelName,
+        manufacturer,
+        type,
+        upProtocol,
+        downProtocol,
+        Channels: channels,
+      } = result as unknown as any;
+      const downPlugin = await southBound.getPlugin(downProtocol.plugin);
+      const downProtocolProps =
+        downProtocol[
+          pluralize.singular(downPlugin?.Protocols.getTableName() + "")
+        ];
+      const upPlugin = await northBound.getPlugin(upProtocol.plugin);
+      const upProtocolProps =
+        upProtocol[pluralize.singular(upPlugin?.Protocols.getTableName() + "")];
+      const channelsProps = channels.map((channel: any) => {
+        return {
+          ...channel,
+          ...channel[
+            pluralize.singular(downPlugin?.Channels.getTableName() + "")
+          ],
+        };
+      });
+      res.send({
+        name,
+        modelName,
+        manufacturer,
+        type,
+        downProtocol: { plugin: downProtocol.plugin, ...downProtocolProps },
+        upProtocol: { plugin: upProtocol.plugin, ...upProtocolProps },
+        channels: channelsProps,
+      });
+    } else {
+      res.sendStatus(401);
+    }
+  }
+  public static async deleteDevices(req: Request, res: Response) {
+    const { id } = req.query as unknown as { id: number };
+    const device = await Devices.findByPk(id);
+    await device?.destroy();
+    res.send(200);
+  }
 }
 export { DeviceController };

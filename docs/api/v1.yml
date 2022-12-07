@@ -39,6 +39,79 @@ paths:
                           type: string
                         protocols:
                           type: object
+  /device/:
+    post:
+      summary: Create new device
+      tags:
+        - "Devices"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Device 1"
+                modelName:
+                  type: string
+                  example: "Model 1"
+                manufacturer:
+                  type: string
+                  example: "Back Khoa"
+                type:
+                  type: string
+                  example: "Power Meter"
+                upProtocol:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: "Connection 1"
+                    plugin:
+                      type: string
+                      example: "mainflux"
+                downProtocol:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: "Modbus connection 1"
+                    plugin:
+                      type: string
+                      example: "modbus-rtu"
+                channels:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: "Channel 1"
+                      readWrite:
+                        type: string
+                        enum: ["R", "W", "RW"]
+                        default: R
+                      offset:
+                        type: number
+                        default: 0
+                      scale:
+                        type: number
+                        default: 1
+      ## TO DO: FIX ME
+      responses:
+        "200":
+          description: "OK"
+
+  /devices/:
+    get:
+      summary: Query all devices
+      tags:
+        - "Devices"
+      responses:
+        "200":
+          description: "OK"
+
   /auth/:
     get:
       summary: Check if user is logged in or not

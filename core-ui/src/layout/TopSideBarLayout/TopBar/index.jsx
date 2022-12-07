@@ -8,15 +8,13 @@ import {
 import { BiUserCircle } from "react-icons/bi";
 import { FaUserCog } from "react-icons/fa";
 import { useLogout, useGetAuth } from "apis";
-export default function TopBar({
-  sideBar,
-  setSiteBar,
-  userMenu,
-  setUserMenu,
-  title,
-  Icon,
-}) {
+import { useMatches } from "react-router-dom";
+export default function TopBar({ sideBar, setSiteBar, userMenu, setUserMenu }) {
   const { data: user } = useGetAuth();
+  const matches = useMatches();
+  const {
+    data: { title, Icon },
+  } = matches[1];
   const logout = useLogout();
   return (
     <>

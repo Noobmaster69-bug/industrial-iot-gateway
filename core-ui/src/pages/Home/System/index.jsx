@@ -50,15 +50,15 @@ export default function System() {
         <h3>CPU</h3>
         <div style={{ display: "flex" }}>
           Core <span style={{ flex: "1 1 0%" }} />
-          {data.cpuCount}
+          {data?.cpuCount}
         </div>
         <div style={{ display: "flex" }}>
           Usage <span style={{ flex: "1 1 0%" }} />
-          {status.cpu}%
+          {status?.cpu}%
         </div>
         <div style={{ display: "flex" }}>
           Model <span style={{ flex: "1 1 0%" }} />
-          {data.cpuModel}
+          {data?.cpuModel}
         </div>
       </div>
       <div className={style.system}>
@@ -80,15 +80,15 @@ export default function System() {
         <h3>Operating System</h3>
         <div style={{ display: "flex" }}>
           OS <span style={{ flex: "1 1 0%" }} />
-          {data.os}
+          {data?.os}
         </div>
         <div style={{ display: "flex" }}>
           Type <span style={{ flex: "1 1 0%" }} />
-          {data.type}
+          {data?.type}
         </div>
         <div style={{ display: "flex" }}>
           Arch <span style={{ flex: "1 1 0%" }} />
-          {data.arch}
+          {data?.arch}
         </div>
         <div style={{ display: "flex" }}>
           Uptime <span style={{ flex: "1 1 0%" }} />
