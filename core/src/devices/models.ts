@@ -70,6 +70,11 @@ Devices.init(
     type: {
       type: DataTypes.STRING,
     },
+    status: {
+      type: DataTypes.ENUM,
+      values: ["active", "dormant"],
+      defaultValue: "dormant",
+    },
   },
   { sequelize }
 );

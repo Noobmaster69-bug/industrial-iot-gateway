@@ -1,5 +1,7 @@
+//To do refactor me
+
 import { SortTable as Table } from "components/Table";
-import { useProtocols } from "apis";
+import { useDevice, useProtocols } from "apis";
 import style from "./index.module.scss";
 import _ from "lodash";
 
@@ -8,13 +10,14 @@ export default function Channels({
   onChange = () => {},
   onAdd = () => {},
   onDeleteRow = () => {},
-  onEditRow = () => {},
 }) {
   const {
     data: { southBound },
   } = useProtocols();
-  const downService = southBound.find(
-    (plugin) => plugin.name === formData.downProtocol?.plugin
+  const { data: thisDevice } = useDevice({ id: formData?.Device?.id });
+
+  const thisDownProtocol = (southBound || []).find(
+    (plugin) => plugin.name === thisDevice?.downProtocol?.plugin
   );
   const head = [
     {
@@ -42,7 +45,7 @@ export default function Channels({
       numberic: false,
       label: "Precision",
     },
-    ...Object.entries(downService?.channels || {}).map(([key, value]) => ({
+    ...Object.entries(thisDownProtocol?.channels || {}).map(([key, value]) => ({
       id: key,
       numberic: false,
       label: value?.label || key?.charAt(0)?.toUpperCase() + key.slice(1),
@@ -65,26 +68,6 @@ export default function Channels({
     <div className={style["channel-panel"]}>
       <div className={style["panel-header"]}>
         <h3>Channel Panel</h3>
-        <select
-          onChange={(e) => {
-            onChange({
-              downProtocol: {
-                ...formData.downProtocol,
-                plugin: e.target.value,
-              },
-            });
-          }}
-          name="plugin"
-          value={formData.downProtocol.plugin}
-        >
-          {southBound.map((protocol, index) => {
-            return (
-              <option value={protocol.name} key={index + "protocol"}>
-                {protocol.name}
-              </option>
-            );
-          })}
-        </select>
       </div>
       <hr />
       <div className={style["table-container"]}>
@@ -102,7 +85,7 @@ export default function Channels({
               formData.channels.filter((channel, id) => id !== index)
             );
           }}
-          onEditRow={onEditRow}
+          editBox={false}
         />
       </div>
     </div>

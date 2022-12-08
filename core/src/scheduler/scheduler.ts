@@ -1,6 +1,5 @@
 import cron from "node-cron";
 import { Schedules } from "./scheduler.models";
-import { southBound } from "plugin";
 class Scheduler {
   public static list: Array<Scheduler> = [];
   public static start(id: number) {

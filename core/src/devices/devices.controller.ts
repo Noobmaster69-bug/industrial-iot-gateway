@@ -252,5 +252,11 @@ class DeviceController {
     await device?.destroy();
     res.send(200);
   }
+  public static async getDeviceStatus(_req: Request, res: Response) {
+    const active = await Devices.count({ where: { status: "active" } });
+    const dormant = await Devices.count({ where: { status: "dormant" } });
+    const total = await Devices.count();
+    res.send({ active, dormant, total });
+  }
 }
 export { DeviceController };

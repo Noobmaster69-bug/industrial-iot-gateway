@@ -7,4 +7,5 @@ routes.delete("/device", DeviceController.deleteDevices);
 routes.get("/device", DeviceController.getDevice);
 
 routes.get("/devices", DeviceController.getAllDevices);
+routes.get("/devices/status", DeviceController.getDeviceStatus);
 export default routes;

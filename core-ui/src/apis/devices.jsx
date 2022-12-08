@@ -73,6 +73,17 @@ async function getDevice({ id, name }) {
 }
 export function useDevice({ id, name }) {
   return useQuery(["devices", { id, name }], getDevice, {
-    staleTime: 60000,
+    staleTime: 60000 * 2,
+  });
+}
+
+async function getDeviceStatus() {
+  const { data } = await axios.get("/devices/status");
+  return data;
+}
+export function useDeviceState() {
+  return useQuery(["devices", "status"], getDeviceStatus, {
+    staleTime: 60000 * 2,
+    placeholderData: { active: 0, dormant: 0, total: 0 },
   });
 }

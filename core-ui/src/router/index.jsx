@@ -11,12 +11,18 @@ import AuthWrapper from "components/AuthWrapper";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Home from "pages/Home";
-import { AiFillHome } from "react-icons/ai";
+import { AiFillSchedule, AiOutlineMonitor } from "react-icons/ai";
 import { BsFillCpuFill } from "react-icons/bs";
+import { FaUserCog } from "react-icons/fa";
+
 import { MqttProvider } from "apis";
 import Devices from "pages/Devices";
 import AddDevice from "pages/Devices/AddDevice";
 import Detail from "pages/Devices/Detail";
+import Tasks from "pages/Schedules";
+import ScheduleDetail from "pages/Schedules/Detail";
+import Users from "pages/Users";
+import AddSchedule from "pages/Schedules/AddSchedule";
 
 const queryClient = new QueryClient({
   logger: {
@@ -46,9 +52,9 @@ export const routes = [
     loader: () => {
       return {
         layout: "top-side-bar",
-        title: "Home",
+        title: "System",
         category: "Overview",
-        Icon: AiFillHome,
+        Icon: AiOutlineMonitor,
       };
     },
     children: [{ index: true, element: <Home /> }],
@@ -75,6 +81,39 @@ export const routes = [
         element: <Detail />,
       },
     ],
+  },
+  {
+    path: "/schedules",
+    element: <Layout />,
+    loader: () => {
+      return {
+        layout: "top-side-bar",
+        title: "Schedules",
+        category: "Management",
+        Icon: AiFillSchedule,
+      };
+    },
+    children: [
+      { index: true, element: <Tasks /> },
+      { path: ":id", element: <ScheduleDetail /> },
+      {
+        path: "new",
+        element: <AddSchedule />,
+      },
+    ],
+  },
+  {
+    path: "/users",
+    element: <Layout />,
+    loader: () => {
+      return {
+        layout: "top-side-bar",
+        title: "Users",
+        category: "Management",
+        Icon: FaUserCog,
+      };
+    },
+    children: [{ index: true, element: <Users /> }],
   },
 ];
 

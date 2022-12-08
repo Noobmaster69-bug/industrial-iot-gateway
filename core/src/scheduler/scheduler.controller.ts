@@ -38,5 +38,16 @@ class SchedulerController {
     });
     res.send(result);
   }
+  public static async getSchedules(req: Request, res: Response) {
+    const { limit, start } = req.query as unknown as {
+      limit: number;
+      start: number;
+    };
+    res.send(await Schedules.getAllTask({ limit, start }));
+  }
+  public static async getSchedule(req: Request, res: Response) {
+    const { id } = req.query as unknown as { id: number };
+    res.send(await Schedules.getTask(id || 1));
+  }
 }
 export { SchedulerController };

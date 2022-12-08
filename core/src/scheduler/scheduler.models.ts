@@ -9,8 +9,8 @@ class Schedules extends Model {
   declare cron: string;
   declare state: "start" | "stop";
 
-  static async getAllTask() {
-    const schedules = await this.findAll({
+  static async getAllTask({ limit = Number.MAX_SAFE_INTEGER, start = 0 }) {
+    const { count, rows: schedules } = await this.findAndCountAll({
       include: [
         {
           model: Devices,
@@ -32,15 +32,20 @@ class Schedules extends Model {
           include: (await southBound.list()).map((pln) => pln.Channels),
         },
       ],
+      limit,
+      offset: start,
     });
-    return Promise.all(
+    const arr = await Promise.all(
       schedules.map(async (schedule) => {
         const {
           Device: { upProtocol, downProtocol },
+          Device,
           Channels: channels,
           id,
           cron,
           state,
+          createdAt,
+          updatedAt,
         } = schedule.toJSON() as unknown as any;
         const downPlugin = await southBound.getPlugin(downProtocol.plugin);
         const downProtocolProps =
@@ -68,10 +73,15 @@ class Schedules extends Model {
           downProtocol: downProtocolProps,
           upProtocol: upProtocolProps,
           channels: channelsProps,
+          createdAt,
+          updatedAt,
+          Device,
         };
       })
     );
+    return { total: count, limit, start, schedules: arr };
   }
+
   static async getTask(id: number) {
     const scheduler = (
       await this.findByPk(id, {
@@ -101,9 +111,13 @@ class Schedules extends Model {
     if (scheduler) {
       const {
         Device: { upProtocol, downProtocol },
+        Device,
         Channels: channels,
         id,
         cron,
+        state,
+        createdAt,
+        updatedAt,
       } = scheduler as unknown as any;
       const downPlugin = await southBound.getPlugin(downProtocol.plugin);
       const downProtocolProps =
@@ -124,6 +138,10 @@ class Schedules extends Model {
       return {
         id,
         cron,
+        state,
+        createdAt,
+        updatedAt,
+        Device,
         downProtocol: downProtocolProps,
         upProtocol: upProtocolProps,
         channels: channelsProps,

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import BasicPanel from "./BasicDetails";
 import UpProtocol from "./UpProtocol";
 import DownProtocol from "./DownProtocol";
-import { OldTable as Table } from "components/Table";
+import { SortTable as Table } from "components/Table";
 import { useParams } from "react-router-dom";
 export default function Detail() {
   const { id } = useParams();

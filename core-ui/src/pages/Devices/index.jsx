@@ -50,11 +50,13 @@ export default function Devices() {
         id: "upProtocol",
         numberic: false,
         label: "Up Protocol",
+        sortable: false,
       },
       {
         id: "downProtocol",
         numberic: false,
         label: "Down Protocol",
+        sortable: false,
       },
       {
         id: "createdAt",
@@ -70,7 +72,7 @@ export default function Devices() {
         id: "detail",
         numberic: false,
         label: "",
-        isSort: false,
+        sortable: false,
       },
     ];
   }, []);

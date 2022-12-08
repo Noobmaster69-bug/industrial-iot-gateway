@@ -7,7 +7,12 @@ export default function Log() {
   if (!isConnected) {
     return (
       <div className={style.container} style={{ padding: 0 }}>
-        <Skeleton height={"100%"} width={"100%"} count={1} />
+        <Skeleton
+          width={"100%"}
+          count={1}
+          containerClassName="skeleton"
+          className="skeleton"
+        />
       </div>
     );
   }
