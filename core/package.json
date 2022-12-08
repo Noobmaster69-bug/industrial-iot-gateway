@@ -7,6 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "gulp start",
+    "prebuild": "cd ../core-ui/ && npm run build",
     "build": "gulp build && pkg ."
   },
   "author": "",
@@ -57,7 +58,8 @@
     "assets": [
       "node_modules/sqlite3/lib/binding/**/*.node",
       "node_modules/bcrypt/lib/binding/**/*.node",
-      "tools/nanomq/**/*"
+      "tools/nanomq/**/*",
+      "build/public/**/*"
     ],
     "targets": [
       "node16-linux-x64"

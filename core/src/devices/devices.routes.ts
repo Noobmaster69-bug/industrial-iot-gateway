@@ -8,4 +8,5 @@ routes.get("/device", DeviceController.getDevice);
 
 routes.get("/devices", DeviceController.getAllDevices);
 routes.get("/devices/status", DeviceController.getDeviceStatus);
+routes.get("/devices/protocol", DeviceController.getProtocol);
 export default routes;

@@ -8,27 +8,41 @@ import style from "./index.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { ConfirmBox } from "components/ToolBox";
 
-import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
-
 import { useAllDevices, useDeleteDevice } from "apis";
-import clsx from "clsx";
 
-export default function Devices() {
+export function DevicesTable({
+  limit = 10,
+  removeBox,
+  addBox,
+  editBox,
+  checkbox = true,
+  chooseBox = false,
+  onChoosen = () => {},
+}) {
+  // pages params
   const [pages, setPages] = useState({
     start: 0,
     order: "asc",
     orderBy: "name",
   });
-  const { data: devicesQueryData } = useAllDevices({ ...pages, limit: 10 });
+  const navigate = useNavigate();
+
+  //query devices with pagination
+  const { data: devicesQueryData } = useAllDevices({ ...pages, limit });
+
+  // get device data
   const devicesData = useMemo(
     () => devicesQueryData?.devices || [],
     [devicesQueryData?.devices]
   );
+
+  //delete device
   const { mutate: deleteDevice } = useDeleteDevice();
 
-  const nevigate = useNavigate();
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [deviceDeleteId, setDeviceDeleteId] = useState(null);
+
+  //table metadata
   const head = useMemo(() => {
     return [
       {
@@ -50,13 +64,11 @@ export default function Devices() {
         id: "upProtocol",
         numberic: false,
         label: "Up Protocol",
-        sortable: false,
       },
       {
         id: "downProtocol",
         numberic: false,
         label: "Down Protocol",
-        sortable: false,
       },
       {
         id: "createdAt",
@@ -76,12 +88,8 @@ export default function Devices() {
       },
     ];
   }, []);
-  const onDeleteRow = (row) => {
-    const deviceName = row.name.key;
-    const id = devicesData.find((device) => device.name === deviceName).id;
-    setDeviceDeleteId(id);
-    setDeleteConfirm(true);
-  };
+
+  //table data
   const tableData = useMemo(
     () =>
       ((data) => {
@@ -167,61 +175,50 @@ export default function Devices() {
       })(devicesData),
     [devicesData]
   );
+
+  const onDeleteRow = (row) => {
+    const deviceName = row.name.key;
+    const id = devicesData.find((device) => device.name === deviceName).id;
+    setDeviceDeleteId(id);
+    setDeleteConfirm(true);
+  };
   const onSort = (row) => {
     const { id, state } = row;
     setPages({ ...pages, order: state === "up" ? "desc" : "asc", orderBy: id });
   };
+
   return (
-    <div className={style.container}>
-      <div className={style["table-container"]}>
-        <Table
-          head={head}
-          data={tableData}
-          checkbox
-          onDeleteRow={onDeleteRow}
-          onAdd={() => {
-            nevigate("new");
-          }}
-          className={style.table}
-          onEditRow={(row) => {
-            const { id } = devicesData.find(
-              (data) => data.name === row.name.key
-            );
-            nevigate(`${id}/edit`);
-          }}
-          onSort={onSort}
-        />
-        <div className={style["tool-box"]}>
-          <button
-            className={clsx([
-              style["button"],
-              pages.start === 0 && style["button-inactive"],
-            ])}
-            onClick={() => {
-              setPages({ ...pages, start: pages.start - 10 });
-            }}
-          >
-            <AiOutlineArrowLeft size={20} />
-          </button>
-          <span style={{ margin: "0 16px" }}>
-            Page {Math.floor(pages.start / 10 + 1)} /{" "}
-            {Math.floor((devicesQueryData?.total || 1) / 10) + 1}
-          </span>
-          <button
-            className={clsx([
-              style["button"],
-              Math.floor(pages.start / 10 + 1) ===
-                Math.floor((devicesQueryData?.total || 1) / 10) + 1 &&
-                style["button-inactive"],
-            ])}
-            onClick={() => {
-              setPages({ ...pages, start: pages.start + 10 });
-            }}
-          >
-            <AiOutlineArrowRight size={20} />
-          </button>
-        </div>
-      </div>
+    <>
+      <Table
+        //metadata
+        head={head}
+        data={tableData}
+        className={style.table}
+        start={pages.start}
+        limit={limit}
+        total={devicesQueryData?.total}
+        removeBox={removeBox}
+        addBox={addBox}
+        editBox={editBox}
+        checkbox={checkbox}
+        chooseBox={chooseBox}
+        //listener
+        onDeleteRow={onDeleteRow}
+        onAdd={() => {
+          navigate("new");
+        }}
+        onEditRow={(row) => {
+          const { id } = devicesData.find((data) => data.name === row.name.key);
+          navigate(`${id}/edit`);
+        }}
+        onSort={onSort}
+        onChangePage={(e) => {
+          setPages((_pages) => {
+            return { ..._pages, ...e };
+          });
+        }}
+        onChoosen={onChoosen}
+      />
       <ConfirmBox
         open={deleteConfirm}
         onClose={() => {
@@ -234,6 +231,16 @@ export default function Devices() {
       >
         Delete device?
       </ConfirmBox>
+    </>
+  );
+}
+
+export default function Devices() {
+  return (
+    <div className={style.container}>
+      <div className={style["table-container"]}>
+        <DevicesTable />
+      </div>
     </div>
   );
 }

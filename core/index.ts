@@ -3,7 +3,10 @@ import cors from "cors";
 import express, { json, urlencoded } from "express";
 import morgan from "morgan";
 import { queryParser } from "express-query-parser";
+import path from "path";
+
 import { passport } from "auth";
+
 //
 import logger, { LoggerInit, routes as LoggerRoutes } from "logger";
 import { routes as UserRoutes, UserInit } from "users";
@@ -17,6 +20,7 @@ import { routes as schedulerRoutes, schedulerInit } from "scheduler";
 async function main() {
   //init express
   const app = express();
+  app.use(express.static(path.join(__dirname, "public")));
   app.use(cors());
   app.use(json());
   app.use(urlencoded({ extended: true }));
@@ -52,6 +56,10 @@ async function main() {
   app.use("/api", pluginRoutes);
   app.use("/api", devicesRoutes);
   app.use("/api", schedulerRoutes);
+
+  app.get("/*", (_req, res) => {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
+  });
 
   //run server
   app.listen(33333, () => {

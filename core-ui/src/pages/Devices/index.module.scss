@@ -5,7 +5,6 @@
   overflow: auto;
   .table-container {
     width: 100%;
-    height: calc(50px * 13 + 25px);
     background-color: white;
     border: 0px solid rgba(0, 0, 0, 0.125);
     border-radius: 0.75em;
@@ -28,7 +27,6 @@
 }
 .button {
   border: none;
-  padding: 0;
   height: 42px;
   width: 42px;
   border-radius: 12px;

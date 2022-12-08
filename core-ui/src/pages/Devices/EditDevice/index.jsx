@@ -1,4 +1,4 @@
-import { useCreateDevice, useDevices, useGetProtocol, useProtocol } from "apis";
+import { useCreateDevice, useDevices, useGetProtocol } from "apis";
 import style from "./index.module.scss";
 import { BsArrowLeft } from "react-icons/bs";
 import clsx from "clsx";

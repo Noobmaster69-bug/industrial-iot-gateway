@@ -147,7 +147,7 @@ class DeviceController {
     };
     let _orderBy: Array<any> = [orderBy || "name"];
     if (_orderBy[0] === "downProtocol" || _orderBy[0] === "upProtocol") {
-      _orderBy = [{ model: Protocols, as: orderBy[0] }, "name"];
+      _orderBy = [_orderBy[0], "name"];
     }
     const result = await Devices.findAndCountAll({
       where: JSON.parse(
@@ -257,6 +257,43 @@ class DeviceController {
     const dormant = await Devices.count({ where: { status: "dormant" } });
     const total = await Devices.count();
     res.send({ active, dormant, total });
+  }
+  public static async getProtocol(req: Request, res: Response) {
+    const {
+      plugins = "mainflux:random",
+      start,
+      limit,
+    } = req.query as unknown as {
+      plugins: string;
+      start: number;
+      limit: number;
+    };
+    const include = await Promise.all(
+      plugins
+        .split(":")
+        .map(async (plugin) => {
+          return (
+            (await southBound.getPlugin(plugin)) ||
+            (await northBound.getPlugin(plugin))
+          )?.Protocols;
+        })
+        .filter((plugins) => plugins !== undefined)
+    );
+    const { rows, count } = await Protocols.findAndCountAll({
+      where: {
+        plugin: plugins.split(":"),
+      },
+      limit: limit || 10,
+      offset: start || 0,
+      //@ts-ignore
+      include: include,
+    });
+    res.send({
+      protocol: rows,
+      count,
+      limit: limit || 10,
+      start: start || 0,
+    });
   }
 }
 export { DeviceController };

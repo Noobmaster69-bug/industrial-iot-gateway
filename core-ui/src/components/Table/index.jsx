@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { AiOutlineSearch, AiOutlinePlus, AiOutlineEdit } from "react-icons/ai";
+import {
+  AiOutlineSearch,
+  AiOutlinePlus,
+  AiOutlineEdit,
+  AiOutlineArrowLeft,
+  AiOutlineArrowRight,
+} from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
 import style from "./index.module.scss";
 import ReactTooltip from "react-tooltip";
@@ -8,8 +14,12 @@ import { DownArrow, UpArrow } from "./icon";
 
 import { useMemo } from "react";
 import { useCallback } from "react";
+import { Loading } from "components/ErrorPages";
 
-function Loading() {
+function NoRows({ isLoading }) {
+  if (isLoading) {
+    return <Loading />;
+  }
   return <div className={style["empty-table"]}>no rows</div>;
 }
 
@@ -18,19 +28,28 @@ export default function Table({
   data = [],
   className = "",
   checkbox,
+  chooseBox = false,
   searchID,
   onAdd = () => {},
   onDeleteRow = () => {},
   onEditRow = () => {},
+  onSelect = () => {},
   addBox = true,
   removeBox = true,
   editBox = true,
   onSort = () => {},
+  limit = 10,
+  start = 0,
+  total = 10,
+  onChangePage = () => {},
+  onChoosen = () => {},
+  isLoading = false,
 }) {
   const [rows, setRows] = useState(data);
   const [sortMethod, setSortMethod] = useState({ id: null, state: null });
   const [regex, setRegex] = useState();
-  function onSelectAll(state) {
+
+  function _onSelectAll(state) {
     const newRows = rows.map((row) => {
       return { ...row, ___isSelect: state };
     });
@@ -40,7 +59,7 @@ export default function Table({
       onSelect(selectedRows);
     }
   }
-  function onSelect(index) {
+  function _onSelect(index) {
     const newRows = rows.map((row, i) => {
       if (i !== index) {
         return row;
@@ -52,6 +71,20 @@ export default function Table({
     const selectedRows = newRows.filter((row) => row.___isSelect === true);
     if (onSelect) {
       onSelect(selectedRows);
+    }
+  }
+  function _onChoosen(index) {
+    const newRows = rows.map((row, i) => {
+      if (i !== index) {
+        return { ...row, ___isChoosen: false };
+      } else {
+        return { ...row, ___isChoosen: !row.___isChoosen };
+      }
+    });
+    setRows(newRows);
+    const selectedRows = newRows.filter((row) => row.___isChoosen === true);
+    if (onChoosen) {
+      onChoosen(selectedRows);
     }
   }
   /**
@@ -88,15 +121,19 @@ export default function Table({
   useEffect(() => {
     setRows(data);
   }, [data]);
+
   return (
-    <div className={`${style.container} ${className}`}>
+    <div
+      className={`${style.container} ${className}`}
+      style={{ height: `calc(50px * ${limit + 3} + 25px)` }}
+    >
       <table className={style.table}>
         <thead className={style.header}>
           <tr>
             <td
               colSpan={
                 head.length +
-                (checkbox & 1) +
+                ((checkbox || (chooseBox && checkbox === false)) & 1) +
                 ((editBox || removeBox) && (!removeBox || !addBox) && 1)
               }
               className={style["search-cell"]}
@@ -165,9 +202,14 @@ export default function Table({
                 <input
                   type="checkbox"
                   onChange={(element) => {
-                    onSelectAll(element.target.checked);
+                    _onSelectAll(element.target.checked);
                   }}
                 />
+              </td>
+            )}
+            {chooseBox && !checkbox && (
+              <td className={style.checkbox}>
+                <input type="checkbox" hidden />
               </td>
             )}
             {head.map((e, id) => (
@@ -226,9 +268,22 @@ export default function Table({
                         type="checkbox"
                         checked={row.___isSelect || false}
                         onClick={() => {
-                          onSelect(i);
+                          _onSelect(i);
                         }}
                         value={row.___isSelect}
+                        onChange={() => {}}
+                      />
+                    </td>
+                  )}
+                  {chooseBox && !checkbox && (
+                    <td className={style.checkbox}>
+                      <input
+                        type="radio"
+                        checked={row.___isChoosen || false}
+                        onClick={() => {
+                          _onChoosen(i);
+                        }}
+                        value={row.___isChoosen}
                         onChange={() => {}}
                       />
                     </td>
@@ -302,7 +357,41 @@ export default function Table({
             })}
         </tbody>
       </table>
-      <span style={{ flex: "1 1 0%" }}>{data.length === 0 && <Loading />}</span>
+      <span style={{ flex: "1 1 0%" }}>
+        {data.length === 0 && <NoRows isLoading={isLoading} />}
+      </span>
+      <div className={style["tool-box"]}>
+        <button
+          className={clsx([
+            style["button"],
+            start === 0 && style["button-inactive"],
+          ])}
+          onClick={() => {
+            onChangePage({
+              start: start - limit,
+            });
+          }}
+        >
+          <AiOutlineArrowLeft size={20} />
+        </button>
+        <span style={{ margin: "0 16px" }}>
+          Page {Math.floor(start / limit + 1)} /{" "}
+          {Math.floor((total - 1) / limit) + 1}
+        </span>
+        <button
+          className={clsx([
+            style["button"],
+            total - start <= limit && style["button-inactive"],
+          ])}
+          onClick={() => {
+            onChangePage({
+              start: start + limit,
+            });
+          }}
+        >
+          <AiOutlineArrowRight size={20} />
+        </button>
+      </div>
     </div>
   );
 }
@@ -319,8 +408,13 @@ export function SortTable({
   addBox = true,
   removeBox = true,
   editBox = true,
+  limit = 10,
+  total = 10,
+  isLoading = false,
 }) {
   const [sortMethod, setSortMethod] = useState({ id: null, state: null });
+  const [start, setStart] = useState(0);
+
   const sort = useCallback(
     (rows) => {
       if (sortMethod.state === "down") {
@@ -356,10 +450,19 @@ export function SortTable({
     [head, sortMethod.id, sortMethod.state]
   );
   const rows = useMemo(() => sort(data), [sort, data]);
+
+  function onChangePage({ start }) {
+    setStart(start);
+  }
   return (
     <Table
       head={head}
-      data={rows}
+      data={rows.filter((_row, index) => {
+        if (index > start && index < start + limit) {
+          return true;
+        }
+        return false;
+      })}
       className={className}
       checkbox={checkbox}
       searchID={searchID}
@@ -372,6 +475,11 @@ export function SortTable({
       onSort={(_sortMethod) => {
         setSortMethod(_sortMethod);
       }}
+      isLoading={isLoading}
+      limit={limit}
+      total={total}
+      start={start}
+      onChangePage={onChangePage}
     />
   );
 }

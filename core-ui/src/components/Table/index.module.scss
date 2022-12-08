@@ -142,6 +142,36 @@
       }
     }
   }
+  .tool-box {
+    padding-right: 16px;
+    height: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .button {
+    border: none;
+    padding: 0;
+    height: 42px;
+    width: 42px;
+    border-radius: 12px;
+    background-color: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    &:hover {
+      background-color: var(--button-hover);
+    }
+    &-inactive {
+      pointer-events: none;
+      svg {
+        fill: #b9b9b9;
+      }
+    }
+  }
 }
 
 .empty-table {
