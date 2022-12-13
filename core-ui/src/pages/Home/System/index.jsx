@@ -38,7 +38,7 @@ export default function System() {
   const { data, isLoading, isFetching } = useSystemInfo();
   if (!isConnected && isLoading && isFetching) {
     return (
-      <div className={style.container} style={{ padding: 0, display: "block" }}>
+      <div className={style.container}>
         <Skeleton height={"100%"} width={"100%"} count={1} />
       </div>
     );

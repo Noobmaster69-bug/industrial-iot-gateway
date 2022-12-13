@@ -3,7 +3,8 @@ import logger from "logger";
 import crypto from "crypto";
 const clientId = crypto.randomBytes(16).toString("hex");
 const mqttClient = mqtt.connect({
-  clientId: clientId,
+  clientId,
+  clean: false,
   host: "localhost",
 });
 mqttClient.on("connect", () => {

@@ -32,6 +32,7 @@ class AuthController {
   }
   public static async mqttAuth(req: Request, res: Response) {
     const { clientid, username, password } = req.body;
+    console.log({ clientid, id: clientId });
     if (clientid === clientId) {
       return res.sendStatus(200);
     }
@@ -44,13 +45,15 @@ class AuthController {
         throw new Error("user not found");
       } catch (err) {}
     }
-    const jwtSecret = await AuthConfig.getJwtSecret();
-    const result = jwt.verify(clientid, jwtSecret, {
-      algorithms: ["RS256"],
-    });
-    if (result) {
-      return res.sendStatus(200);
-    }
+    try {
+      const jwtSecret = await AuthConfig.getJwtSecret();
+      const result = await jwt.verify(clientid, jwtSecret, {
+        algorithms: ["RS256"],
+      });
+      if (result) {
+        return res.sendStatus(200);
+      }
+    } catch (err) {}
 
     return res.sendStatus(400);
   }

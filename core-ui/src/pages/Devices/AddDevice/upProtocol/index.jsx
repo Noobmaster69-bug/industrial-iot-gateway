@@ -31,6 +31,7 @@ export default function UpProtocol({ formData = {}, onChange = () => {} }) {
     <div className={style["protocol-panel"]}>
       <div className={style["panel-header"]}>
         <h3>North Bound Panel</h3>
+        <span>Create new connection</span>
         <select
           onChange={(e) => {
             onChange({
@@ -51,6 +52,8 @@ export default function UpProtocol({ formData = {}, onChange = () => {} }) {
             );
           })}
         </select>
+        <span> Or</span>
+        <button type="button">using existed connection</button>
       </div>
       <hr />
       <div className={style["form-container"]}>

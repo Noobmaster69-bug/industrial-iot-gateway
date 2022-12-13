@@ -15,7 +15,7 @@ export default function Devices() {
     );
   }
   return (
-    <div className={style.container} style={{ backgroundColor: "#fff" }}>
+    <div className={style.container}>
       <h2>Devices</h2>
       <div className={style["devices-status"]}>
         <div>

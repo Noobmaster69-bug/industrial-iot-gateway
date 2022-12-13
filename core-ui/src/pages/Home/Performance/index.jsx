@@ -50,7 +50,7 @@ export default function Performance() {
   };
 
   return (
-    <div className={style.container} style={{ backgroundColor: "#fff" }}>
+    <div className={style.container}>
       <h2 className={style.header}>Performance</h2>
       <div className={style.content}>
         <Chart

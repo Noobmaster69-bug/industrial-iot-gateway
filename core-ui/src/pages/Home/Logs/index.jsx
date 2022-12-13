@@ -17,7 +17,7 @@ export default function Log() {
     );
   }
   return (
-    <div className={style.container} style={{ backgroundColor: "#fff" }}>
+    <div className={style.container}>
       <h2>System Log</h2>
       <div className={style.content}>
         {logs.map((log, index) => (
