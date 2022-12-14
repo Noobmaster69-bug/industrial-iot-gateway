@@ -1,8 +1,7 @@
 import { ReactElement } from "react";
 
 export interface DetailProps {
-  keys: Array<string>;
-  values: {
+  keys: {
     [key: string]: {
       type:
         | "STRING"
@@ -14,13 +13,16 @@ export interface DetailProps {
         | "BLOBS"
         | "ENUM";
       defaultValue?: string | number;
-      values: Array<string | number>;
+      values?: Array<string | number>;
       placeholder?: string | number;
       label?: string;
       allowNull?: boolean;
-      unique: boolean | string;
+      unique?: boolean | string;
     };
   };
+  values?: object;
+  onChange?: (newObject: object) => void;
+  header: string | ReactElement | null;
 }
 declare function DetailForm(DetailProps: DetailProps): ReactElement;
 

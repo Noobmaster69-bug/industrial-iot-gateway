@@ -13,6 +13,8 @@ import Channels from "./Channel";
 import AddChannel from "./AddChannel";
 import EditChannel from "./EditChannel";
 
+import DetailForm from "components/DetailForm";
+
 export default function AddDevice() {
   const {
     data: { southBound },
@@ -121,9 +123,9 @@ export default function AddDevice() {
         </div>
         <div className={style.body}>
           <BasicPanel formData={formData} onChange={handleChange} />
-          <UpProtocol formData={formData} onChange={handleChange} />
-          <DownProtocol formData={formData} onChange={handleChange} />
-          <Channels
+          {/* <UpProtocol formData={formData} onChange={handleChange} /> */}
+          {/* <DownProtocol formData={formData} onChange={handleChange} /> */}
+          {/* <Channels
             formData={formData}
             onChange={handleChange}
             onAdd={() => {
@@ -136,7 +138,7 @@ export default function AddDevice() {
             onDeleteRow={(channels) => {
               handleChange({ channels });
             }}
-          />
+          /> */}
         </div>
       </form>
       <AddChannel

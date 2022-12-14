@@ -1,3 +1,6 @@
+import { useMemo } from "react";
+import Paper from "components/Paper";
+import DetailForm from "components/DetailForm";
 import style from "./index.module.scss";
 export default function BasicPanel({
   formData = {
@@ -9,15 +12,41 @@ export default function BasicPanel({
   onChange = () => {},
 }) {
   function handleChange(e) {
-    onChange({ ...formData, [e.target.name]: e.target.value });
+    onChange({ ...formData, ...e });
   }
-
+  const keys = useMemo(() => {
+    return {
+      name: {
+        type: "STRING",
+        allowNull: false,
+        placeholder: "Inverter 1,...",
+      },
+      manufacturer: {
+        type: "STRING",
+        placeholder: "Moxa",
+      },
+      type: {
+        type: "STRING",
+        placeholder: "Inverter,...",
+      },
+      modelName: {
+        type: "STRING",
+        label: "Model Name",
+        placeholder: "SUN2000,...",
+      },
+    };
+  }, []);
   return (
     <div className={style["basic-panel"]}>
-      <h3 className={style["panel-header"]}>Basic Details</h3>
-      <hr />
-      <div className={style["form-container"]}>
-        <table>
+      <Paper>
+        <div className={style["form-container"]}>
+          <DetailForm
+            keys={keys}
+            onChange={handleChange}
+            values={formData}
+            header="Basic Details"
+          />
+          {/* <table>
           <tbody>
             <tr>
               <td>
@@ -85,8 +114,9 @@ export default function BasicPanel({
               </td>
             </tr>
           </tbody>
-        </table>
-      </div>
+        </table> */}
+        </div>
+      </Paper>
     </div>
   );
 }
