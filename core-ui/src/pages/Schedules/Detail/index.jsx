@@ -75,7 +75,7 @@ export default function ScheduleDetail() {
           <h3 className={style["panel-header"]}>Basic Details</h3>
           <hr />
           <div className={style["form-container"]}>
-            <table>
+            <table className={style["table"]}>
               <tbody>
                 <tr>
                   <td>

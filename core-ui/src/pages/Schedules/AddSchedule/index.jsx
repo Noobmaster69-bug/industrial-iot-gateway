@@ -1,13 +1,13 @@
-import { useAllDevices } from "apis";
+import { useAllDevices, useDevice } from "apis";
 import clsx from "clsx";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BsArrowLeft } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import style from "./index.module.scss";
 import { Cron } from "react-js-cron";
 import "react-js-cron/dist/styles.css";
 import cronstrue from "cronstrue";
-import Channels from "./Channels";
+import { useCreateSchedule } from "apis";
 export default function AddSchedule() {
   const [formData, setFormData] = useState({
     cron: "* * * * *",
@@ -21,13 +21,32 @@ export default function AddSchedule() {
   function handleChange(newFormData) {
     setFormData((formData) => ({ ...formData, ...newFormData }));
   }
-  const { data: devicesQueryData } = useAllDevices({ start: 0, limit: 1000 });
+  const { data: devicesQueryData } = useAllDevices({
+    start: 0,
+    limit: 1000,
+  });
   const devicesData = useMemo(
     () => devicesQueryData?.devices || [],
     [devicesQueryData?.devices]
   );
+  const { mutate: createSchedule } = useCreateSchedule();
+  useEffect(() => {
+    handleChange({
+      Device: {
+        id: devicesData[0]?.id,
+      },
+      device_id: devicesData[0]?.id,
+      channels: devicesData
+        .find((device) => device.id === Number(devicesData[0]?.id))
+        ?.Channels.map((channel) => channel.id),
+    });
+  }, [devicesData]);
+  function onSubmit(e) {
+    e.preventDefault();
+    createSchedule(formData);
+  }
   return (
-    <form className={style.container}>
+    <form className={style.container} onSubmit={onSubmit}>
       <div className={style.header}>
         <div
           className={style["back"]}
@@ -59,7 +78,20 @@ export default function AddSchedule() {
                     </label>
                   </td>
                   <td>
-                    <select>
+                    <select
+                      onChange={(e) => {
+                        handleChange({
+                          Device: {
+                            id: Number(e.target.value),
+                          },
+                          channels: devicesData
+                            .find(
+                              (device) => device.id === Number(e.target.value)
+                            )
+                            .map((device) => device.id),
+                        });
+                      }}
+                    >
                       {devicesData.map((value, index) => (
                         <option key={index} value={value.id}>
                           {value.name}
@@ -128,7 +160,23 @@ export default function AddSchedule() {
             </table>
           </div>
         </div>
-        <Channels formData={formData} />
+        {/* <Channels
+          formData={formData}
+          onAdd={() => {
+            setOpenAddChannel(true);
+          }}
+        /> */}
+        {/* <AddChannel
+          formData={formData}
+          open={openAddChannel}
+          onConfrim={(data) => {
+            handleChange({ channels: data });
+            setOpenAddChannel(false);
+          }}
+          onCancel={() => {
+            setOpenAddChannel(false);
+          }}
+        /> */}
       </div>
     </form>
   );

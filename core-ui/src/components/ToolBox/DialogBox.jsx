@@ -45,7 +45,6 @@ export default function DialogBox({
               className={clsx([style.confirm, style.button])}
               onClick={() => {
                 onConfirm();
-                // close();
               }}
             >
               {confirm}

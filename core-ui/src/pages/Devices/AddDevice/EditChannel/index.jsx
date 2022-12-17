@@ -1,7 +1,7 @@
 import style from "./index.module.scss";
 import DialogBox from "components/ToolBox/DialogBox";
 import { useRef } from "react";
-import { useProtocols } from "apis";
+import { usePlugins } from "apis";
 export default function EditChannel({
   formData,
 
@@ -12,7 +12,7 @@ export default function EditChannel({
 }) {
   const {
     data: { southBound },
-  } = useProtocols();
+  } = usePlugins();
   const downService = southBound.find(
     (plugin) => plugin.name === formData.downProtocol?.plugin
   );

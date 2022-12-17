@@ -7,7 +7,7 @@ import pluralize from "pluralize";
 class Schedules extends Model {
   declare id: number;
   declare cron: string;
-  declare state: "start" | "stop";
+  declare state: "running" | "stopping";
 
   static async getAllTask({ limit = Number.MAX_SAFE_INTEGER, start = 0 }) {
     const { count, rows: schedules } = await this.findAndCountAll({
@@ -178,6 +178,8 @@ Schedules.init(
       defaultValue: "running",
     },
   },
-  { sequelize }
+  {
+    sequelize,
+  }
 );
 export { Schedules };

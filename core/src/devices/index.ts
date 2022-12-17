@@ -31,8 +31,14 @@ export async function DevicesInit() {
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
   });
-  Devices.hasMany(Schedules);
-  Schedules.belongsTo(Devices);
+  Devices.hasMany(Schedules, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  });
+  Schedules.belongsTo(Devices, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  });
 
   Schedules.belongsToMany(Channels, { through: "SchedulerChannels" });
   Channels.belongsToMany(Schedules, { through: "SchedulerChannels" });

@@ -1,11 +1,12 @@
 import style from "./index.module.scss";
-import { useAllSchedules } from "apis";
+import { useAllSchedules, useDeleteSchedule } from "apis";
 import { Loading } from "components/ErrorPages";
 import { useState } from "react";
 import Table from "components/Table";
 import cronstrue from "cronstrue";
 import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineEllipsis } from "react-icons/ai";
+import { ConfirmBox } from "components/ToolBox";
 import ReactTooltip from "react-tooltip";
 export default function Schedules() {
   const [pages, setPages] = useState({ start: 0 });
@@ -15,6 +16,9 @@ export default function Schedules() {
     isFetching,
   } = useAllSchedules({ ...pages, limit: 10 });
   const navigate = useNavigate();
+  const [openConfirmBox, setOpenConfirmBox] = useState(false);
+  const [chosenRow, setChosenRow] = useState(null);
+  const { mutate: deleteSchedule } = useDeleteSchedule();
   const tableHead = [
     {
       id: "id",
@@ -129,7 +133,30 @@ export default function Schedules() {
           onAdd={() => {
             navigate("new");
           }}
+          onDeleteRow={(row) => {
+            setChosenRow(row?.id?.key);
+            setOpenConfirmBox(true);
+          }}
+          start={start}
+          limit={limit}
+          total={total}
+          editBox={false}
+          onChangePage={(pages) => {
+            setPages(pages);
+          }}
         />
+        <ConfirmBox
+          open={openConfirmBox}
+          onConfirm={() => {
+            deleteSchedule(chosenRow);
+            setOpenConfirmBox(false);
+          }}
+          onClose={() => {
+            setOpenConfirmBox(false);
+          }}
+        >
+          Delete Schedule?
+        </ConfirmBox>
       </div>
     </div>
   );

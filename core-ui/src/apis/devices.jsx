@@ -36,12 +36,12 @@ export function useDeleteDevice() {
   });
 }
 
-async function getProtocols() {
+async function getPlugins() {
   const data = await axios.get("/plugin/").then(({ data }) => data);
   return data;
 }
-export function useProtocols() {
-  return useQuery(["plugin"], getProtocols, {
+export function usePlugins() {
+  return useQuery(["plugin"], getPlugins, {
     staleTime: 2 * 3600 * 1000,
     retry: false,
     placeholderData: { southBound: [], northBound: [] },
@@ -67,12 +67,15 @@ export function useCreateDevice({ onSuccess = () => {} }) {
   });
 }
 
-async function getDevice({ id, name }) {
-  const { data } = await axios.get("/device", { params: { id, name } });
+async function getDevice({ queryKey }) {
+  const [_key, { id }] = queryKey;
+  const { data } = await axios.get("/device", { params: { id } });
   return data;
 }
-export function useDevice({ id, name }) {
-  return useQuery(["devices", { id, name }], getDevice, {
+export function useDevice({ id }) {
+  return useQuery({
+    queryKey: ["devices", { id }],
+    queryFn: getDevice,
     staleTime: 60000 * 2,
   });
 }

@@ -81,6 +81,8 @@ Devices.init(
 
 class Protocols extends Model {
   declare name: string;
+  declare plugin: string;
+  declare type: string;
 }
 
 Protocols.init(
@@ -102,6 +104,10 @@ Protocols.init(
     plugin: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    type: {
+      type: DataTypes.ENUM,
+      values: ["upProtocol", "downProtocol"],
     },
   },
   { sequelize }

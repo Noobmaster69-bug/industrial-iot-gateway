@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import {
   AiOutlineSearch,
   AiOutlinePlus,
@@ -395,16 +395,17 @@ export default function Table({
     </div>
   );
 }
-
-export function SortTable({
+function _SortTable({
   head = [],
   data = [],
   className = "",
   checkbox,
+  chooseBox = false,
   searchID,
   onAdd = () => {},
   onDeleteRow = () => {},
   onEditRow = () => {},
+  onSelect = () => {},
   addBox = true,
   removeBox = true,
   editBox = true,
@@ -458,11 +459,12 @@ export function SortTable({
     <Table
       head={head}
       data={rows.filter((_row, index) => {
-        if (index > start && index < start + limit) {
+        if (index >= start && index < start + limit) {
           return true;
         }
         return false;
       })}
+      chooseBox={chooseBox}
       className={className}
       checkbox={checkbox}
       searchID={searchID}
@@ -480,6 +482,8 @@ export function SortTable({
       total={total}
       start={start}
       onChangePage={onChangePage}
+      onSelect={onSelect}
     />
   );
 }
+export const SortTable = memo(_SortTable);

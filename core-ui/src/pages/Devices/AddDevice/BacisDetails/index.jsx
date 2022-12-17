@@ -34,6 +34,11 @@ export default function BasicPanel({
         label: "Model Name",
         placeholder: "SUN2000,...",
       },
+      key: {
+        type: "STRING",
+        label: "Device Key",
+        allowNull: false,
+      },
     };
   }, []);
   return (
@@ -46,75 +51,6 @@ export default function BasicPanel({
             values={formData}
             header="Basic Details"
           />
-          {/* <table>
-          <tbody>
-            <tr>
-              <td>
-                <label>
-                  <h4>Name</h4>
-                </label>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Inverter 1,..."
-                  required
-                  value={formData.name}
-                  onChange={handleChange}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label>
-                  <h4>Manufacturer</h4>
-                </label>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  name="manufacturer"
-                  placeholder="Schneider,..."
-                  value={formData.manufacturer}
-                  onChange={handleChange}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label>
-                  <h4>Model</h4>
-                </label>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  name="modelName"
-                  placeholder="SUN2000,..."
-                  value={formData.modelName}
-                  onChange={handleChange}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label>
-                  <h4>Type</h4>
-                </label>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  name="type"
-                  placeholder="Inverter,..."
-                  value={formData.type}
-                  onChange={handleChange}
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table> */}
         </div>
       </Paper>
     </div>

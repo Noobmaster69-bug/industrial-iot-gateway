@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { Schedules } from "./scheduler.models";
 import { Devices, Channels } from "devices";
+import Scheduler from "./scheduler";
 import { sequelize } from "ultils";
 interface SchedulerDTO {
   cron: string;
@@ -36,6 +37,12 @@ class SchedulerController {
       }
       return result;
     });
+    if (result.state === "running") {
+      const schedule = await Schedules.getTask(result.id);
+      Scheduler.newReadDataTask(schedule.id, schedule.cron, {
+        startNow: schedule.state === "running",
+      });
+    }
     res.send(result);
   }
   public static async getSchedules(req: Request, res: Response) {
@@ -48,6 +55,13 @@ class SchedulerController {
   public static async getSchedule(req: Request, res: Response) {
     const { id } = req.query as unknown as { id: number };
     res.send(await Schedules.getTask(id || 1));
+  }
+  public static async deleteSchedule(req: Request, res: Response) {
+    const { id } = req.query as unknown as { id: number };
+    const schedule = await Schedules.findByPk(id);
+    await schedule?.destroy();
+    Scheduler.stop(id);
+    res.send(200);
   }
 }
 export { SchedulerController };

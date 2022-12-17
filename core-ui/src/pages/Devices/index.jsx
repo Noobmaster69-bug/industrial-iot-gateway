@@ -239,7 +239,7 @@ export default function Devices() {
   return (
     <div className={style.container}>
       <div className={style["table-container"]}>
-        <DevicesTable />
+        <DevicesTable editBox={false} />
       </div>
     </div>
   );

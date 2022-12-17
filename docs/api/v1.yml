@@ -6,6 +6,34 @@ servers:
   - description: Default server
     url: http://localhost:33333/api/
 paths:
+  /plugin/southBound/random:
+    get:
+      summary: Get random properties
+      tags:
+        - "South Bound Plugin"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Random"
+
+  /plugin/southBound:
+    get:
+      summary: Get list of sound bound plugin
+      tags:
+        - "Plugin"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  anyOf:
+                    - $ref: "#/components/schemas/SouthBoundPlugin"
   /plugin:
     get:
       summary: Get list of plugin
@@ -22,14 +50,7 @@ paths:
                   southBound:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        name:
-                          type: string
-                        channels:
-                          type: object
-                        protocols:
-                          type: object
+                      $ref: "#/components/schemas/SouthBoundPlugin"
                   northBound:
                     type: array
                     items:
@@ -38,7 +59,7 @@ paths:
                         name:
                           type: string
                         protocols:
-                          type: object
+                          $ref: "#/components/schemas/DynamicProps"
   /device/:
     post:
       summary: Create new device
@@ -103,6 +124,72 @@ paths:
         "200":
           description: "OK"
 
+    delete:
+      summary: Delete device by ID
+      tags:
+        - "Devices"
+      parameters:
+        - in: query
+          name: id
+          description: device id
+          schema:
+            type: number
+            example: 1
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Some thing wrong"
+    get:
+      summary: get device by id or name
+      tags:
+        - "Devices"
+      parameters:
+        - in: query
+          name: id
+          description: device id
+          schema:
+            type: number
+            example: 1
+        - in: query
+          name: name
+          description: device name
+          schema:
+            type: string
+            example: "Device 1"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Device"
+
+  /devices/status:
+    get:
+      summary: Get devices status sumary
+      tags:
+        - "Devices"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  active:
+                    type: number
+                    example: 0
+                  dormant:
+                    type: number
+                    example: 1
+                  total:
+                    type: number
+                    example: 1
+
   /devices/:
     get:
       summary: Query all devices
@@ -111,6 +198,24 @@ paths:
       responses:
         "200":
           description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  limit:
+                    type: number
+                    example: 10
+                  start:
+                    type: number
+                    example: 0
+                  total:
+                    type: number
+                    example: 100
+                  devices:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Device"
 
   /auth/:
     get:
@@ -519,6 +624,100 @@ components:
         createdAt:
           type: string
           format: date-time
+
+    DynamicProps:
+      additionalProperties:
+        type: object
+        properties:
+          type:
+            type: string
+            enum:
+              [
+                "INTEGER",
+                "STRING",
+                "BOOLEAN",
+                "REAL",
+                "DECIMAL",
+                "DATES",
+                "BLOBS",
+                "ENUM",
+              ]
+          defaultValue:
+            type: string
+          values:
+            type: array
+          unique:
+            type: string
+          allowNull:
+            type: boolean
+          label:
+            type: string
+          placeholder:
+            type: string
+
+    SouthBoundPlugin:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "random"
+        channels:
+          $ref: "#/components/schemas/DynamicProps"
+        protocols:
+          $ref: "#/components/schemas/DynamicProps"
+
+    Random:
+      type: object
+      properties:
+        name:
+          type: string
+          default: "random"
+        channels:
+          type: object
+          properties:
+            max:
+              type: string
+              default: "REAL"
+            min:
+              type: string
+              default: "REAL"
+        protocols:
+          type: object
+          properties:
+            seed:
+              type: string
+              default: "REAL"
+    Device:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        name:
+          type: string
+          example: "Device 1"
+        modelName:
+          type: string
+          example: "Model 1"
+        manufacturer:
+          type: string
+          example: "Back Khoa"
+        type:
+          type: string
+          example: "Power Meter"
+        status:
+          type: string
+          enum: ["dormant", "active"]
+        createdAt:
+          type: string
+          format: "date-time"
+        updateAt:
+          type: string
+          format: "date-time"
+        upProtocol:
+          type: object
+        downProtocol:
+          type: object
 
 security:
   - bearerAuth: []

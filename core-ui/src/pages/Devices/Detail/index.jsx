@@ -1,4 +1,4 @@
-import { useProtocols, useDevice } from "apis";
+import { usePlugins, useDevice } from "apis";
 import style from "./index.module.scss";
 import { BsArrowLeft } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +13,7 @@ export default function Detail() {
   const {
     data: { southBound },
     isLoading: loading2,
-  } = useProtocols();
+  } = usePlugins();
   const nevigate = useNavigate();
   if (loading1 && loading2) {
     return <div></div>;

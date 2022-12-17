@@ -57,6 +57,7 @@ class DeviceController {
               downProtocol: {
                 name: downProtocol?.name,
                 plugin: downProtocol?.plugin,
+                type: "downProtocol",
                 // Eager loading plugin table
                 [pluralize.singular(downPlugin?.Protocols.getTableName() + "")]:
                   downPluginProps,
@@ -64,6 +65,7 @@ class DeviceController {
               upProtocol: {
                 name: upProtocol?.name,
                 plugin: upProtocol?.plugin,
+                type: "upProtocol",
                 // Eager loading plugin table
                 [pluralize.singular(upPlugin?.Protocols.getTableName() + "")]:
                   upPluginProps,
@@ -168,6 +170,9 @@ class DeviceController {
           as: "downProtocol",
           attributes: ["name"],
         },
+        {
+          model: Channels,
+        },
       ],
       //@ts-ignore
       order: [[..._orderBy, (order || "DESC").toUpperCase()]],
@@ -249,8 +254,12 @@ class DeviceController {
   public static async deleteDevices(req: Request, res: Response) {
     const { id } = req.query as unknown as { id: number };
     const device = await Devices.findByPk(id);
-    await device?.destroy();
-    res.send(200);
+    try {
+      await device?.destroy();
+    } catch (err) {
+      return res.sendStatus(400);
+    }
+    return res.send(200);
   }
   public static async getDeviceStatus(_req: Request, res: Response) {
     const active = await Devices.count({ where: { status: "active" } });
@@ -258,39 +267,52 @@ class DeviceController {
     const total = await Devices.count();
     res.send({ active, dormant, total });
   }
-  public static async getProtocol(req: Request, res: Response) {
+
+  public static async getConnections(req: Request, res: Response) {
     const {
-      plugins = "mainflux:random",
+      types = ["upProtocol", "downProtocol"],
       start,
       limit,
     } = req.query as unknown as {
-      plugins: string;
+      types: Array<"upProtocol" | "downProtocol">;
       start: number;
       limit: number;
     };
-    const include = await Promise.all(
-      plugins
-        .split(":")
-        .map(async (plugin) => {
-          return (
-            (await southBound.getPlugin(plugin)) ||
-            (await northBound.getPlugin(plugin))
-          )?.Protocols;
+    const includes = (
+      await Promise.all(
+        types.map(async (type) => {
+          if (type === "upProtocol") {
+            const temp = await northBound.list();
+            return temp.map((plugin) => plugin.Protocols);
+          } else {
+            const temp = await southBound.list();
+            return temp.map((plugin) => plugin.Protocols);
+          }
         })
-        .filter((plugins) => plugins !== undefined)
-    );
+      )
+    ).flat();
     const { rows, count } = await Protocols.findAndCountAll({
       where: {
-        plugin: plugins.split(":"),
+        type: types,
       },
       limit: limit || 10,
       offset: start || 0,
       //@ts-ignore
-      include: include,
+      include: includes,
     });
+
     res.send({
-      protocol: rows,
-      count,
+      connections: rows.map((row) => {
+        return {
+          name: row.name,
+          plugin: row.plugin,
+          //@ts-ignore
+          ...row[
+            row.plugin[0]?.toUpperCase() + row.plugin.slice(1) + "Protocol"
+          ].toJSON(),
+        };
+      }),
+      total: count,
       limit: limit || 10,
       start: start || 0,
     });

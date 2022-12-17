@@ -6,8 +6,14 @@ export async function mainfluxInit({
 }: {
   Protocols: ModelStatic<Model>;
 }) {
-  Protocols.hasOne(MainfluxProtocol);
-  MainfluxProtocol.belongsTo(Protocols);
+  Protocols.hasOne(MainfluxProtocol, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  });
+  MainfluxProtocol.belongsTo(Protocols, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  });
   await MainfluxProtocol.sync();
   const connections = await MainfluxProtocol.findAll();
   for (const connection of connections) {

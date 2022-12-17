@@ -38,3 +38,7 @@ export function successToast(msg) {
   const toast = Toast("success");
   toast(msg);
 }
+
+export function toUpperCase(string) {
+  return string[0].toUpperCase() + string.slice(1);
+}

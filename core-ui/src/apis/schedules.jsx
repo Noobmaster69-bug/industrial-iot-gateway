@@ -1,5 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
-import { axios } from "utils";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { axios, successToast } from "utils";
 async function getAllSchedules({ queryKey }) {
   // eslint-disable-next-line no-unused-vars
   const [_key, { start, limit }] = queryKey;
@@ -22,7 +23,7 @@ async function getSchedule({ queryKey }) {
 }
 export function useSchedule(id) {
   return useQuery({
-    queryKey: ["schedule", id],
+    queryKey: ["schedules", id],
     queryFn: getSchedule,
     placeholderData: {
       id: -1,
@@ -34,6 +35,38 @@ export function useSchedule(id) {
       channels: [],
       downPlugin: {},
       upPlugin: {},
+    },
+  });
+}
+
+async function createSchedule(schedule) {
+  const { data } = await axios.post("/schedule", schedule);
+  return data;
+}
+export function useCreateSchedule() {
+  const navigate = useNavigate();
+  return useMutation({
+    mutationFn: createSchedule,
+    mutationKey: "schedules",
+    onSuccess: () => {
+      navigate(-1);
+    },
+  });
+}
+
+async function deleteSchedule(id) {
+  const { data } = await axios.delete("/schedule", { params: { id } });
+  return data;
+}
+
+export function useDeleteSchedule() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: deleteSchedule,
+    mutationKey: "schedules",
+    onSuccess: () => {
+      successToast("Success");
+      queryClient.invalidateQueries(["schedules"]);
     },
   });
 }

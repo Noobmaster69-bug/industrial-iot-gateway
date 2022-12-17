@@ -11,10 +11,22 @@ export async function randomInit({
   Channels: ModelStatic<Model>;
   Protocols: ModelStatic<Model>;
 }) {
-  Channels.hasOne(RandomChannels);
-  RandomChannels.belongsTo(Channels);
+  Channels.hasOne(RandomChannels, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  });
+  RandomChannels.belongsTo(Channels, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  });
 
-  Protocols.hasOne(RandomProtocols);
-  RandomProtocols.belongsTo(Protocols);
+  Protocols.hasOne(RandomProtocols, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  });
+  RandomProtocols.belongsTo(Protocols, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  });
 }
 export default RandomPlugin;

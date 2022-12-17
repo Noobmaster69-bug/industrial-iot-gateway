@@ -1,7 +1,7 @@
 //To do refactor me
 
 import { SortTable as Table } from "components/Table";
-import { useDevice, useProtocols } from "apis";
+import { useDevice, usePlugins } from "apis";
 import style from "./index.module.scss";
 import _ from "lodash";
 
@@ -13,7 +13,7 @@ export default function Channels({
 }) {
   const {
     data: { southBound },
-  } = useProtocols();
+  } = usePlugins();
   const { data: thisDevice } = useDevice({ id: formData?.Device?.id });
 
   const thisDownProtocol = (southBound || []).find(

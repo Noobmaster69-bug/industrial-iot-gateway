@@ -3,23 +3,21 @@ import { BsArrowLeft } from "react-icons/bs";
 import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
 import BasicPanel from "./BacisDetails";
-import DownProtocol from "./downProtocol";
+import DownProtocol from "./DownProtocol";
 import { useState } from "react";
 import _ from "lodash";
 import { errorToast as toast } from "utils";
-import { useCreateDevice, useProtocols } from "apis";
-import UpProtocol from "./upProtocol";
+import { useCreateDevice, usePlugins } from "apis";
+import UpProtocol from "./UpProtocol";
 import Channels from "./Channel";
 import AddChannel from "./AddChannel";
 import EditChannel from "./EditChannel";
-
-import DetailForm from "components/DetailForm";
 
 export default function AddDevice() {
   const {
     data: { southBound },
     isLoading,
-  } = useProtocols();
+  } = usePlugins();
 
   const [addChannel, setAddChannel] = useState(false);
   const [editChannel, setEditChannel] = useState(false);
@@ -34,6 +32,7 @@ export default function AddDevice() {
     manufacturer: "",
     modelName: "",
     type: "",
+    key: "",
     upProtocol: {},
     downProtocol: {},
     channels: [],
@@ -123,9 +122,9 @@ export default function AddDevice() {
         </div>
         <div className={style.body}>
           <BasicPanel formData={formData} onChange={handleChange} />
-          {/* <UpProtocol formData={formData} onChange={handleChange} /> */}
-          {/* <DownProtocol formData={formData} onChange={handleChange} /> */}
-          {/* <Channels
+          <UpProtocol formData={formData} onChange={handleChange} />
+          <DownProtocol formData={formData} onChange={handleChange} />
+          <Channels
             formData={formData}
             onChange={handleChange}
             onAdd={() => {
@@ -138,7 +137,7 @@ export default function AddDevice() {
             onDeleteRow={(channels) => {
               handleChange({ channels });
             }}
-          /> */}
+          />
         </div>
       </form>
       <AddChannel

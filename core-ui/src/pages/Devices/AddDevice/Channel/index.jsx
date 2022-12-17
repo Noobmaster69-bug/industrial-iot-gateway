@@ -1,5 +1,5 @@
 import { SortTable as Table } from "components/Table";
-import { useProtocols } from "apis";
+import { usePlugins } from "apis";
 import style from "./index.module.scss";
 import _ from "lodash";
 
@@ -12,7 +12,7 @@ export default function Channels({
 }) {
   const {
     data: { southBound },
-  } = useProtocols();
+  } = usePlugins();
   const downService = southBound.find(
     (plugin) => plugin.name === formData.downProtocol?.plugin
   );
