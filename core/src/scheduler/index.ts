@@ -4,8 +4,8 @@ export { default as routes } from "./scheduler.routes";
 export async function schedulerInit() {
   const { schedules } = await Schedules.getAllTask({});
   schedules.map((schedule) => {
-    // Scheduler.newReadDataTask(schedule.id, schedule.cron, {
-    //   startNow: schedule.state === "running",
-    // });
+    Scheduler.newReadDataTask(schedule.id, schedule.cron, {
+      startNow: schedule.state === "running",
+    });
   });
 }

@@ -42,10 +42,16 @@ Channels.init(
 );
 
 class Devices extends Model {
+  declare id: number;
   declare name: string;
   declare modelName: string;
   declare manufacturer: string;
   declare type: string;
+  declare downProtocol: {
+    id: number;
+    name: string;
+    plugin: string;
+  };
 }
 
 Devices.init(
@@ -74,6 +80,10 @@ Devices.init(
       type: DataTypes.ENUM,
       values: ["active", "dormant"],
       defaultValue: "dormant",
+    },
+    deviceKey: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   },
   { sequelize }

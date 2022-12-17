@@ -5,6 +5,8 @@ import { Devices, Channels, Protocols } from "./models";
 import { southBound, northBound } from "plugin";
 import _ from "lodash";
 import pluralize from "pluralize";
+import { Schedules } from "scheduler/scheduler.models";
+import Scheduler from "scheduler/scheduler";
 interface DeviceBody {
   name: string;
   modelName?: string;
@@ -25,6 +27,7 @@ interface DeviceBody {
     scale: number;
     precision: number;
   }>;
+  key: string;
 }
 
 class DeviceController {
@@ -37,6 +40,7 @@ class DeviceController {
       channels,
       downProtocol,
       upProtocol,
+      key,
     } = req.body as unknown as DeviceBody;
     try {
       // parse downProtocol object
@@ -93,6 +97,7 @@ class DeviceController {
                     pluginChannelProps,
                 };
               }),
+              deviceKey: key,
             },
             {
               // Include other table
@@ -129,7 +134,6 @@ class DeviceController {
         throw new Error("invalid plugin");
       }
     } catch (err) {
-      console.log(err);
       logger.warn(err);
       res.status(400).send(err);
     }
@@ -220,6 +224,7 @@ class DeviceController {
         type,
         upProtocol,
         downProtocol,
+        deviceKey,
         Channels: channels,
       } = result as unknown as any;
       const downPlugin = await southBound.getPlugin(downProtocol.plugin);
@@ -243,6 +248,7 @@ class DeviceController {
         modelName,
         manufacturer,
         type,
+        deviceKey,
         downProtocol: { plugin: downProtocol.plugin, ...downProtocolProps },
         upProtocol: { plugin: upProtocol.plugin, ...upProtocolProps },
         channels: channelsProps,
@@ -253,9 +259,20 @@ class DeviceController {
   }
   public static async deleteDevices(req: Request, res: Response) {
     const { id } = req.query as unknown as { id: number };
-    const device = await Devices.findByPk(id);
+    const device = await Devices.findByPk(id, {
+      include: Schedules,
+    });
     try {
-      await device?.destroy();
+      sequelize.transaction(async (t) => {
+        //@ts-ignore
+        const schedules = device?.toJSON().Schedules;
+
+        // await device?.destroy({ transaction: t });
+        //@ts-ignore
+        schedules.forEach((schedule) => {
+          Scheduler.delete(schedule.id);
+        });
+      });
     } catch (err) {
       return res.sendStatus(400);
     }

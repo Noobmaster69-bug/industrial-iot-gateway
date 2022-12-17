@@ -1,10 +1,11 @@
+import logger from "logger";
 import cron from "node-cron";
 import { Schedules } from "./scheduler.models";
 class Scheduler {
   public static list: Array<Scheduler> = [];
   public static start(id: number) {
     const cronTask = this.list.find((scheduler) => {
-      scheduler.id === id;
+      return scheduler.id === id;
     });
     cronTask?.start();
     return cronTask;
@@ -12,7 +13,7 @@ class Scheduler {
 
   public static stop(id: number) {
     const cronTask = this.list.find((scheduler) => {
-      scheduler.id === id;
+      return scheduler.id === id;
     });
     cronTask?.stop();
     return cronTask;
@@ -21,9 +22,9 @@ class Scheduler {
   public static delete(id: number) {
     this.stop(id);
     const index = this.list.findIndex((scheduler) => {
-      scheduler.id === id;
+      return scheduler.id === id;
     });
-    this.list = this.list.slice(index, 1);
+    this.list = this.list.filter((_it, _index) => _index !== index);
   }
   public static newReadDataTask(
     id: number,
@@ -34,12 +35,38 @@ class Scheduler {
       id,
       cronString,
       async (_schedule) => {
-        const task = await Schedules.getTask(id);
-        const data = await task.downPlugin?.plugin.get(
-          task.downProtocol,
-          task.channels
-        );
-        await task.upPlugin?.plugin.up(task.upProtocol, data);
+        try {
+          let task = await Schedules.getTask(id);
+          let data = await task.downPlugin?.plugin.get(
+            task.downProtocol,
+            task.channels
+          );
+          const pkg = data?.map((sample) => {
+            //@ts-ignore
+            let v = (sample.value + sample.offset) * sample.scale;
+            //@ts-ignore
+
+            if (sample.precision) {
+              //@ts-ignore
+
+              v = v.toFixed(sample.precision);
+            }
+            return {
+              //@ts-ignore
+              n: sample.name,
+              v,
+            };
+          });
+          //@ts-ignore
+          pkg[0].bn = `urn:dev:id:${task.Device.deviceKey}:`;
+
+          //@ts-ignore
+          pkg[0].bt = (Date.now() / 1000).toFixed(0);
+          //@ts-ignore
+          await task.upPlugin?.plugin.up(task.upProtocol, pkg);
+        } catch (err) {
+          logger.warn(err);
+        }
       },
       options
     );

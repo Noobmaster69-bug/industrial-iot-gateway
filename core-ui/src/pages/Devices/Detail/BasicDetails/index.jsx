@@ -47,6 +47,14 @@ export default function BasicPanel() {
               </td>
               <td>{thisDevice.type}</td>
             </tr>
+            <tr>
+              <td>
+                <label>
+                  <h4>Device Key</h4>
+                </label>
+              </td>
+              <td>{thisDevice.deviceKey}</td>
+            </tr>
           </tbody>
         </table>
       </div>

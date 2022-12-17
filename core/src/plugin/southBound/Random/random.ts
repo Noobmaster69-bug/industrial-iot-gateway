@@ -25,7 +25,7 @@ class RandomPlugin {
     );
   }
   public static async set(
-    _protocol: RandomChannel,
+    _protocol: RandomProtocol,
     _channels: Array<RandomChannel>
   ) {
     return await Promise.reject("No set method for this plugin");

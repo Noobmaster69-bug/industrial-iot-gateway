@@ -1,6 +1,6 @@
 import type { Model, ModelStatic } from "sequelize";
 import { MainfluxProtocol } from "./mainflux.models";
-import mqtt from "mqtt";
+import Mainflux from "./mainflux";
 export async function mainfluxInit({
   Protocols,
 }: {
@@ -17,19 +17,13 @@ export async function mainfluxInit({
   await MainfluxProtocol.sync();
   const connections = await MainfluxProtocol.findAll();
   for (const connection of connections) {
-    // mqtt.connect({
-    //   protocolVersion: 4,
-    //   username: connection.thingId,
-    //   password: connection.thingKey,
-    //   host: connection.host,
-    //   port: connection.port,
-    // });
+    Mainflux.addConnection(connection.toJSON());
   }
 }
 
 class MainfluxPlugin {
   public static async up(protocol: any, data: any) {
-    console.log({ protocol, data });
+    Mainflux.publish(protocol, data);
   }
   public static async getProperties() {
     return {
