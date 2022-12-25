@@ -24,6 +24,7 @@ async function logIn(userData) {
   const {
     data: { accessToken },
   } = await axios.post("/auth/", userData);
+  console.log("test");
   window.localStorage.setItem("TOKEN", "Bearer " + accessToken);
   axios.defaults.headers.common["Authorization"] = accessToken;
   return "login";

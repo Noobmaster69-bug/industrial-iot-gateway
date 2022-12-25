@@ -7,6 +7,7 @@ import _ from "lodash";
 import pluralize from "pluralize";
 import { Schedules } from "scheduler/scheduler.models";
 import Scheduler from "scheduler/scheduler";
+import Mainflux from "plugin/northBound/Mainflux/mainflux";
 interface DeviceBody {
   name: string;
   modelName?: string;
@@ -43,6 +44,7 @@ class DeviceController {
       key,
     } = req.body as unknown as DeviceBody;
     try {
+      console.log(req.body);
       // parse downProtocol object
       const downPlugin = await southBound.getPlugin(downProtocol?.plugin);
       const downPluginProps: any = _.omit(downProtocol, ["name", "plugin"]);
@@ -130,11 +132,13 @@ class DeviceController {
           );
           res.send(result);
         });
+        await Mainflux.reload();
       } else {
         throw new Error("invalid plugin");
       }
     } catch (err) {
       logger.warn(err);
+      console.log(err);
       res.status(400).send(err);
     }
   }
@@ -267,7 +271,7 @@ class DeviceController {
         //@ts-ignore
         const schedules = device?.toJSON().Schedules;
 
-        // await device?.destroy({ transaction: t });
+        await device?.destroy({ transaction: t });
         //@ts-ignore
         schedules.forEach((schedule) => {
           Scheduler.delete(schedule.id);

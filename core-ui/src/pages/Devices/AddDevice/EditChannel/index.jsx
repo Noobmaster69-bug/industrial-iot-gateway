@@ -152,7 +152,7 @@ export default function EditChannel({
                               form="addChannel"
                               defaultValue={channel[key]?.key}
                             >
-                              {JSON.parse(value?.values).map((vl, index) => (
+                              {(value?.values).map((vl, index) => (
                                 <option value={vl} key={+index}>
                                   {vl}
                                 </option>

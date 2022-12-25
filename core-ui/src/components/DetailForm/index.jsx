@@ -34,7 +34,7 @@ export default function DetailForm(props) {
               {value?.type === "ENUM" || value?.type === "BOOLEAN" ? (
                 <select
                   name={key}
-                  value={value?.defaultValue || ""}
+                  value={"" || props.values[key]}
                   onChange={(e) => {
                     onChange({
                       ...props.values,
@@ -42,6 +42,7 @@ export default function DetailForm(props) {
                     });
                   }}
                 >
+                  <option value="">Select {key}</option>
                   {value?.type === "ENUM" &&
                     value?.values.map((_value, index) => {
                       return (

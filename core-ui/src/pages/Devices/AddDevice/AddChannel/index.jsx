@@ -187,35 +187,37 @@ export default function AddChannel({
                     </td>
                   </tr>
                   {Object.entries(downService?.channels || {}).map(
-                    ([key, value], index) => (
-                      <tr key={"channels" + index}>
-                        <td>
-                          <label>
-                            <h4>{key[0].toUpperCase() + key.slice(1)}</h4>
-                          </label>
-                        </td>
-                        <td>
-                          {value?.type === "ENUM" ? (
-                            <select name={key} form="addChannel">
-                              {JSON.parse(value?.values).map((vl, index) => (
-                                <option value={vl} key={+index}>
-                                  {vl}
-                                </option>
-                              ))}
-                            </select>
-                          ) : (
-                            <input
-                              name={key}
-                              placeholder={value?.placeholder}
-                              required={!value?.allowNull}
-                              type={DataTypetoInputType(value?.type)}
-                              defaultValue={value?.defaultValue}
-                              form="addChannel"
-                            />
-                          )}
-                        </td>
-                      </tr>
-                    )
+                    ([key, value], index) => {
+                      return (
+                        <tr key={"channels" + index}>
+                          <td>
+                            <label>
+                              <h4>{key[0].toUpperCase() + key.slice(1)}</h4>
+                            </label>
+                          </td>
+                          <td>
+                            {value?.type === "ENUM" ? (
+                              <select name={key} form="addChannel">
+                                {(value?.values).map((vl, index) => (
+                                  <option value={vl} key={+index}>
+                                    {vl}
+                                  </option>
+                                ))}
+                              </select>
+                            ) : (
+                              <input
+                                name={key}
+                                placeholder={value?.placeholder}
+                                required={!value?.allowNull}
+                                type={DataTypetoInputType(value?.type)}
+                                defaultValue={value?.defaultValue}
+                                form="addChannel"
+                              />
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    }
                   )}
                 </tbody>
               </table>

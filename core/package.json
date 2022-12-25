@@ -8,7 +8,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "gulp start",
     "prebuild": "cd ../core-ui/ && npm run build",
-    "build": "gulp build && pkg ."
+    "build": "gulp build",
+    "pkg": "pkg .",
+    "setup_armhf": "export AR=\"arm-linux-gnueabihf-ar\" && export CC=\"arm-linux-gnueabihf-gcc\" && export CXX=\"arm-linux-gnueabihf-g++\" &&export LINK=\"arm-linux-gnueabihf-g++\"&&npm install --build-from-source --target_arch=arm --omit=dev"
   },
   "author": "",
   "license": "ISC",
@@ -33,7 +35,7 @@
     "tslib": "^2.4.1"
   },
   "dependencies": {
-    "axios": "^1.2.1",
+    "axios": "^0.26.1",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "debug": "^4.3.4",
@@ -51,7 +53,7 @@
     "passport-jwt": "^4.0.0",
     "pluralize": "^8.0.0",
     "sequelize": "^6.25.8",
-    "serialport": "^10.5.0",
+    "serialport": "^10.4.0",
     "sqlite3": "^5.1.2",
     "winston": "^3.8.2",
     "winston-transport": "^4.5.0"
@@ -60,11 +62,11 @@
     "assets": [
       "node_modules/sqlite3/lib/binding/**/*.node",
       "node_modules/bcrypt/lib/binding/**/*.node",
-      "tools/nanomq/**/*",
+      "node_modules/@serialport/bindings-cpp/prebuilds/**/*.node",
       "build/public/**/*"
     ],
     "targets": [
-      "node16-linux-x64"
+      "node16-linux-armv7"
     ],
     "outputPath": "build/out"
   }

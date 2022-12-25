@@ -4,6 +4,7 @@ import logger from "logger";
 import { Channels, Devices, Protocols } from "devices";
 import { southBound } from "plugin";
 import pluralize from "pluralize";
+import { MainfluxProtocol } from "./mainflux.models";
 namespace NMainflux {
   export interface ConstructorOpts {
     thingKey: string;
@@ -82,6 +83,7 @@ class Mainflux {
             ];
             return result;
           });
+          //@ts-ignore
           const downProtocol = await downPlugin?.Protocols.findOne({
             where: {
               ProtocolId: device.downProtocol.id,
@@ -116,12 +118,20 @@ class Mainflux {
       _.isEqual(connection.opts, _otps)
     );
   }
+
+  static async reload() {
+    const connections = await MainfluxProtocol.findAll();
+    for (const connection of connections) {
+      Mainflux.addConnection(connection.toJSON());
+    }
+  }
+
   static publish(opts: NMainflux.ConstructorOpts, message: any) {
     const instance = this.connections.find((connection) =>
       _.isEqual(connection.opts, opts)
     );
     instance?.client.publish(
-      `channels/${instance.opts.channelId}/message/data`,
+      `channels/${instance.opts.channelId}/messages/data`,
       JSON.stringify(message),
       {
         qos: 2,

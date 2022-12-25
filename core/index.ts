@@ -57,9 +57,9 @@ async function main() {
   app.use("/api", devicesRoutes);
   app.use("/api", schedulerRoutes);
 
-  app.get("/*", (_req, res) => {
-    res.sendFile(path.join(__dirname, "public", "index.html"));
-  });
+  // app.get("/*", (_req, res) => {
+  //   res.sendFile(path.join(__dirname, "public", "index.html"));
+  // });
 
   //run server
   app.listen(33333, () => {

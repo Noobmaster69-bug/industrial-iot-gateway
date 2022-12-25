@@ -54,14 +54,14 @@ class Scheduler {
             return {
               //@ts-ignore
               n: sample.name,
-              v,
+              v: Number(v),
             };
           });
           //@ts-ignore
           pkg[0].bn = `urn:dev:id:${task.Device.deviceKey}:`;
 
           //@ts-ignore
-          pkg[0].bt = (Date.now() / 1000).toFixed(0);
+          pkg[0].bt = Number((Date.now() / 1000).toFixed(3));
           //@ts-ignore
           await task.upPlugin?.plugin.up(task.upProtocol, pkg);
         } catch (err) {

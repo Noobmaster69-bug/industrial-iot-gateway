@@ -1,10 +1,12 @@
 import type { Model, ModelStatic } from "sequelize";
-import { randomInit } from "./Random";
-import RandomPlugin from "./Random";
+
+import RandomPlugin, { randomInit } from "./Random";
+import ModbusPlugin, { modbusInit } from "./Modbus";
+
 class SouthBound {
   public static async list() {
     return await Promise.all(
-      [RandomPlugin].map((plugin) => {
+      [ModbusPlugin, RandomPlugin].map((plugin) => {
         return plugin.getProperties();
       })
     );
@@ -21,6 +23,10 @@ class SouthBound {
     Protocols: ModelStatic<Model>;
   }) {
     await randomInit({
+      Channels,
+      Protocols,
+    });
+    await modbusInit({
       Channels,
       Protocols,
     });

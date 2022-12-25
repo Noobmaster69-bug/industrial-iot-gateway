@@ -1,23 +1,32 @@
-const fcs = {
-  "01": "readCoils",
-  "02": "readDiscreteInputs",
-  "03": "readHoldingRegisters",
-  "04": "readInputRegisters",
-  "05": "writeSingleCoil",
-  "06": "writeSingleRegister",
-  "0F": "writeMultipleCoils",
-  10: "writeMultipleRegisters",
-};
+import { ModbusChannels, ModbusProtocols } from "./modbus.models";
+import type { Model, ModelStatic } from "sequelize";
+import ModbusPlugin from "./modbus";
 
-interface Modbus {
-  readCoils: () => Promise<number>;
-  readDiscreteInput: () => Promise<number>;
-  // readHoldingRegisters
-  // readInputRegisters
+export { default as routes } from "./modbus.routes";
 
-  //   writeSingleCoil
-  //   writeSingleRegister
-  //   writeMultipleCoils
-  //   writeMultipleRegisters
-  //   command
+export async function modbusInit({
+  Channels,
+  Protocols,
+}: {
+  Channels: ModelStatic<Model>;
+  Protocols: ModelStatic<Model>;
+}) {
+  Channels.hasOne(ModbusChannels, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  });
+  ModbusChannels.belongsTo(Channels, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  });
+
+  Protocols.hasOne(ModbusProtocols, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  });
+  ModbusProtocols.belongsTo(Protocols, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  });
 }
+export default ModbusPlugin;

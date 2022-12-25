@@ -60,6 +60,7 @@ export default function UpProtocol({ formData = {}, onChange = () => {} }) {
             </div>
           }
           onChange={(_vl) => {
+            console.log(_vl);
             onChange({ downProtocol: { ...formData.downProtocol, ..._vl } });
           }}
           values={formData.downProtocol}

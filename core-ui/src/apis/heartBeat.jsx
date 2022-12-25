@@ -28,7 +28,7 @@ export function MqttProvider({ children }) {
   const [_mem, setMem] = useState([]);
   const [cpu, setCPU] = useState([]);
   useEffect(() => {
-    const client = mqtt.connect("mqtt://localhost:8083/mqtt");
+    const client = mqtt.connect(`mqtt://${window.location.hostname}:8083/mqtt`);
     client.on("connect", () => {
       setIsConnected(true);
 

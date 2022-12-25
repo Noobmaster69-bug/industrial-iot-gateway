@@ -153,7 +153,7 @@ export default function AddDevice() {
           setAddChannel(false);
         }}
       />
-      <EditChannel
+      {/* <EditChannel
         formData={formData}
         onChange={formData}
         open={editChannel}
@@ -182,7 +182,7 @@ export default function AddDevice() {
         onCancel={() => {
           setEditChannel(false);
         }}
-      />
+      /> */}
     </>
   );
 }

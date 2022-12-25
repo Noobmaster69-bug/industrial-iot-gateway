@@ -1,7 +1,7 @@
 import Axios from "axios";
 import { toast } from "react-toastify";
 export const axios = Axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL || "http://localhost:33333/api",
+  baseURL: `http://${window.location.hostname}:33333/api`,
 });
 export function Toast(type) {
   if (type) {
