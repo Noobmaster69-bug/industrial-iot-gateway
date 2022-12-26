@@ -83,7 +83,7 @@ class SqliteTransport extends Transport {
         console.log(err);
       });
   }
-  query(
+  public query(
     options: queryOptions,
     callback: (
       err: Error | null,

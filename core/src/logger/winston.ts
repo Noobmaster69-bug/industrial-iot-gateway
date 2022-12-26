@@ -28,7 +28,11 @@ const printer = winston.format.printf((info) => {
   const color = colors[stringHash(label) % 16] as string;
   //@ts-ignore
   const colorize: (message: any) => string = chalk[color];
-  return colorize(`[${[info["timestamp"]]}] [${info.level}]:  ${info.message}`);
+  return colorize(
+    `[${[info["timestamp"]]}] [${info.level}] [${info["label"]}]: ${
+      info.message
+    }`
+  );
 });
 
 const winstonLogger = winston.createLogger({

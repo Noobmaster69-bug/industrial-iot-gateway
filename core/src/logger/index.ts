@@ -1,5 +1,6 @@
 import { winstonLogger } from "./winston";
 import { init } from "./SqliteTransport";
+
 const logger = createLogger("logger");
 export async function LoggerInit() {
   await init();
@@ -22,3 +23,4 @@ export default function createLogger(label: string) {
     },
   };
 }
+export { default as LoggerRouter } from "./routes";
