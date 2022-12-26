@@ -4,8 +4,71 @@ info:
   version: "2.0"
 servers:
   - description: Default server
-    url: http://localhost:33333/api/
+    url: http://localhost:33333/
 paths:
+  /logger:
+    get:
+      summary: Tracing logs
+      tags:
+        - Logger
+      description: Query old log
+      parameters:
+        - in: query
+          name: from
+          description: Start time for the search
+          schema:
+            type: string
+            format: date-time
+            example: "1970-01-01T00:00:00.000Z"
+        - in: query
+          name: until
+          description: End time for the search
+          schema:
+            type: string
+            format: date-time
+            example: "2022-11-30T07:31:28.380Z"
+        - in: query
+          name: limit
+          description: Number of query message
+          schema:
+            type: integer
+            default: 10
+        - in: query
+          name: start
+          description: Starting row offset
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: order
+          description: asc or desc
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Logs"
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                      example: "query[parameters]:Invalid value"
+        "401":
+          $ref: "#/components/responses/401"
+
   /user:
     get:
       summary: get user info
@@ -39,11 +102,11 @@ paths:
                   - $ref: "#/components/schemas/User"
                   - $ref: "#/components/schemas/Timestamp"
         "400":
-          description: "Failed due to malformed query params"
+          $ref: "#/components/responses/400"
         "401":
-          description: "Missing or invalid access token provided"
+          $ref: "#/components/responses/401"
         "500":
-          description: "Unexpected server-side error occurred"
+          $ref: "#/components/responses/500"
     put:
       summary: change user password
       tags:
@@ -89,7 +152,7 @@ paths:
         "401":
           description: "Missing or invalid access token provided."
         "500":
-          description: "Unexpected server-side error occurred."
+          $ref: "#/components/responses/500"
     post:
       summary: Get access token
       tags:
@@ -136,7 +199,7 @@ paths:
         "401":
           description: "Missing or invalid access token provided"
         "500":
-          description: "Unexpected server-side error occurred"
+          $ref: "#/components/responses/500"
 components:
   securitySchemes:
     bearerAuth:
@@ -146,6 +209,29 @@ components:
       description: |
         * Users access: "Authorization: Bearer <user_token>"
   schemas:
+    Logs:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            type: object
+            properties:
+              level:
+                type: string
+                enum: ["info", "warn", "error"]
+              message:
+                type: string
+                example: "Hello World"
+              timestamp:
+                type: string
+                format: date-time
+              label:
+                type: string
+                example: app
+        total:
+          type: number
+          example: 100
     User:
       type: object
       properties:
@@ -165,6 +251,13 @@ components:
         updatedAt:
           type: string
           format: date-time
+  responses:
+    "400":
+      description: "Failed due to malformed query params"
+    "401":
+      description: "Missing or invalid access token provided"
+    "500":
+      description: "Unexpected server-side error occurred"
     # Logs:
     #   type: array
     #   items:

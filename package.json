@@ -20,6 +20,9 @@
     "widdershins": "^4.0.1"
   },
   "dependencies": {
-    "node-cron": "^3.0.2"
+    "chalk": "^5.2.0",
+    "node-cron": "^3.0.2",
+    "socket.io": "^4.5.4",
+    "string-hash": "^1.1.3"
   }
 }
