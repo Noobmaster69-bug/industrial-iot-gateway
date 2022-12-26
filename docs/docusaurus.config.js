@@ -9,7 +9,7 @@ const config = {
   title: "Industrial IoT Gateway",
   tagline: "Industrial IoT Gateway",
   url: "https://noobmaster69-bug.github.io/",
-  baseUrl: "/",
+  baseUrl: "/industrial-iot-gateway/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",
