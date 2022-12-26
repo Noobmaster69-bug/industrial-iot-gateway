@@ -26,5 +26,5 @@ jobs:
         with:
           github_token: ${{ secrets.KEY }}
           publish_dir: ./docs/build
-          user_name: github-actions[bot]
+          user_name: Noobmaster69-bug
           user_email: tranuyson@gmail.com
