@@ -13,12 +13,14 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: yarn
+          cache: npm
 
       - name: Install dependencies
-        run: cd docs && yarn install --frozen-lockfile
+        working-directory: ./docs
+        run: npm install --frozen-lockfile
       - name: Build website
-        run: cd docs && yarn build
+        working-directory: ./docs
+        run: npm run build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
