@@ -24,7 +24,7 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.KEY }}
+          github_token: ${{ secrets.GIT_KEY }}
           publish_dir: ./docs/build
           user_name: Noobmaster69-bug
           user_email: tranuyson@gmail.com
