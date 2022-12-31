@@ -2,12 +2,12 @@ import express, { json, urlencoded } from "express";
 import { queryParser } from "express-query-parser";
 import cors from "cors";
 import morgan from "morgan";
-
 import createLogger, { LoggerInit, LoggerRouter } from "logger";
 import { SocketInit } from "socket";
-
+import { UserInit, UsersRouter } from "users";
 const logger = createLogger("app");
 const morganLogger = createLogger("morgan");
+
 async function main() {
   const app = express();
 
@@ -36,10 +36,11 @@ async function main() {
   //init modules
   const server = await SocketInit(app);
   await LoggerInit();
+  await UserInit();
 
   //init routes
   app.use(LoggerRouter);
-
+  app.use(UsersRouter);
   return server;
 }
 
