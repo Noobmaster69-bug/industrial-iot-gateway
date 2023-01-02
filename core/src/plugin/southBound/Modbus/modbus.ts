@@ -1,15 +1,20 @@
 import { SerialPort } from "serialport";
 import { ModbusChannels, ModbusProtocols } from "./modbus.models";
-import axios from "axios";
+import { modbusRTU } from "./modbus/index";
 class ModbusPlugin {
   public static async get(
     _protocol: ModbusProtocols,
     _channels: ModbusChannels
   ) {
-    const { data } = await axios.get("http://localhost:33334/RTU", {
-      data: { ..._protocol, channels: _channels },
-    });
-    return data.channels;
+    // const { data } = await axios.get("http://localhost:33334/RTU", {
+    //   data: { ..._protocol, channels: _channels },
+    // });
+    const test = await modbusRTU.readHoldingRegisterChannels(
+      _protocol,
+      _channels
+    );
+    console.log(test);
+    return test;
   }
   public static async set(
     _protocol: ModbusProtocols,

@@ -2,6 +2,7 @@
   "extends": "@tsconfig/node16-strictest-esm",
   "compilerOptions": {
     "allowJs": true,
+    "checkJs": false,
     "outDir": "./build",
     "resolveJsonModule": true,
     "baseUrl": "./src"
