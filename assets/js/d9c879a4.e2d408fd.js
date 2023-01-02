@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[4753],{2291:a=>{a.exports=JSON.parse('{"label":"hello","permalink":"/industrial-iot-gateway/blog/tags/hello","allTagsPath":"/industrial-iot-gateway/blog/tags","count":2}')}}]);
