@@ -1,0 +1,308 @@
+openapi: 3.0.1
+info:
+  title: Core API
+  version: "2.0"
+servers:
+  - description: Default server
+    url: http://localhost:33333/api/
+paths:
+  /user:
+    get:
+      summary: get user info
+      tags:
+        - "Users"
+      parameters:
+        - in: query
+          name: id
+          description: User ID
+          schema:
+            type: number
+            example: 1
+        - in: query
+          name: name
+          description: User name
+          schema:
+            type: string
+            example: "root"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    example: 1
+                allOf:
+                  - $ref: "#/components/schemas/User"
+                  - $ref: "#/components/schemas/Timestamp"
+        "400":
+          description: "Failed due to malformed query params"
+        "401":
+          description: "Missing or invalid access token provided"
+        "500":
+          description: "Unexpected server-side error occurred"
+    put:
+      summary: change user password
+      tags:
+        - "Users"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                newPassword:
+                  type: string
+      responses:
+        "201":
+          description: "Password changed"
+        "400":
+          description: "Failed due to malformed JSON"
+        "415":
+          description: "Missing or invalid content type"
+        "500":
+          description: "Unexpected server-side error occurred"
+  /auth:
+    get:
+      summary: Check if token is valid or not
+      tags:
+        - "Authenticate"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    example: 1
+                allOf:
+                  - $ref: "#/components/schemas/User"
+                  - $ref: "#/components/schemas/Timestamp"
+        "401":
+          description: "Missing or invalid access token provided."
+        "500":
+          description: "Unexpected server-side error occurred."
+    post:
+      summary: Get access token
+      tags:
+        - "Authenticate"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: root
+                passsword:
+                  type: string
+                  example: root
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjY5NTM1MzY0fQ.Bj5LwN-vAozJmz-AIyoe4Ok-ENvj4iSaLtU43VwAslHi2diTP0zjVmNGSoULMQSw82hav6199UtapV_iMnp9tOsJYvoCfAeedryQErSkBGOiY6Lr-WGHQbUvcOn_evKXWWtqZCI0LZShrVM0XyS8gxP5l167T4w-g0qpNChIcvA"
+
+        "400":
+          description: "Failed due to malformed JSON"
+        "401":
+          description: "Failed due to using invalid credentials"
+        "415":
+          description: "Missing or invalid content type"
+        "500":
+          description: "Unexpected server-side error occurred"
+    delete:
+      summary: "Revoke key"
+      tags:
+        - "Authenticate"
+      responses:
+        "204":
+          description: "Key revoked"
+        "401":
+          description: "Missing or invalid access token provided"
+        "500":
+          description: "Unexpected server-side error occurred"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        * Users access: "Authorization: Bearer <user_token>"
+  schemas:
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+          example: root
+        role:
+          type: string
+          enum:
+            - admin
+    Timestamp:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    # Logs:
+    #   type: array
+    #   items:
+    #     type: object
+    #     properties:
+    #       rows:
+    #         type: array
+    #         items:
+    #           type: object
+    #           properties:
+    #             level:
+    #               type: string
+    #               enum: ["info", "warn", "error"]
+    #             message:
+    #               type: string
+    #               example: "Hello World"
+    #             timestamp:
+    #               type: string
+    #               format: date-time
+    # User:
+    #   type: object
+    #   properties:
+    #     username:
+    #       type: string
+    #       example: admin
+    #     password:
+    #       type: string
+    #       example: admin
+    #     role:
+    #       type: string
+    #       example: admin
+    # UserDetail:
+    #   type: object
+    #   properties:
+    #     username:
+    #       type: string
+    #       example: root
+    #     role:
+    #       type: string
+    #       enum: ["admin"]
+    #       example: "admin"
+    #     createdAt:
+    #       type: string
+    #       format: date-time
+
+    # DynamicProps:
+    #   additionalProperties:
+    #     type: object
+    #     properties:
+    #       type:
+    #         type: string
+    #         enum:
+    #           [
+    #             "INTEGER",
+    #             "STRING",
+    #             "BOOLEAN",
+    #             "REAL",
+    #             "DECIMAL",
+    #             "DATES",
+    #             "BLOBS",
+    #             "ENUM",
+    #           ]
+    #       defaultValue:
+    #         type: string
+    #       values:
+    #         type: array
+    #       unique:
+    #         type: string
+    #       allowNull:
+    #         type: boolean
+    #       label:
+    #         type: string
+    #       placeholder:
+    #         type: string
+
+    # SouthBoundPlugin:
+    #   type: object
+    #   properties:
+    #     name:
+    #       type: string
+    #       example: "random"
+    #     channels:
+    #       $ref: "#/components/schemas/DynamicProps"
+    #     protocols:
+    #       $ref: "#/components/schemas/DynamicProps"
+
+    # Random:
+    #   type: object
+    #   properties:
+    #     name:
+    #       type: string
+    #       default: "random"
+    #     channels:
+    #       type: object
+    #       properties:
+    #         max:
+    #           type: string
+    #           default: "REAL"
+    #         min:
+    #           type: string
+    #           default: "REAL"
+    #     protocols:
+    #       type: object
+    #       properties:
+    #         seed:
+    #           type: string
+    #           default: "REAL"
+    # Device:
+    # type: object
+    # properties:
+    #   id:
+    #     type: number
+    #     example: 1
+    #   name:
+    #     type: string
+    #     example: "Device 1"
+    #   modelName:
+    #     type: string
+    #     example: "Model 1"
+    #   manufacturer:
+    #     type: string
+    #     example: "Back Khoa"
+    #   type:
+    #     type: string
+    #     example: "Power Meter"
+    #   status:
+    #     type: string
+    #     enum: ["dormant", "active"]
+    #   createdAt:
+    #     type: string
+    #     format: "date-time"
+    #   updateAt:
+    #     type: string
+    #     format: "date-time"
+    #   upProtocol:
+    #     type: object
+    #   downProtocol:
+    #     type: object
+
+security:
+  - bearerAuth: []

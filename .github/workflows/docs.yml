@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - docs/**
+    branches-ignore:
+      - gh-pages
 jobs:
   deploy:
     name: Deploy to GitHub Pages
