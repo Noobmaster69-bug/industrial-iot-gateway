@@ -1,7 +1,9 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
+// @ts-ignore
 const lightCodeTheme = require("prism-react-renderer/themes/github");
+// @ts-ignore
 const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
@@ -71,13 +73,17 @@ const config = {
             label: "Tutorial",
           },
           {
+            to: "/api",
+            label: "APIs",
+            position: "left",
+          },
+          {
+            type: "docsVersionDropdown",
+          },
+          {
             href: "https://github.com/Noobmaster69-bug/industrial-iot-gateway",
             label: "GitHub",
             position: "right",
-          },
-
-          {
-            type: "docsVersionDropdown",
           },
         ],
       },
@@ -131,6 +137,23 @@ const config = {
         darkTheme: darkCodeTheme,
       },
     }),
+  plugins: [
+    // @ts-ignore
+    () => ({
+      configureWebpack: function () {
+        return {
+          module: {
+            rules: [
+              {
+                test: /\.yml$/,
+                loader: "raw-loader",
+              },
+            ],
+          },
+        };
+      },
+    }),
+  ],
 };
 
 module.exports = config;
