@@ -18,8 +18,5 @@
     "open-swagger-ui": "^1.2.0",
     "openapi-editor": "^0.3.0",
     "widdershins": "^4.0.1"
-  },
-  "dependencies": {
-    "node-cron": "^3.0.2"
   }
 }
