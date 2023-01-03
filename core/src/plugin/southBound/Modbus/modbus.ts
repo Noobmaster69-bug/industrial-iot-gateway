@@ -6,21 +6,17 @@ class ModbusPlugin {
     _protocol: ModbusProtocols,
     _channels: ModbusChannels
   ) {
-    // const { data } = await axios.get("http://localhost:33334/RTU", {
-    //   data: { ..._protocol, channels: _channels },
-    // });
     const test = await modbusRTU.readHoldingRegisterChannels(
       _protocol,
       _channels
     );
-    console.log(test);
     return test;
   }
   public static async set(
     _protocol: ModbusProtocols,
     _channels: Array<ModbusChannels>
   ) {
-    return await Promise.reject("No set method for this plugin");
+    await modbusRTU.writeHoldingRegisterChannels(_protocol, _channels);
   }
   public static async getProperties() {
     return await Promise.resolve({

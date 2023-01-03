@@ -11,7 +11,7 @@ namespace NMainflux {
     thingId: string;
     channelId: string;
     host: string;
-    port?: 1883 | number;
+    port?: 1883 | 8883 | number;
   }
 }
 
@@ -27,6 +27,7 @@ class Mainflux {
       port: _otps?.port || 1883,
     });
     this.client.on("connect", () => {
+      logger.info("connected to mainflux");
       this.client.subscribe(`channels/${this.opts.channelId}/messages/command`);
       this.client.on("message", async (_topic, message) => {
         const messageJSON = JSON.parse(message.toString());
@@ -81,6 +82,9 @@ class Mainflux {
             delete result[
               pluralize.singular(downPlugin?.Channels.getTableName() + "")
             ];
+            result.value = messageJSON.find(
+              (message: { n: string }) => message.n === result.name
+            ).v;
             return result;
           });
           //@ts-ignore
@@ -104,10 +108,23 @@ class Mainflux {
   static connections: Array<Mainflux> = [];
 
   static addConnection(_otps: NMainflux.ConstructorOpts) {
-    let instance = this.findConnection(_otps);
+    const { thingKey, thingId, channelId, host, port = 1883 } = _otps;
+    let instance = this.findConnection({
+      thingKey,
+      thingId,
+      channelId,
+      host,
+      port,
+    });
     // create new connection if instance not exists
     if (!instance) {
-      instance = new Mainflux(_otps);
+      instance = new Mainflux({
+        thingKey,
+        thingId,
+        channelId,
+        host,
+        port,
+      });
       this.connections.push(instance);
     }
     return instance;
@@ -127,8 +144,10 @@ class Mainflux {
   }
 
   static publish(opts: NMainflux.ConstructorOpts, message: any) {
+    const { thingKey, thingId, channelId, host, port = 1883 } = opts;
+
     const instance = this.connections.find((connection) =>
-      _.isEqual(connection.opts, opts)
+      _.isEqual(connection.opts, { thingKey, thingId, channelId, host, port })
     );
     instance?.client.publish(
       `channels/${instance.opts.channelId}/messages/data`,

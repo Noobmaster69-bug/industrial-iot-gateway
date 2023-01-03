@@ -44,7 +44,6 @@ class DeviceController {
       key,
     } = req.body as unknown as DeviceBody;
     try {
-      console.log(req.body);
       // parse downProtocol object
       const downPlugin = await southBound.getPlugin(downProtocol?.plugin);
       const downPluginProps: any = _.omit(downProtocol, ["name", "plugin"]);
@@ -138,7 +137,6 @@ class DeviceController {
       }
     } catch (err) {
       logger.warn(err);
-      console.log(err);
       res.status(400).send(err);
     }
   }

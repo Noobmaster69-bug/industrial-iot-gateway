@@ -1,4 +1,4 @@
-import { useAllDevices, useDevice } from "apis";
+import { useAllDevices } from "apis";
 import clsx from "clsx";
 import { useEffect, useMemo, useState } from "react";
 import { BsArrowLeft } from "react-icons/bs";
@@ -8,6 +8,7 @@ import { Cron } from "react-js-cron";
 import "react-js-cron/dist/styles.css";
 import cronstrue from "cronstrue";
 import { useCreateSchedule } from "apis";
+import { isValidCron } from "cron-validator";
 export default function AddSchedule() {
   const [formData, setFormData] = useState({
     cron: "* * * * *",
@@ -38,11 +39,13 @@ export default function AddSchedule() {
       device_id: devicesData[0]?.id,
       channels: devicesData
         .find((device) => device.id === Number(devicesData[0]?.id))
-        ?.Channels.map((channel) => channel.id),
+        ?.Channels.filter((channel) => channel.readWrite !== "W")
+        .map((channel) => channel.id),
     });
   }, [devicesData]);
   function onSubmit(e) {
     e.preventDefault();
+
     createSchedule(formData);
   }
   return (
@@ -84,9 +87,14 @@ export default function AddSchedule() {
                           Device: {
                             id: Number(e.target.value),
                           },
+                          device_id: Number(e.target.value),
                           channels: devicesData
                             .find(
                               (device) => device.id === Number(e.target.value)
+                            )
+
+                            ?.Channels.filter(
+                              (channel) => channel.readWrite !== "W"
                             )
                             .map((device) => device.id),
                         });
@@ -133,9 +141,10 @@ export default function AddSchedule() {
                         clearButtonProps={{ type: "dashed" }}
                       />
                     )}
-                    {formData.cron.split(" ").length >= 6 && (
-                      <div>{cronstrue.toString(formData.cron)}</div>
-                    )}
+                    {formData.cron.split(" ").length >= 6 &&
+                      isValidCron(formData.cron, { seconds: true }) && (
+                        <div>{cronstrue.toString(formData.cron)}</div>
+                      )}
                   </td>
                 </tr>
                 <tr>

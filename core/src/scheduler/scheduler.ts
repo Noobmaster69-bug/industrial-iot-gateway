@@ -41,22 +41,30 @@ class Scheduler {
             task.downProtocol,
             task.channels
           );
-          const pkg = data?.map((sample) => {
-            //@ts-ignore
-            let v = (sample.value + sample.offset) * sample.scale;
-            //@ts-ignore
-
-            if (sample.precision) {
+          const pkg = data?.map(
+            (sample: {
+              value: any;
+              offset: any;
+              scale: number;
+              precision: number | undefined;
+              name: any;
+            }) => {
+              //@ts-ignore
+              let v = (sample.value + sample.offset) * sample.scale;
               //@ts-ignore
 
-              v = v.toFixed(sample.precision);
+              if (sample.precision) {
+                //@ts-ignore
+
+                v = v.toFixed(sample.precision);
+              }
+              return {
+                //@ts-ignore
+                n: sample.name,
+                v: Number(v),
+              };
             }
-            return {
-              //@ts-ignore
-              n: sample.name,
-              v: Number(v),
-            };
-          });
+          );
           //@ts-ignore
           pkg[0].bn = `urn:dev:id:${task.Device.deviceKey}:`;
 

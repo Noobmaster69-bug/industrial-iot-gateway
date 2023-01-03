@@ -32,7 +32,6 @@ class AuthController {
   }
   public static async mqttAuth(req: Request, res: Response) {
     const { clientid, username, password } = req.body;
-    console.log({ clientid, id: clientId });
     if (clientid === clientId) {
       return res.sendStatus(200);
     }

@@ -38,9 +38,7 @@ class SchedulerController {
       return result;
     });
     if (result.state === "running") {
-      console.log(result.id);
       const schedule = await Schedules.getTask(result.id);
-      console.log(schedule.id);
       Scheduler.newReadDataTask(schedule.id, schedule.cron, {
         startNow: schedule.state === "running",
       });

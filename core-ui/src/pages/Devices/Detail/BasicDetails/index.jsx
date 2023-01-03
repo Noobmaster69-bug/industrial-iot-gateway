@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import style from "./index.module.scss";
 export default function BasicPanel() {
   const { id } = useParams();
-  const { data: thisDevice, isLoading } = useDevice(id);
+  const { data: thisDevice, isLoading } = useDevice({ id });
   if (isLoading) {
     return <div></div>;
   }

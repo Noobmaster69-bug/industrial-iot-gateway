@@ -50,6 +50,14 @@ class Modbus {
       this.#errorParser(err);
     }
   }
+  async writeHoldingRegisterChannels(option, channels) {
+    for (const channel of channels) {
+      await this.#client.writeSingleRegister(option, {
+        quantity: channel.value,
+        addr: channel.addr,
+      });
+    }
+  }
   #errorParser(err) {
     switch (err.message) {
       case "A Modbus Exception Occurred - See Response Body":
@@ -190,6 +198,13 @@ export class ModbusRTU extends Modbus {
   async readHoldingRegisterChannels(option, channels) {
     try {
       return super.readHoldingRegisterChannels(option, channels);
+    } catch (err) {
+      throw err;
+    }
+  }
+  async writeHoldingRegisterChannels(option, channels) {
+    try {
+      return super.writeHoldingRegisterChannels(option, channels);
     } catch (err) {
       throw err;
     }
