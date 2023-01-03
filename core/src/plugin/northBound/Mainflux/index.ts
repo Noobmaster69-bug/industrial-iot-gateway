@@ -41,6 +41,10 @@ class MainfluxPlugin {
         host: {
           type: "STRING",
         },
+        protocol: {
+          type: "ENUM",
+          values: ["mqtt", "mqtts"],
+        },
       },
       Protocols: MainfluxProtocol,
       plugin: MainfluxPlugin,

@@ -20,9 +20,9 @@ export default function Log() {
     <div className={style.container}>
       <h2>System Log</h2>
       <div className={style.content}>
-        {logs.map((log, index) => (
+        {/* {logs.map((log, index) => (
           <div key={index + "log"}>{log}</div>
-        ))}
+        ))} */}
       </div>
     </div>
   );

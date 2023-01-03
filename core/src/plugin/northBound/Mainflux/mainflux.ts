@@ -11,7 +11,7 @@ namespace NMainflux {
     thingId: string;
     channelId: string;
     host: string;
-    port?: 1883 | 8883 | number;
+    protocol: "mqtt" | "mqtts";
   }
 }
 
@@ -24,7 +24,22 @@ class Mainflux {
       username: _otps.thingId,
       password: _otps.thingKey,
       host: _otps.host,
-      port: _otps?.port || 1883,
+      port: _otps.protocol === "mqtts" ? 8883 : 1883,
+      protocolVersion: 4,
+      protocol: _otps.protocol,
+      rejectUnauthorized: true,
+    });
+    console.log({
+      username: _otps.thingId,
+      password: _otps.thingKey,
+      host: _otps.host,
+      port: _otps.protocol === "mqtts" ? 8883 : 1883,
+      protocolVersion: 4,
+      protocol: _otps.protocol,
+      rejectUnauthorized: true,
+    });
+    this.client.on("error", (err) => {
+      logger.error(err.message);
     });
     this.client.on("connect", () => {
       logger.info("connected to mainflux");
@@ -108,13 +123,13 @@ class Mainflux {
   static connections: Array<Mainflux> = [];
 
   static addConnection(_otps: NMainflux.ConstructorOpts) {
-    const { thingKey, thingId, channelId, host, port = 1883 } = _otps;
+    const { thingKey, thingId, channelId, host, protocol } = _otps;
     let instance = this.findConnection({
       thingKey,
       thingId,
       channelId,
       host,
-      port,
+      protocol,
     });
     // create new connection if instance not exists
     if (!instance) {
@@ -123,7 +138,7 @@ class Mainflux {
         thingId,
         channelId,
         host,
-        port,
+        protocol,
       });
       this.connections.push(instance);
     }
@@ -144,10 +159,16 @@ class Mainflux {
   }
 
   static publish(opts: NMainflux.ConstructorOpts, message: any) {
-    const { thingKey, thingId, channelId, host, port = 1883 } = opts;
+    const { thingKey, thingId, channelId, host, protocol } = opts;
 
     const instance = this.connections.find((connection) =>
-      _.isEqual(connection.opts, { thingKey, thingId, channelId, host, port })
+      _.isEqual(connection.opts, {
+        thingKey,
+        thingId,
+        channelId,
+        host,
+        protocol,
+      })
     );
     instance?.client.publish(
       `channels/${instance.opts.channelId}/messages/data`,

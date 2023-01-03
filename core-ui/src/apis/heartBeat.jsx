@@ -33,8 +33,8 @@ export function MqttProvider({ children }) {
       setIsConnected(true);
 
       //subscribes to system topic
-      client.subscribe("$CORE/health");
-      client.subscribe("$CORE/logs");
+      client.subscribe("$CORE/#");
+      // client.subscribe("$CORE/logs");
 
       //handle message
       client.on("message", (_topic, message) => {
@@ -98,10 +98,12 @@ export function MqttProvider({ children }) {
 
             break;
           case "$CORE/logs":
+            console.log("allo");
             //update logs
             setLogs((_logs) => [..._logs, JSON.parse(message)]);
             break;
           default:
+            console.log("allo");
         }
       });
     });

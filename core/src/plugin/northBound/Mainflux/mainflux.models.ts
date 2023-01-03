@@ -32,10 +32,10 @@ MainfluxProtocol.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    port: {
-      type: DataTypes.INTEGER,
+    protocol: {
+      type: DataTypes.ENUM,
       allowNull: false,
-      defaultValue: 1883,
+      values: ["mqtt", "mqtts"],
     },
   },
   { sequelize }
